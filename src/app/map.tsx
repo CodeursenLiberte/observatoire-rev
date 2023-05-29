@@ -4,6 +4,8 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from './page.module.css'
 import troncons from '../../data/vif.json'
+import {featureCollection, lineString, multiLineString} from '@turf/helpers'
+import _ from 'lodash'
 
 export default function Map() {
     const mapContainer = useRef<null | HTMLElement>(null);
@@ -13,7 +15,17 @@ export default function Map() {
     const [zoom] = useState(10);
 
     useEffect(() => {
-      if (map.current) return;
+        if (map.current) return;
+
+
+        // This is a failed attempt to see if creating a single multiLineString per line
+        // we could avoid having line-caps between successive tronçons of the same line
+        const outlineGeojson = featureCollection(_(troncons.features)
+            .reject(['properties.NIVEAU_VALID_SUPPORT_VIAIRE', 'Variante'])
+            .groupBy('properties.NUM_LIGNE')
+            .values()
+            .map(e => multiLineString(_.flatMap(e, 'geometry.coordinates')))
+            .value())
 
       const newMap = new maplibregl.Map({
           container: mapContainer.current || '',
@@ -21,8 +33,8 @@ export default function Map() {
           center: [lng, lat],
           zoom: zoom
         }).on('load', () => {
-            console.log(troncons)
           newMap.addSource('vif', {type: 'geojson', data: troncons})
+                .addSource('outline', {type: 'geojson', data: outlineGeojson})
           .addLayer({
             id: 'base',
             source: 'vif',
