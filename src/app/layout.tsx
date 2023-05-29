@@ -1,4 +1,4 @@
-import './globals.css'
+import './globals.scss'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css' rel='stylesheet' />
       </head>
       <body className={inter.className}>{children}</body>
