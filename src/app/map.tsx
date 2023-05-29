@@ -39,52 +39,21 @@ export default function Map() {
             filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
         })
         .addLayer({
-            id: 'finalisé',
+            id: 'couleur',
             source: 'vif',
             type: 'line',
             paint: {
                 'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
-                'line-color': '#3A3',
+                'line-color': ['match', ['get', 'NIVEAU_VALID_AMENAG'],
+                    'Mis en service', '#3A3',
+                    'En travaux', '#33A',
+                    '#A33'
+                ]
             },
             layout: {
                 'line-cap': 'round',
             },
-            filter: ['all',
-                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
-                ['==', ['get', 'NIVEAU_VALID_AMENAG'], 'Mis en service']
-            ]
-        })
-        .addLayer({
-            id: 'en travaux',
-            source: 'vif',
-            type: 'line',
-            paint: {
-                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
-                'line-color': '#33A',
-            },
-            layout: {
-                'line-cap': 'round',
-            },
-            filter: ['all',
-                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
-                ['==', ['get', 'NIVEAU_VALID_AMENAG'], 'En travaux']
-            ]
-        })
-        .addLayer({
-            id: 'autre',
-            source: 'vif',
-            type: 'line',
-            paint: {
-                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
-                'line-color': '#A33',
-            },
-            layout: {
-                'line-cap': 'round',
-            },
-            filter: ['all',
-                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
-                ['!', ['in', ['get', 'NIVEAU_VALID_AMENAG'], ['literal', ['Mis en service', 'En travaux']]]]
-            ]
+            filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
         })
         .addLayer({
             id: 'variantes',
