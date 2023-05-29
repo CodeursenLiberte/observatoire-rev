@@ -7,6 +7,11 @@
   min-height: 100vh;
 }
 
+.map {
+  height: 400px;
+  width: 100%;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;
