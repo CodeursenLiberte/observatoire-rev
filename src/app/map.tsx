@@ -28,11 +28,12 @@ export default function Map() {
             source: 'vif',
             type: 'line',
             paint: {
-                'line-width': 2,
-                'line-gap-width': 5,
+                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
+                'line-gap-width': ["interpolate", ["linear"], ["zoom"], 10, 3, 15, 10],
                 'line-opacity': 0.5,
             },
             layout: {
+                'line-join': 'round',
                 'line-cap': 'round',
             },
             filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
@@ -42,7 +43,7 @@ export default function Map() {
             source: 'vif',
             type: 'line',
             paint: {
-                'line-width': 3,
+                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
                 'line-color': '#3A3',
             },
             layout: {
@@ -58,7 +59,7 @@ export default function Map() {
             source: 'vif',
             type: 'line',
             paint: {
-                'line-width': 3,
+                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
                 'line-color': '#33A',
             },
             layout: {
@@ -74,7 +75,7 @@ export default function Map() {
             source: 'vif',
             type: 'line',
             paint: {
-                'line-width': 3,
+                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
                 'line-color': '#A33',
             },
             layout: {
@@ -90,7 +91,7 @@ export default function Map() {
             source: 'vif',
             type: 'line',
             paint: {
-                'line-width': 2,
+                'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
                 'line-dasharray': [2, 1],
             },
             filter: ['==', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
