@@ -23,7 +23,78 @@ export default function Map() {
         }).on('load', () => {
             console.log(troncons)
           newMap.addSource('vif', {type: 'geojson', data: troncons})
-          .addLayer({id: 'base', source: 'vif', 'type': 'line'});
+          .addLayer({
+            id: 'base',
+            source: 'vif',
+            type: 'line',
+            paint: {
+                'line-width': 2,
+                'line-gap-width': 5,
+                'line-opacity': 0.5,
+            },
+            layout: {
+                'line-cap': 'round',
+            },
+            filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
+        })
+        .addLayer({
+            id: 'finalisé',
+            source: 'vif',
+            type: 'line',
+            paint: {
+                'line-width': 3,
+                'line-color': '#3A3',
+            },
+            layout: {
+                'line-cap': 'round',
+            },
+            filter: ['all',
+                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
+                ['==', ['get', 'NIVEAU_VALID_AMENAG'], 'Mis en service']
+            ]
+        })
+        .addLayer({
+            id: 'en travaux',
+            source: 'vif',
+            type: 'line',
+            paint: {
+                'line-width': 3,
+                'line-color': '#33A',
+            },
+            layout: {
+                'line-cap': 'round',
+            },
+            filter: ['all',
+                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
+                ['==', ['get', 'NIVEAU_VALID_AMENAG'], 'En travaux']
+            ]
+        })
+        .addLayer({
+            id: 'autre',
+            source: 'vif',
+            type: 'line',
+            paint: {
+                'line-width': 3,
+                'line-color': '#A33',
+            },
+            layout: {
+                'line-cap': 'round',
+            },
+            filter: ['all',
+                ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
+                ['!', ['in', ['get', 'NIVEAU_VALID_AMENAG'], ['literal', ['Mis en service', 'En travaux']]]]
+            ]
+        })
+        .addLayer({
+            id: 'variantes',
+            source: 'vif',
+            type: 'line',
+            paint: {
+                'line-width': 2,
+                'line-dasharray': [2, 1],
+            },
+            filter: ['==', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
+        });
       })
 
       map.current = newMap;
