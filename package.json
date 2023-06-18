@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@turf/distance": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
