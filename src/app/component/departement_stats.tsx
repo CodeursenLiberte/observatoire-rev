@@ -7,7 +7,7 @@ export default function DepartementStats({name, code, progress}: {name: string, 
       <div className="column has-text-left pl-0">
         <p className="heading is-size-6 mb-0">{name}</p>
         <p>
-          <progress className="progress" value="15" max="100">{progress}%</progress>
+          <progress className="progress" value={progress} max="100">{progress}%</progress>
         </p>
       </div>
     </div>
