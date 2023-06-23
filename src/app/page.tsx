@@ -1,5 +1,6 @@
 import Map from './map'
 import Panel from './panel'
+import About from './component/about'
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <Map/>
       </section>
       <Panel/>
+      <About />
     </main>
   )
 }

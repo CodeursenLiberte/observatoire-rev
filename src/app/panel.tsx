@@ -87,13 +87,6 @@ export default function Panel() {
           </div>
         </nav>
       </div>
-      <div className="container">
-        <h2 className="title is-3">À propos</h2>
-        <p>Les données affichées sont mises à la disposition du public par la région Île-de-France et régulièrement mises à jour.</p>
-        <p>Cet observatoire a été mis en place par le Collectif Vélo Île-de-France. Créé en mars 2019, il a pour objectif de faire de l’Île-de-France une région cyclable, où toutes et tous peuvent se déplacer à vélo de manière sûre, confortable et efficate, quels que soient leur âge et leur niveau.</p>
-        <p><a>En savoir plus</a></p>
-        <img/>
-      </div>
     </section>
   )
 }
