@@ -1,5 +1,11 @@
+import {Departement} from "./types"
+import _ from "lodash"
 import DepartementStats from "./component/departement_stats"
-export default function Panel() {
+
+export default function Panel({
+  departements,
+}: {departements: Departement[]}) {
+
   return (
     <section className="section has-text-centered">
       <div className="container">
@@ -42,9 +48,7 @@ export default function Panel() {
       </div>
       <div className="container">
         <h2 className="title is-3">Informations par département</h2>
-        <DepartementStats name="Essonne" code="90" progress={30} />
-        <DepartementStats name="Hauts-de-Seine" code="92" progress={15} />
-        <DepartementStats name="Paris" code="75" progress={45} />
+        {departements.map(d => <DepartementStats name={d.name} code={d.code} progress={30} key={d.code} />)}
       </div>
     </section>
   )
