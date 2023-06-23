@@ -1,3 +1,4 @@
+import DepartementStats from "./component/departement_stats"
 export default function Panel() {
   return (
     <section className="section has-text-centered">
@@ -41,51 +42,9 @@ export default function Panel() {
       </div>
       <div className="container">
         <h2 className="title is-3">Informations par département</h2>
-        <nav className="level">
-          <div className="level-left">
-            <div className="level-item has-text-centered">
-              <a className="link is-info">90</a>
-            </div>
-          </div>
-          <div className="level-right">
-            <div className="level-item">
-              <p className="heading">Essonne</p>
-              <p>
-                <progress className="progress" value="15" max="100">15%</progress>
-              </p>
-            </div>
-          </div>
-        </nav>
-        <nav className="level">
-          <div className="level-left">
-            <div className="level-item has-text-centered">
-              <a className="link is-info">92</a>
-            </div>
-          </div>
-          <div className="level-right">
-            <div className="level-item">
-              <p className="heading">Hauts-de-Seine</p>
-              <p>
-                <progress className="progress" value="15" max="100">15%</progress>
-              </p>
-            </div>
-          </div>
-        </nav>
-        <nav className="level">
-          <div className="level-left">
-            <div className="level-item has-text-centered">
-              <a className="link is-info">75</a>
-            </div>
-          </div>
-          <div className="level-right">
-            <div className="level-item">
-              <p className="heading">Paris</p>
-              <p>
-                <progress className="progress" value="15" max="100">15%</progress>
-              </p>
-            </div>
-          </div>
-        </nav>
+        <DepartementStats name="Essonne" code="90" progress={30} />
+        <DepartementStats name="Hauts-de-Seine" code="92" progress={15} />
+        <DepartementStats name="Paris" code="75" progress={45} />
       </div>
     </section>
   )
