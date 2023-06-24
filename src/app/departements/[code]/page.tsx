@@ -1,4 +1,11 @@
 import Link from "next/link";
+import departements from "@/utils/prepared_departements"
+
+export async function generateStaticParams() {
+  return departements().map((departement) => ({
+    code: departement.code,
+  }))
+}
 
 export default function Departement({ params }: { params: { code: string } }) {
   return <section className="section has-text-centered">
