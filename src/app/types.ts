@@ -8,7 +8,7 @@ type Departement = {
 }
 
 enum TronçonStatus {
-  Planed,
+  Planned = 1,
   Building,
   Built,
   Blocked,

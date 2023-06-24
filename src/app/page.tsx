@@ -5,6 +5,7 @@ import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
 import { Departement, TronçonStatus } from './types'
 import _ from 'lodash'
 import prepared_tronçons from '@/utils/prepared_tronçons'
+import GlobalStats from './component/global_stats'
 
 function statsPerDepartement(code: string): {built: number, total: number} {
   const t = _.filter(prepared_tronçons(), feature => feature.properties.departement === code && !feature.properties.variant)
@@ -28,6 +29,7 @@ export default function Home() {
       <section className="hero">
         <Map/>
       </section>
+      <GlobalStats />
       <Panel departements={departements()}/>
       <About />
     </main>

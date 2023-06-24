@@ -15,7 +15,7 @@ export default function(): Tronçon[] {
       route: feature.properties.NUM_LIGNE,
       variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE != "Itinéraire validé",
       status: {
-        "A l'étude": TronçonStatus.Planed,
+        "A l'étude": TronçonStatus.Planned,
         "En travaux": TronçonStatus.Building,
         "Mis en service": TronçonStatus.Built,
       }[feature.properties.NIVEAU_VALID_AMENAG || ""] || TronçonStatus.Unknown
