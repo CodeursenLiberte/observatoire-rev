@@ -1,37 +1,45 @@
-import Map from './map'
-import Panel from './panel'
-import About from './component/about'
-import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
-import { Departement, TronçonStatus } from './types'
-import _ from 'lodash'
 import prepared_tronçons from '@/utils/prepared_tronçons'
-import GlobalStats from './component/global_stats'
+import { TronçonStatus } from '@/app/types';
+import _ from 'lodash'
 
-function statsPerDepartement(code: string): {built: number, total: number} {
-  const t = _.filter(prepared_tronçons(), feature => feature.properties.departement === code && !feature.properties.variant)
-  const total = _(t).map('properties.length').sum()
-  const built = _(t).filter(feature => feature.properties.status === TronçonStatus.Built).map('properties.length').sum()
-  return {built, total}
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Observatoire Vélo Île-de-France',
 }
 
-function departements() : Departement[] {
-  const departements = _(departementsGeojson.features)
-    .map(d => ({name: d.properties.nom, code: d.properties.code, stats: statsPerDepartement(d.properties.code)}))
-    .sortBy('code')
-    .value()
-
-  return departements
+function Stat({label, length, total}: {label: string, length: number, total: number}) {
+  return <tr>
+    <td><span className="icon"><i className="fa fa-eye"></i></span></td>
+    <td><span>{label}</span></td>
+    <td><span className="tag">{Math.round(length * 100 / total)}%</span></td>
+  </tr>
 }
 
-export default function Home() {
+export default function GlobalStats() {
+  const stats = _(prepared_tronçons())
+    .map('properties')
+    .reject(feature => feature.variant)
+    .groupBy('status')
+    .mapValues(features => _.sumBy(features, 'length'))
+    .value();
+  const total = _(stats).values().sum();
+
   return (
-    <main>
-      <section className="hero">
-        <Map/>
-      </section>
-      <GlobalStats />
-      <Panel departements={departements()}/>
-      <About />
-    </main>
+    <section className="section">
+      <div className="container">
+        <progress className="progress" value="15" max="100">15%</progress>
+        <h3 className="subtitle is-5">au 22 juin 2023</h3>
+        <h1 className="title is-3">Observatoire du Réseau Vélo Île-de-France</h1>
+        <table className="table is-rounded is-bordered is-fullwidth">
+          <tbody>
+            <Stat label="aménagements livrés" length={stats[TronçonStatus.Built]} total={total} />
+            <Stat label="en cours d’aménagement" length={stats[TronçonStatus.Building]} total={total} />
+            <Stat label="validé" length={stats[TronçonStatus.Planned]} total={total} />
+            <Stat label="état inconnu" length={stats[TronçonStatus.Unknown]} total={total} />
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }

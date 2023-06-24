@@ -1,6 +1,29 @@
 import './globals.scss'
 import { Inter } from 'next/font/google'
+import Map from '../app/map'
+import About from '../app/component/about'
+import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
+import { Departement, TronçonStatus } from '../app/types'
+import _ from 'lodash'
+import prepared_tronçons from '@/utils/prepared_tronçons'
+import RouteList from './component/routes_list'
+import DepartementList from './component/departements_list'
 
+function statsPerDepartement(code: string): {built: number, total: number} {
+  const t = _.filter(prepared_tronçons(), feature => feature.properties.departement === code && !feature.properties.variant)
+  const total = _(t).map('properties.length').sum()
+  const built = _(t).filter(feature => feature.properties.status === TronçonStatus.Built).map('properties.length').sum()
+  return {built, total}
+}
+
+function departements() : Departement[] {
+  const departements = _(departementsGeojson.features)
+    .map(d => ({name: d.properties.nom, code: d.properties.code, stats: statsPerDepartement(d.properties.code)}))
+    .sortBy('code')
+    .value()
+
+  return departements
+}
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -19,7 +42,17 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css' rel='stylesheet' />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main>
+          <section className="hero">
+            <Map/>
+          </section>
+          {children}
+          <RouteList />
+          <DepartementList departements={departements()}/>
+          <About />
+        </main>
+      </body>
     </html>
   )
 }
