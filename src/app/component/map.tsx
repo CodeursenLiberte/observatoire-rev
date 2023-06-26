@@ -8,7 +8,7 @@ import { featureCollection, lineString, multiLineString } from '@turf/helpers'
 import _ from 'lodash'
 import outlines from '../../utils/outlines'
 
-export default function Map() {
+export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
     const mapContainer = useRef<null | HTMLElement>(null);
     const map = useRef<null | maplibregl.Map>(null);
     const [lng] = useState(2.3717);
@@ -77,8 +77,10 @@ export default function Map() {
         map.current = newMap;
     });
 
+    const style = fullHeight ? styles.mapfullheight : styles.map ;
+
     return (
-        <div ref={(el) => (mapContainer.current = el)} className={styles.map} />
+        <div ref={(el) => (mapContainer.current = el)} className={style} />
     );
 }
 
