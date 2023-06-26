@@ -2,11 +2,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import styles from './page.module.css'
-import troncons from '../../data/vif.json'
+import styles from '../page.module.css'
+import troncons from '../../../data/vif.json'
 import { featureCollection, lineString, multiLineString } from '@turf/helpers'
 import _ from 'lodash'
-import outlines from '../utils/outlines'
+import outlines from '../../utils/outlines'
 
 export default function Map() {
     const mapContainer = useRef<null | HTMLElement>(null);

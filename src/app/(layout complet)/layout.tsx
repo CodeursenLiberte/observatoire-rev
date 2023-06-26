@@ -1,9 +1,9 @@
-import './globals.scss'
+import '../globals.scss'
 import { Inter } from 'next/font/google'
-import Map from '../app/map'
-import About from '../app/component/about'
-import RouteList from './component/routes_list'
-import DepartementList from './component/departements_list'
+import Map from '../component/map'
+import About from '../component/about'
+import RouteList from '../component/routes_list'
+import DepartementList from '../component/departements_list'
 
 const inter = Inter({ subsets: ['latin'] })
 
