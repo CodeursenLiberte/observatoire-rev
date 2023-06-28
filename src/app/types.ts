@@ -20,7 +20,9 @@ type TronçonProperties = {
   departement: string|undefined,
   status: TronçonStatus,
   route: string,
-  variant: boolean
+  variant: boolean,
+  commune: string|undefined,
+  id: string,
 }
 
 // It’s actually a geojson, with typed properties
