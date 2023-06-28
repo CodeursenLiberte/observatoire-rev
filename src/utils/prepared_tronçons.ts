@@ -10,10 +10,13 @@ export default function(): Tronçon[] {
     const simpleLineString = lineString(feature.geometry.coordinates[0])
     const dep = departements.features.find((dep) => booleanWithin(simpleLineString, dep.geometry))
     const properties: TronçonProperties = {
-      length: feature.properties.LONGUEUR,
+      id: feature.properties.GIDTRONCON,
+      // When it is a "Variante" don’t count its length for any statistic
+      length: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ? 0 : feature.properties.LONGUEUR,
+      commune: commune?.properties.nom,
       departement: dep?.properties.code,
       route: feature.properties.NUM_LIGNE,
-      variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE != "Itinéraire validé",
+      variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE != "Variante" && feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE != "Variante initiale",
       status: {
         "A l'étude": TronçonStatus.Planned,
         "En travaux": TronçonStatus.Building,

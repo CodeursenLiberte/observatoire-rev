@@ -60,7 +60,7 @@ export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
                         'line-cap': 'round',
                         'line-join': 'round',
                     },
-                    filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
+                    filter: ['match', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], ['Variante', 'Variante initiale'], false, true],
                 })
                 .addLayer({
                     id: 'variantes',
@@ -70,7 +70,7 @@ export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
                         'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
                         'line-dasharray': [2, 1],
                     },
-                    filter: ['==', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante'],
+                    filter: ['match', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], ['Variante', 'Variante initiale'], true, false],
                 });
         })
 

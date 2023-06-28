@@ -4,7 +4,7 @@ import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
 import _ from "lodash"
 
 function statsPerDepartement(code: string): {built: number, total: number} {
-  const t = _.filter(prepared_tronçons(), feature => feature.properties.departement === code && !feature.properties.variant)
+  const t = _.filter(prepared_tronçons(), feature => feature.properties.departement === code)
   const total = _(t).map('properties.length').sum()
   const built = _(t).filter(feature => feature.properties.status === TronçonStatus.Built).map('properties.length').sum()
   return {built, total}
