@@ -1,4 +1,4 @@
-import prepared_tronçons from '@/utils/prepared_tronçons'
+import {preparedAndCached} from '@/utils/prepared_tronçons'
 import { TronçonStatus } from '@/app/types';
 import _ from 'lodash'
 
@@ -17,7 +17,7 @@ function Stat({label, length, total}: {label: string, length: number, total: num
 }
 
 export default function GlobalStats() {
-  const stats = _(prepared_tronçons())
+  const stats = _(preparedAndCached())
     .map('properties')
     .reject(feature => feature.variant)
     .groupBy('status')

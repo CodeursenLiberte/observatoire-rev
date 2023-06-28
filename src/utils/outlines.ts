@@ -1,7 +1,7 @@
 // Try to build outlines from individual segments
 // We must do that do avoid cap that are ugly
 
-import troncons from '../../data/vif.json'
+import {preparedAndCached} from '@/utils/prepared_tronçons'
 import distance from '@turf/distance'
 import { Position, Feature, multiLineString, MultiLineString } from '@turf/helpers'
 import _ from 'lodash';
@@ -38,9 +38,9 @@ function groupLineStrings(coords: Array<Array<Position>>): Feature<MultiLineStri
 }
 
 export default function outlines() : Array<Feature<MultiLineString>> {
-    return _(troncons.features)
-            .reject(['properties.NIVEAU_VALID_SUPPORT_VIAIRE', 'Variante'])
-            .groupBy('properties.NUM_LIGNE')
+    return _(preparedAndCached())
+            .reject('variante')
+            .groupBy('voie')
             .values()
             .map(features => groupLineStrings(features.map(f => f.geometry.coordinates.flat())))
             .value()

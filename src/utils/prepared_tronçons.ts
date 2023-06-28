@@ -4,9 +4,10 @@ import departements from '../../data/departements-ile-de-france.geo.json'
 import booleanWithin from '@turf/boolean-within'
 import {TronçonProperties, TronçonStatus, Tronçon} from '../app/types'
 import { lineString } from '@turf/helpers'
+import { cache } from 'react'
 
 
-export default function(): Tronçon[] {
+function prepare(): Tronçon[] {
   return troncons.features.map( (feature) => {
     // booleanWithin doesn’t support MultiLineString
     const simpleLineString = lineString(feature.geometry.coordinates[0])
@@ -34,3 +35,4 @@ export default function(): Tronçon[] {
     }
   })
 }
+export const preparedAndCached = cache(() => prepare())

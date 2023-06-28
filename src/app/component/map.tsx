@@ -7,6 +7,8 @@ import troncons from '../../../data/vif.json'
 import { featureCollection, lineString, multiLineString } from '@turf/helpers'
 import _ from 'lodash'
 import outlines from '../../utils/outlines'
+import { usePathname } from 'next/navigation'
+import { statsPerDepartement } from '@/utils/prepared_departements';
 
 export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
     const mapContainer = useRef<null | HTMLElement>(null);
@@ -76,6 +78,19 @@ export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
 
         map.current = newMap;
     });
+
+    const pathname = usePathname()
+
+    useEffect( () => {
+        const [, object, id] = pathname.split("/")
+        if(object === 'departements') {
+            let bbox = statsPerDepartement(id)?.bbox
+            if (bbox !== undefined) {
+                map.current?.fitBounds(bbox)
+            }
+        }
+    }, [pathname])
+
 
     const style = fullHeight ? styles.mapfullheight : styles.map ;
 

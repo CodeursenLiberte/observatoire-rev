@@ -1,10 +1,13 @@
+import { LngLatBounds } from "maplibre-gl"
+
 type Departement = {
   name: string,
   code: string,
   stats: {
     total: number,
     built: number,
-  }
+  },
+  bbox: LngLatBounds,
 }
 
 enum TronçonStatus {
