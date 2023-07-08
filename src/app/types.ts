@@ -1,39 +1,54 @@
-import { LngLatBounds } from "maplibre-gl"
+export type Bounds = [number, number, number, number]
 
-type Departement = {
+export type Departement = {
   name: string,
   code: string,
   stats: {
     total: number,
     built: number,
   },
-  bbox: LngLatBounds,
+  bounds: Bounds,
 }
+export type DepartementsMap = {[index: string]: Departement}
 
-enum TronçonStatus {
+export enum TronçonStatus {
   Planned = 1,
+  PreExisting,
   Building,
   Built,
   Blocked,
   Unknown
 }
 
-type TronçonProperties = {
+export type TronçonProperties = {
   length: number,
   departement: string|undefined,
   status: TronçonStatus,
   route: string,
   variant: boolean,
   commune: string|undefined,
-  id: string,
 }
 
 // It’s actually a geojson, with typed properties
-type Tronçon = {
+export type Tronçon = {
   type: string,
   geometry: {type: string, coordinates: number[][][]},
   properties: TronçonProperties,
 }
 
-export type {Departement, TronçonProperties, Tronçon}
-export {TronçonStatus}
+export type RouteStats = {
+  code: string,
+  built: number,
+  total: number,
+  bounds: Bounds
+}
+
+export type RoutesMap = {[index: string]: RouteStats}
+
+export type GlobalStats = {[index: number]: number}
+
+
+export type Level = { level: 'region' } |
+                    { level: 'departement', props: Departement } |
+                    { level: 'route', props: RouteStats } |
+                    { level: 'segment', props: TronçonProperties}

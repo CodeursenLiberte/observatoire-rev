@@ -11,7 +11,7 @@ export default function About() {
         <div className="container has-text-centered">
           <figure className="image is-128x128 is-inline-block">
             <img
-              src="logo_cvidf.png"
+              src="/logo_cvidf.png"
               alt="Logo du collectif vélo Île-de-France"
               />
           </figure>

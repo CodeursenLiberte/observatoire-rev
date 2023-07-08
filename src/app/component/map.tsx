@@ -1,68 +1,129 @@
 'use client'
-import React, { useRef, useEffect, useState } from 'react';
-import maplibregl from 'maplibre-gl';
+import React, { useRef, useEffect } from 'react';
+import maplibregl, { LngLatBounds } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from '../page.module.css'
-import troncons from '../../../data/vif.json'
-import { featureCollection, lineString, multiLineString } from '@turf/helpers'
 import _ from 'lodash'
-import outlines from '../../utils/outlines'
-import { usePathname } from 'next/navigation'
-import { statsPerDepartement } from '@/utils/prepared_departements';
+import { Feature, FeatureCollection, LineString } from '@turf/helpers';
+import { Level, TronçonProperties, TronçonStatus } from '../types';
 
-export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
+/*
+variante = en discussion ?
+z-index : pré-existant, livré, en construction, [variante], en discussion, au ponit mort
+
+détour communes : écart 8px de centre à centre, noir sur 3px de diamètre, blanc sur 6px
+
+3 premiers niveaux pas de gap blanc
+
+Alleger le outline des variantes (50%)
+*/
+
+type Props = {
+    outlines: FeatureCollection,
+    variantOutlines: Feature,
+    bounds: [number, number, number, number],
+    segments: FeatureCollection<LineString, TronçonProperties>,
+    level: Level,
+}
+
+export default function Map({outlines, variantOutlines, bounds, segments, level}: Props) {
     const mapContainer = useRef<null | HTMLElement>(null);
     const map = useRef<null | maplibregl.Map>(null);
-    const [lng] = useState(2.3717);
-    const [lat] = useState(48.8512);
-    const [zoom] = useState(10);
 
     useEffect(() => {
         if (map.current) return;
 
-        const outlineGeojson = featureCollection(outlines())
-
         const newMap = new maplibregl.Map({
             container: mapContainer.current || '',
-            style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
-            center: [lng, lat],
-            zoom: zoom
-        }).on('load', () => {
-            newMap.addSource('vif', { type: 'geojson', data: troncons })
-                .addSource('outline', { type: 'geojson', data: outlineGeojson })
+            style: `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
+        })
+        .on('load', () => {
+            newMap.fitBounds(new LngLatBounds(bounds))
+            newMap.addSource('vif', { type: 'geojson', data: segments, generateId: true })
+                .addSource('outline', { type: 'geojson', data: outlines })
+                .addSource('variant-outline', { type: 'geojson', data: variantOutlines })
                 .addLayer({
-                    id: 'base',
+                    id: 'variant-outline',
+                    source: 'variant-outline',
+                    type: 'line',
+                    paint: {
+                        'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
+                        'line-gap-width': ["interpolate", ["linear"], ["zoom"], 10, 3, 15, 10],
+                        'line-color': '#7f7f7f',
+                        'line-opacity': 0.5,
+                    },
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round',
+                    }
+                })
+                .addLayer({
+                    id: 'base-outer',
+                    source: 'outline',
+                    type: 'line',
+                    paint: {
+                        'line-width': ["interpolate", ["linear"], ["zoom"], 10, 8, 15, 30],
+                        'line-color': '#fff'
+                    },
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round',
+                    }
+                })
+                .addLayer({
+                    id: 'base-inner',
                     source: 'outline',
                     type: 'line',
                     paint: {
                         'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
                         'line-gap-width': ["interpolate", ["linear"], ["zoom"], 10, 3, 15, 10],
                         'line-opacity': 1,
-                        'line-color': '#555'
+                        'line-color': '#7f7f7f'
                     },
                     layout: {
                         'line-join': 'round',
                         'line-cap': 'round',
                     },
-                    filter: ['!=', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], 'Variante']
                 })
                 .addLayer({
                     id: 'couleur',
                     source: 'vif',
                     type: 'line',
                     paint: {
-                        'line-width': ["interpolate", ["linear"], ["zoom"], 10, 2, 15, 6],
-                        'line-color': ['match', ['get', 'NIVEAU_VALID_AMENAG'],
-                            'Mis en service', '#3A3',
-                            'En travaux', '#33A',
-                            '#A33'
-                        ]
+                        'line-width':
+                            ["interpolate", ["linear"], ["zoom"],
+                            // at zoom level 10, the line-width is either 3 or 2
+                            10, ['match', ['get', 'status'],
+                                    TronçonStatus.PreExisting, 3,
+                                    TronçonStatus.Built, 3,
+                                    TronçonStatus.Building, 3,
+                                    2,
+                            ],
+                            15, ['match', ['get', 'status'],
+                                    TronçonStatus.PreExisting, 10,
+                                    TronçonStatus.Built, 10,
+                                    TronçonStatus.Building, 10,
+                                    6,
+                                ],
+                            ],
+                        'line-color': ['match', ['get', 'status'],
+                            TronçonStatus.PreExisting, '#60AE73',
+                            TronçonStatus.Built, '#2ee35c',
+                            TronçonStatus.Building, '#fff200',
+                            TronçonStatus.Blocked, '#DADF4C',
+                            '#ff8400',
+                        ],
+                        'line-opacity': ['case',
+                            ['boolean', ['feature-state', 'active'], false],
+                            1,
+                            0.1,
+                        ],
                     },
                     layout: {
                         'line-cap': 'round',
                         'line-join': 'round',
                     },
-                    filter: ['match', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], ['Variante', 'Variante initiale'], false, true],
+                    filter: ['!', ['get', 'variant']],
                 })
                 .addLayer({
                     id: 'variantes',
@@ -72,30 +133,29 @@ export default function Map({fullHeight=false}: {fullHeight?: boolean}) {
                         'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
                         'line-dasharray': [2, 1],
                     },
-                    filter: ['match', ['get', 'NIVEAU_VALID_SUPPORT_VIAIRE'], ['Variante', 'Variante initiale'], true, false],
+                    filter: ['get', 'variant'],
                 });
         })
 
         map.current = newMap;
     });
 
-    const pathname = usePathname()
-
+    useEffect( () => { map.current?.fitBounds(bounds)}, [bounds])
     useEffect( () => {
-        const [, object, id] = pathname.split("/")
-        if(object === 'departements') {
-            let bbox = statsPerDepartement(id)?.bbox
-            if (bbox !== undefined) {
-                map.current?.fitBounds(bbox)
-            }
-        }
-    }, [pathname])
 
+            map.current?.querySourceFeatures('vif').forEach(feature => {
+                const active = level.level !== 'route' ||
+                    (level.level === 'route' && feature.properties.route === level.props.code)
+                map.current?.setFeatureState({
+                    id: feature.id,
+                    source: 'vif'
+                }, { active })
+            })
 
-    const style = fullHeight ? styles.mapfullheight : styles.map ;
+    }, [level])
 
     return (
-        <div ref={(el) => (mapContainer.current = el)} className={style} />
+        <div ref={(el) => (mapContainer.current = el)} className={ styles.map} />
     );
 }
 

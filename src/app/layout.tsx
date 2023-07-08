@@ -1,11 +1,10 @@
-import '../globals.scss'
-import { Inter } from 'next/font/google'
-import Map from '../component/map'
-import About from '../component/about'
-import RouteList from '../component/routes_list'
-import DepartementList from '../component/departements_list'
+import './globals.scss'
+import { Source_Sans_3 } from 'next/font/google'
+import StateHolder from './component/state_holder'
+import {routes, departements, tronçons, outlines, globalBounds, variantOutlines} from '@/utils/prepared_data'
+import About from './component/about'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Source_Sans_3({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Observatoire Vélo Île-de-France',
@@ -17,6 +16,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+  const data = {
+    routes,
+    outlines,
+    tronçons,
+    departements,
+    globalBounds,
+    variantOutlines,
+  }
+
   return (
     <html lang="fr">
       <head>
@@ -25,12 +34,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <main>
-          <section className="hero">
-            <Map/>
-          </section>
-          {children}
-          <RouteList />
-          <DepartementList />
+          <StateHolder data={data} />
           <About />
         </main>
       </body>
