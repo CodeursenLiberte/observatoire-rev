@@ -7,6 +7,7 @@ import _ from 'lodash'
 import { FeatureCollection, LineString } from '@turf/helpers';
 import { Level, TronçonProperties, TronçonStatus } from '../types';
 import { useRouter } from 'next/navigation';
+import { statusColor } from '@/utils/constants';
 
 type Props = {
     outlines: FeatureCollection,
@@ -117,11 +118,12 @@ export default function Map({outlines, variantOutlines, bounds, segments, level 
                                 ],
                             ],
                         'line-color': ['match', ['get', 'status'],
-                            TronçonStatus.PreExisting, '#60AE73',
-                            TronçonStatus.Built, '#2ee35c',
-                            TronçonStatus.Building, '#fff200',
-                            TronçonStatus.Blocked, '#DADF4C',
-                            '#ff8400',
+                            TronçonStatus.PreExisting, statusColor[TronçonStatus.PreExisting],
+                            TronçonStatus.Built, statusColor[TronçonStatus.Built],
+                            TronçonStatus.Building, statusColor[TronçonStatus.Building],
+                            TronçonStatus.Planned, statusColor[TronçonStatus.Planned],
+                            TronçonStatus.Blocked, statusColor[TronçonStatus.Blocked],
+                            statusColor[TronçonStatus.Unknown], // default value
                         ],
                         'line-opacity': ['case',
                             ['boolean', ['feature-state', 'active'], false],

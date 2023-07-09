@@ -5,7 +5,7 @@ import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
 import distance from '@turf/distance'
 import { Position, Feature, multiLineString, MultiLineString, FeatureCollection, featureCollection, lineString, LineString } from '@turf/helpers'
 import _ from 'lodash';
-import { TronçonStatus, TronçonProperties, RoutesMap, Bounds, RouteStats, GlobalStats,  DepartementsMap, Departement} from '@/app/types';
+import { TronçonStatus, TronçonProperties, RoutesMap, Bounds, RouteStats, GlobalStats,  DepartementsMap, Departement, TypeMOA} from '@/app/types';
 import bbox from '@turf/bbox';
 import booleanWithin from '@turf/boolean-within'
 import troncons from '../../data/vif.json'
@@ -54,6 +54,12 @@ function status(niveau_validation: string, apport_rerv: string) : TronçonStatu
     }
 }
 
+const moaTypeMapping = {
+    Commune: TypeMOA.Commune,
+    Département: TypeMOA.Departement,
+    'EPCI/EPT': TypeMOA.EPCI
+}
+
 const tronçonsArray: Feature<LineString, TronçonProperties>[] = troncons.features.map( (feature) => {
         // booleanWithin doesn’t support MultiLineString
         const simpleLineString = lineString(feature.geometry.coordinates[0])
@@ -69,6 +75,8 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] = troncons.featu
             route: feature.properties.NUM_LIGNE,
             variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" || feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante initiale",
             status: status(feature.properties.NIVEAU_VALID_AMENAG || "", feature.properties.APPORT_RERV || ""),
+            typeMOA: moaTypeMapping[feature.properties.TYPE_MOA] || TypeMOA.Unknown,
+            moa: feature.properties.NOM_MOA
         }
 
         return lineString(feature.geometry.coordinates[0], properties, {bbox: bbox(simpleLineString)})

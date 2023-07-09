@@ -1,12 +1,18 @@
 import Link from "next/link"
 import { RouteStats } from "../types"
 
-export default function RouteDetails({route }: {route: RouteStats}) {
-  return <section className="section has-text-centered">
-    <div className="content">
-      <h2 className="title is-3">Voie {route.code} </h2>
-      <p> {Math.round(route.built/1000)} km de voies construites sur {Math.round(route.total/1000)}</p>
-      <Link href="?">retour</Link>
+export default function RouteDetails({route}: {route: RouteStats}) {
+  return <section className="section has-text-centered main-content">
+    <nav className="level is-mobile main-content-header px-4">
+        <div className="level-item"><h3 className="title is-1">{route.code}</h3></div>
+        <div className="level-right">
+          <div className="level-item"><Link href="/">X</Link></div>
+        </div>
+    </nav>
+
+    <div className="mx-4 mb-6">
+      Au 26 mai 2023
     </div>
+
   </section>
 }

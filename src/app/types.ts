@@ -1,4 +1,5 @@
 import { Feature, FeatureCollection, LineString, MultiLineString } from "@turf/helpers"
+import { Type } from "maplibre-gl"
 
 export type Bounds = [number, number, number, number]
 
@@ -30,6 +31,8 @@ export type TronçonProperties = {
   route: string,
   variant: boolean,
   commune: string|undefined,
+  typeMOA: TypeMOA,
+  moa: string,
 }
 
 // It’s actually a geojson, with typed properties
@@ -62,4 +65,11 @@ export type GlobalData = {
   outlines: FeatureCollection<MultiLineString>,
   variantOutlines: FeatureCollection<MultiLineString>,
   routes: RoutesMap,
+}
+
+export enum TypeMOA {
+  Commune = 1,
+  Departement,
+  EPCI,
+  Unknow
 }

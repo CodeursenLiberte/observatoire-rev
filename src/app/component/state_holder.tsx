@@ -7,6 +7,7 @@ import RouteDetails from './route_details'
 import { globalStats, totalLength } from '@/utils/prepared_data'
 import GlobalStats from './global_stats'
 import { useSearchParams } from 'next/navigation'
+import Segment from './segment'
 
 export default function({data} : {data: GlobalData}) {
   const [bounds, setBounds] = useState(data.globalBounds)
@@ -14,7 +15,6 @@ export default function({data} : {data: GlobalData}) {
   const searchParams = useSearchParams()
 
   useEffect( () => {
-    console.log('search params changed')
     window.scrollTo({top: 0, behavior: 'smooth'});
     const level = searchParams.get('level')
     const id = searchParams.get('id')
@@ -44,9 +44,8 @@ export default function({data} : {data: GlobalData}) {
   switch (level.level) {
     case 'region': current = <GlobalStats globalStats={globalStats} totalLength={totalLength} />; break;
     case 'route': current = <RouteDetails route={level.props}/>; break;
-    case 'segment': current = <p>segment</p>; break;
+    case 'segment': current = <Segment segment={level.props} />; break;
   }
-  console.log(data.tronçons)
   return <>
     <section className="hero">
       <Map outlines={data.outlines} variantOutlines={data.variantOutlines} bounds={bounds} segments={data.tronçons} level={level} setLevel={setLevel} />

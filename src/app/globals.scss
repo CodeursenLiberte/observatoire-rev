@@ -1,2 +1,29 @@
 @import '~bulma/bulma';
 @import '@fortawesome/fontawesome-free/css/all.css';
+
+.segment-status-ruler {
+  width: 100%;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.main-content {
+  border-radius: 20px;
+  width: 90%;
+  margin-top: -24px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+  position: relative;
+  background: white;
+  padding: 0;
+  border: solid 1px #979797;
+  box-shadow: 0 4px 8px #3E73A1, 0 6px 24px #3E73A1;
+}
+
+.main-content-header {
+  background-color: #f7f7f7;
+  height: 72px;
+  border-bottom: solid 1px #9f9e9e;
+  border-radius: 20px 20px 0 0;
+}
