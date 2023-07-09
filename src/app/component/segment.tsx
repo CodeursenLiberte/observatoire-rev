@@ -11,7 +11,9 @@ export default function({segment}: {segment: TronçonProperties}) {
         </div>
         <div className="level-item"><h3 className="title is-4">{segment.commune}</h3></div>
         <div className="level-right">
-          <div className="level-item"><Link href="/">X</Link></div>
+          <Link href="/">
+            <span className="icon is-large rounded-border"><i className="fas fa-2x fa-close"></i></span>
+          </Link>
         </div>
       </nav>
 
@@ -24,7 +26,7 @@ export default function({segment}: {segment: TronçonProperties}) {
 
         <div className="block">
           <label className="label has-text-weight-light">Collectivité responsable</label>
-          <p>{moaLabel[segment.typeMOA]} {segment.moa}</p>
+          <p className="title is-4">{moaLabel[segment.typeMOA]} {segment.moa}</p>
         </div>
       </div>
     </section>

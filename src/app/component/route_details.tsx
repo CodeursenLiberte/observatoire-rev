@@ -8,7 +8,9 @@ export default function RouteDetails({route}: {route: RouteStats}) {
       <div className="level-left"></div>
       <div className="level-item"><h3 className="title is-1">{route.code}</h3></div>
       <div className="level-right">
-        <div className="level-item"><Link href="/">X</Link></div>
+      <Link href="/">
+        <span className="icon is-large rounded-border"><i className="fas fa-2x fa-close"></i></span>
+      </Link>
       </div>
     </nav>
 

@@ -70,13 +70,13 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] = troncons.featu
             id: feature.properties.CODE_TRONCON + feature.properties.NUM_LIGNE,
             // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
             length: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ? 0 : feature.properties.LONGUEUR,
-            commune: commune?.properties.nom,
+            commune: commune?.properties.nom.replace(' Arrondissement', ''),
             departement: dep?.properties.code,
             route: feature.properties.NUM_LIGNE,
             variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" || feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante initiale",
             status: status(feature.properties.NIVEAU_VALID_AMENAG || "", feature.properties.APPORT_RERV || ""),
             typeMOA: moaTypeMapping[feature.properties.TYPE_MOA] || TypeMOA.Unknown,
-            moa: feature.properties.NOM_MOA
+            moa: feature.properties.NOM_MOA || ''
         }
 
         return lineString(feature.geometry.coordinates[0], properties, {bbox: bbox(simpleLineString)})
@@ -128,28 +128,34 @@ const routeList = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 
 export const routes: RoutesMap = _.fromPairs(routeList.map((route) => [route, routeStats(route)]));
 
 function routeStats(code: string): RouteStats {
-  const t = _.filter(tronçonsArray, feature => feature.properties.route === code)
-  const total = _(t).map('properties.length').sum()
-  const stats: LengthStats = {
-    [TronçonStatus.PreExisting]: _(t).filter(f => f.properties.status === TronçonStatus.PreExisting).sumBy('properties.length'),
-    [TronçonStatus.Built]: _(t).filter(f => f.properties.status === TronçonStatus.Built).sumBy('properties.length'),
-    [TronçonStatus.Building]: _(t).filter(f => f.properties.status === TronçonStatus.Building).sumBy('properties.length'),
-    [TronçonStatus.Planned]: _(t).filter(f => f.properties.status === TronçonStatus.Planned).sumBy('properties.length'),
-    [TronçonStatus.Blocked]: _(t).filter(f => f.properties.status === TronçonStatus.Blocked).sumBy('properties.length'),
-    [TronçonStatus.Unknown]: _(t).filter(f => f.properties.status === TronçonStatus.Unknown).sumBy('properties.length'),
+    const t = _.filter(tronçonsArray, feature => feature.properties.route === code)
+    function length(status: TronçonStatus): number {
+        return _(t).filter(f => f.properties.status === status).sumBy('properties.length')
+    }
+    const total = _(t).map('properties.length').sum()
+    const stats: LengthStats = {
+    [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
+    [TronçonStatus.Built]: length(TronçonStatus.Built),
+    [TronçonStatus.Building]: length(TronçonStatus.Building),
+    [TronçonStatus.Planned]: length(TronçonStatus.Planned),
+    [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
+    [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
   }
   const [xmin, ymin, xmax, ymax] = bbox({type: 'FeatureCollection', features: t})
   return {code, stats, total, bounds: [xmin, ymin, xmax, ymax]}
 }
 
+function length(status: TronçonStatus): number {
+    return _(tronçonsArray).filter(f => f.properties.status === status).sumBy('properties.length')
+}
 const total = _(tronçonsArray).map('properties.length').sum()
 const stats: LengthStats = {
-    [TronçonStatus.PreExisting]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.PreExisting).sumBy('properties.length'),
-    [TronçonStatus.Built]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Built).sumBy('properties.length'),
-    [TronçonStatus.Building]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Building).sumBy('properties.length'),
-    [TronçonStatus.Planned]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Planned).sumBy('properties.length'),
-    [TronçonStatus.Blocked]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Blocked).sumBy('properties.length'),
-    [TronçonStatus.Unknown]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Unknown).sumBy('properties.length'),
+    [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
+    [TronçonStatus.Built]: length(TronçonStatus.Built),
+    [TronçonStatus.Building]: length(TronçonStatus.Building),
+    [TronçonStatus.Planned]: length(TronçonStatus.Planned),
+    [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
+    [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
 }
 export const globalStats: GlobalStats = {
     stats,
