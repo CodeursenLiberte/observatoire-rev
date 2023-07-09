@@ -5,7 +5,7 @@ import departementsGeojson from '../../data/departements-ile-de-france.geo.json'
 import distance from '@turf/distance'
 import { Position, Feature, multiLineString, MultiLineString, FeatureCollection, featureCollection, lineString, LineString } from '@turf/helpers'
 import _ from 'lodash';
-import { TronçonStatus, TronçonProperties, RoutesMap, Bounds, RouteStats, GlobalStats,  DepartementsMap, Departement, TypeMOA} from '@/app/types';
+import { TronçonStatus, TronçonProperties, RoutesMap, Bounds, RouteStats, GlobalStats,  DepartementsMap, Departement, TypeMOA, LengthStats} from '@/app/types';
 import bbox from '@turf/bbox';
 import booleanWithin from '@turf/boolean-within'
 import troncons from '../../data/vif.json'
@@ -142,10 +142,18 @@ function routeStats(code: string): RouteStats {
   return {code, stats, total, bounds: [xmin, ymin, xmax, ymax]}
 }
 
-export const globalStats: GlobalStats  = _(tronçons)
-    .map('properties')
-    .groupBy('status')
-    .mapValues(features => _.sumBy(features, 'length'))
-    .value();
+const total = _(tronçonsArray).map('properties.length').sum()
+const stats: LengthStats = {
+    [TronçonStatus.PreExisting]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.PreExisting).sumBy('properties.length'),
+    [TronçonStatus.Built]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Built).sumBy('properties.length'),
+    [TronçonStatus.Building]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Building).sumBy('properties.length'),
+    [TronçonStatus.Planned]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Planned).sumBy('properties.length'),
+    [TronçonStatus.Blocked]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Blocked).sumBy('properties.length'),
+    [TronçonStatus.Unknown]: _(tronçonsArray).filter(f => f.properties.status === TronçonStatus.Unknown).sumBy('properties.length'),
+}
+export const globalStats: GlobalStats = {
+    stats,
+    total
+}
 
 export const totalLength: number = _(globalStats).values().sum();

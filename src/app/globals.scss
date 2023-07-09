@@ -65,3 +65,31 @@
   color: white;
   transform: translateX(-50%);
 }
+
+.region-stats {
+  margin-top: -46px;
+  z-index: 1000;
+  position: relative;
+  padding-top: 0;
+}
+
+.maplibregl-control-container .maplibregl-ctrl-bottom-right {
+  bottom: 25px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.legend-section {
+  width: 249px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: solid 1px #C3C1B9;
+  padding-top: 1rem;
+  margin-top: 3rem;
+}

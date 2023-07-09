@@ -2,12 +2,19 @@
 import Map from './map'
 import RouteList from './routes_list'
 import { useEffect, useState } from 'react'
-import { Level, GlobalData } from '../types'
+import { Level, GlobalData, TronçonStatus } from '../types'
 import RouteDetails from './route_details'
-import { globalStats, totalLength } from '@/utils/prepared_data'
 import GlobalStats from './global_stats'
 import { useSearchParams } from 'next/navigation'
 import Segment from './segment'
+import { statusColor, statusLabel } from '@/utils/constants'
+
+function Legend({status}: {status: TronçonStatus}) {
+  return <div>
+    <span style={{background: statusColor[status]}} className="legend-color"/>
+    <span>{statusLabel[status]}</span>
+  </div>
+}
 
 export default function({data} : {data: GlobalData}) {
   const [bounds, setBounds] = useState(data.globalBounds)
@@ -42,7 +49,7 @@ export default function({data} : {data: GlobalData}) {
 
   let current;
   switch (level.level) {
-    case 'region': current = <GlobalStats globalStats={globalStats} totalLength={totalLength} />; break;
+    case 'region': current = <GlobalStats globalStats={data.globalStats} />; break;
     case 'route': current = <RouteDetails route={level.props}/>; break;
     case 'segment': current = <Segment segment={level.props} />; break;
   }
@@ -51,6 +58,14 @@ export default function({data} : {data: GlobalData}) {
       <Map outlines={data.outlines} variantOutlines={data.variantOutlines} bounds={bounds} segments={data.tronçons} level={level} setLevel={setLevel} />
     </section>
     {current}
+    <section className="section legend-section">
+      <Legend status={TronçonStatus.PreExisting} />
+      <Legend status={TronçonStatus.Built} />
+      <Legend status={TronçonStatus.Building} />
+      <Legend status={TronçonStatus.Planned} />
+      <Legend status={TronçonStatus.Blocked} />
+      <Legend status={TronçonStatus.Unknown} />
+    </section>
     <RouteList routes={data.routes} />
   </>
 }

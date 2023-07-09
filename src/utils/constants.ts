@@ -14,7 +14,7 @@ export const statusColor = {
   [TronçonStatus.Built]: "#2ee35c",
   [TronçonStatus.Building]: "#fff200",
   [TronçonStatus.Planned]: "#ff8400",
-  [TronçonStatus.Blocked]: "#DADF4C",
+  [TronçonStatus.Blocked]: "#F84E45",
   [TronçonStatus.Unknown]: "#7E7E7E",
 }
 

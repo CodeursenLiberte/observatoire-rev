@@ -1,5 +1,4 @@
-import { Feature, FeatureCollection, LineString, MultiLineString } from "@turf/helpers"
-import { Type } from "maplibre-gl"
+import { FeatureCollection, LineString, MultiLineString } from "@turf/helpers"
 
 export type Bounds = [number, number, number, number]
 
@@ -53,8 +52,10 @@ export type RouteStats = {
 
 export type RoutesMap = {[index: string]: RouteStats}
 
-export type GlobalStats = {[index: number]: number}
-
+export type GlobalStats = {
+  stats: LengthStats,
+  total: number
+}
 
 export type Level = { level: 'region' } |
                     { level: 'departement', props: Departement } |
@@ -67,6 +68,7 @@ export type GlobalData = {
   outlines: FeatureCollection<MultiLineString>,
   variantOutlines: FeatureCollection<MultiLineString>,
   routes: RoutesMap,
+  globalStats: GlobalStats,
 }
 
 export enum TypeMOA {

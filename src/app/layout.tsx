@@ -1,7 +1,7 @@
 import './globals.scss'
 import { Source_Sans_3 } from 'next/font/google'
 import StateHolder from './component/state_holder'
-import {routes, departements, tronçons, outlines, globalBounds, variantOutlines} from '@/utils/prepared_data'
+import {routes, tronçons, outlines, globalBounds, variantOutlines, globalStats} from '@/utils/prepared_data'
 import About from './component/about'
 import { GlobalData } from './types'
 
@@ -12,11 +12,7 @@ export const metadata = {
   description: 'Suivi de l’avancée du plan vélo de la région Île-de-France',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout() {
 
   const data: GlobalData = {
     routes,
@@ -24,6 +20,7 @@ export default function RootLayout({
     tronçons,
     globalBounds,
     variantOutlines,
+    globalStats,
   }
 
   return (

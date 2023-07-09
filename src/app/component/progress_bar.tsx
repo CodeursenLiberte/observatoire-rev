@@ -25,6 +25,6 @@ export default function ProgressBar(props: Props) {
       <Part props={props} status={TronçonStatus.Blocked} />
       <Part props={props} status={TronçonStatus.Unknown} right/>
     </div>
-    <div className="progress-bar-percent is-size-4 has-text-weight-bold" style={{marginLeft: `${part_ok}%`}}>{Math.round(part_ok)}%</div>
+    <div className="progress-bar-percent is-size-4 has-text-weight-bold has-text-centered" style={{marginLeft: `${part_ok}%`}}>{Math.round(part_ok)}%</div>
   </div>
 }
