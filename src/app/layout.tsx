@@ -3,6 +3,7 @@ import { Source_Sans_3 } from 'next/font/google'
 import StateHolder from './component/state_holder'
 import {routes, departements, tronçons, outlines, globalBounds, variantOutlines} from '@/utils/prepared_data'
 import About from './component/about'
+import { GlobalData } from './types'
 
 const inter = Source_Sans_3({ subsets: ['latin'] })
 
@@ -17,11 +18,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  const data = {
+  const data: GlobalData = {
     routes,
     outlines,
     tronçons,
-    departements,
     globalBounds,
     variantOutlines,
   }

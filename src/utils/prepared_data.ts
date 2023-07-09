@@ -15,7 +15,7 @@ function closeEnough(a: Position, b: Position): boolean {
     return distance(a, b, {units: 'meters'}) < 10
 }
 
-function groupLineStrings(coords: Array<Array<Position>>): Feature<MultiLineString> {
+function groupLineStrings(coords: Array<Array<Position>>, route: string): Feature<MultiLineString> {
     let result: Array<Array<Position>> = [];
     for (const linestring of coords) {
         let found = false;
@@ -39,7 +39,7 @@ function groupLineStrings(coords: Array<Array<Position>>): Feature<MultiLineStri
             result.push(linestring)
         }
     }
-    return multiLineString(result);
+    return multiLineString(result, {route});
 }
 
 function status(niveau_validation: string, apport_rerv: string) : TronçonStatus {
@@ -60,7 +60,7 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] = troncons.featu
         const dep = departementsGeojson.features.find((dep) => booleanWithin(simpleLineString, dep.geometry))
         const commune = communes.features.find((commune) => booleanWithin(simpleLineString, commune.geometry))
         const properties: TronçonProperties = {
-            // When it is a "Variante" don’t count its length for any statistic
+            // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
             length: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ? 0 : feature.properties.LONGUEUR,
             commune: commune?.properties.nom,
             departement: dep?.properties.code,
@@ -100,16 +100,19 @@ export const globalBounds: Bounds = [xmin, ymin, xmax, ymax]
 const outlineFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
     .reject('properties.variant')
     .orderBy(['properties.status'])
-    .groupBy('properties.voie')
-    .values()
-    .map(features => groupLineStrings(features.map(f => f.geometry.coordinates)))
+    .groupBy('properties.route')
+    .map((features, route) => groupLineStrings(features.map(f => f.geometry.coordinates), route))
     .value()
 export const outlines: FeatureCollection<MultiLineString> = featureCollection(outlineFeatures)
 
-export const variantOutlines: Feature<MultiLineString> =  groupLineStrings(_(tronçonsArray)
+const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
     .filter('properties.variant')
-    .map('geometry.coordinates')
-    .value())
+    .orderBy(['properties.status'])
+    .groupBy('properties.route')
+    .map((features, route) => groupLineStrings(features.map(f => f.geometry.coordinates), route))
+    .value()
+
+export const variantOutlines: FeatureCollection<MultiLineString> = featureCollection(variantOutlinesFeatures)
 
 const routeList = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V20'];
 export const routes: RoutesMap = _.fromPairs(routeList.map((route) => [route, routeStats(route)]));

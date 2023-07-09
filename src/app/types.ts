@@ -1,3 +1,5 @@
+import { Feature, FeatureCollection, LineString, MultiLineString } from "@turf/helpers"
+
 export type Bounds = [number, number, number, number]
 
 export type Departement = {
@@ -52,3 +54,11 @@ export type Level = { level: 'region' } |
                     { level: 'departement', props: Departement } |
                     { level: 'route', props: RouteStats } |
                     { level: 'segment', props: TronçonProperties}
+
+export type GlobalData = {
+  tronçons: FeatureCollection<LineString>,
+  globalBounds: [number, number, number, number],
+  outlines: FeatureCollection<MultiLineString>,
+  variantOutlines: FeatureCollection<MultiLineString>,
+  routes: RoutesMap,
+}

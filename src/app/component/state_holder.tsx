@@ -3,25 +3,19 @@ import Map from './map'
 import RouteList from './routes_list'
 import { useEffect, useState } from 'react'
 import { Feature, FeatureCollection, MultiLineString } from '@turf/helpers'
-import { RoutesMap, Level } from '../types'
+import { RoutesMap, Level, GlobalData } from '../types'
 import RouteDetails from './route_details'
 import { globalStats, totalLength, tronçons } from '@/utils/prepared_data'
 import GlobalStats from './global_stats'
 import { useSearchParams } from 'next/navigation'
 
-type Data = {
-  globalBounds: [number, number, number, number],
-  outlines: FeatureCollection<MultiLineString>,
-  variantOutlines: Feature<MultiLineString>,
-  routes: RoutesMap,
-}
-
-export default function({data} : {data: Data}) {
+export default function({data} : {data: GlobalData}) {
   const [bounds, setBounds] = useState(data.globalBounds)
   const [level, setLevel] = useState<Level>({ level: 'region' })
   const searchParams = useSearchParams()
 
   useEffect( () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
     const level = searchParams.get('level')
     const id = searchParams.get('id')
     console.log('searchParams changed', level, id)

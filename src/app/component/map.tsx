@@ -7,17 +7,6 @@ import _ from 'lodash'
 import { Feature, FeatureCollection, LineString } from '@turf/helpers';
 import { Level, TronçonProperties, TronçonStatus } from '../types';
 
-/*
-variante = en discussion ?
-z-index : pré-existant, livré, en construction, [variante], en discussion, au ponit mort
-
-détour communes : écart 8px de centre à centre, noir sur 3px de diamètre, blanc sur 6px
-
-3 premiers niveaux pas de gap blanc
-
-Alleger le outline des variantes (50%)
-*/
-
 type Props = {
     outlines: FeatureCollection,
     variantOutlines: Feature,
@@ -40,7 +29,7 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
         .on('load', () => {
             newMap.fitBounds(new LngLatBounds(bounds))
             newMap.addSource('vif', { type: 'geojson', data: segments, generateId: true })
-                .addSource('outline', { type: 'geojson', data: outlines })
+                .addSource('outline', { type: 'geojson', data: outlines, generateId: true })
                 .addSource('variant-outline', { type: 'geojson', data: variantOutlines })
                 .addLayer({
                     id: 'variant-outline',
@@ -77,13 +66,32 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
                     paint: {
                         'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
                         'line-gap-width': ["interpolate", ["linear"], ["zoom"], 10, 3, 15, 10],
-                        'line-opacity': 1,
-                        'line-color': '#7f7f7f'
+                        'line-color': '#7f7f7f',
+                        'line-opacity': ['case',
+                            ['boolean', ['feature-state', 'active'], false],
+                            1,
+                            0.5,
+                        ],
                     },
                     layout: {
                         'line-join': 'round',
                         'line-cap': 'round',
                     },
+                })
+                .addLayer({
+                    id: 'variantes',
+                    source: 'vif',
+                    type: 'line',
+                    paint: {
+                        'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
+                        'line-dasharray': [2, 1],
+                        'line-opacity': ['case',
+                            ['boolean', ['feature-state', 'active'], false],
+                            1,
+                            0.2,
+                        ]
+                    },
+                    filter: ['get', 'variant'],
                 })
                 .addLayer({
                     id: 'couleur',
@@ -116,7 +124,7 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
                         'line-opacity': ['case',
                             ['boolean', ['feature-state', 'active'], false],
                             1,
-                            0.1,
+                            0.2,
                         ],
                     },
                     layout: {
@@ -125,32 +133,30 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
                     },
                     filter: ['!', ['get', 'variant']],
                 })
-                .addLayer({
-                    id: 'variantes',
-                    source: 'vif',
-                    type: 'line',
-                    paint: {
-                        'line-width': ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
-                        'line-dasharray': [2, 1],
-                    },
-                    filter: ['get', 'variant'],
-                });
         })
 
         map.current = newMap;
     });
 
-    useEffect( () => { map.current?.fitBounds(bounds)}, [bounds])
+    useEffect( () => { map.current?.fitBounds(bounds, {padding: 10})}, [bounds])
     useEffect( () => {
+        map.current?.querySourceFeatures('vif').forEach(feature => {
+            const active = level.level !== 'route' ||
+                (level.level === 'route' && feature.properties.route === level.props.code)
+            map.current?.setFeatureState({
+                id: feature.id,
+                source: 'vif'
+            }, { active })
+        })
 
-            map.current?.querySourceFeatures('vif').forEach(feature => {
-                const active = level.level !== 'route' ||
-                    (level.level === 'route' && feature.properties.route === level.props.code)
-                map.current?.setFeatureState({
-                    id: feature.id,
-                    source: 'vif'
-                }, { active })
-            })
+        map.current?.querySourceFeatures('outline').forEach(feature => {
+            const active = level.level !== 'route' ||
+                (level.level === 'route' && feature.properties.route === level.props.code)
+            map.current?.setFeatureState({
+                id: feature.id,
+                source: 'outline'
+            }, { active })
+        })
 
     }, [level])
 
