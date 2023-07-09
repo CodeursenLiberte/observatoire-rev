@@ -99,3 +99,28 @@
   border-radius: 24px;
   background-color: white;
 }
+
+.route-list-icons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.route-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  background-color: #FAFAFA;
+  border: solid 1px #c3cbcc;
+  outline: 5px solid RGBA(0, 0, 0, 0.03);
+}
+
+.route-button:hover {
+  border: solid 1px RGBA(74, 210, 255, 0.42);
+  outline: 5px solid RGBA(0, 130, 173, 0.13);
+}
+
+.route-button:active {
+  border: solid 1px RGB(0, 130, 173);
+  outline: 5px solid RGBA(0, 130, 173, 0.13);
+}
