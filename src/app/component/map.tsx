@@ -1,6 +1,6 @@
 'use client'
 import React, { useRef, useEffect } from 'react';
-import maplibregl, { Feature, LngLatBounds, MapGeoJSONFeature } from 'maplibre-gl';
+import maplibregl, { LngLatBounds, MapGeoJSONFeature } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from '../page.module.css'
 import _ from 'lodash'
@@ -8,6 +8,32 @@ import { FeatureCollection, LineString } from '@turf/helpers';
 import { Level, TronçonProperties, TronçonStatus } from '../types';
 import { useRouter } from 'next/navigation';
 import { statusColor } from '@/utils/constants';
+
+function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
+    if (level.level === 'route') {
+        return feature.properties.route === level.props.code
+    } else if (level.level === 'segment') {
+        return feature.properties.id === level.props.id
+    } else {
+        return true;
+    }
+}
+
+function setActiveSegments(map: maplibregl.Map, level: Level) {
+    map.querySourceFeatures('vif').forEach(feature => {
+        map.setFeatureState({
+            id: feature.id,
+            source: 'vif'
+        }, { active: isActive(level, feature) })
+    })
+
+    map.querySourceFeatures('outline').forEach(feature => {
+        map.setFeatureState({
+            id: feature.id,
+            source: 'outline'
+        }, { active: isActive(level, feature) })
+    })
+}
 
 type Props = {
     outlines: FeatureCollection,
@@ -143,36 +169,16 @@ export default function Map({outlines, variantOutlines, bounds, segments, level 
                     router.push(`?level=segment&id=${tronçon.features[0].id}`)
                 }
             })
+            setActiveSegments(newMap, level)
             map.current = newMap;
     });
 
     useEffect( () => { map.current?.fitBounds(bounds, {padding: 10})}, [bounds])
 
-    function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
-        if (level.level === 'route') {
-            return feature.properties.route === level.props.code
-        } else if (level.level === 'segment') {
-            return feature.properties.id === level.props.id
-        } else {
-            return true;
-        }
-    }
-
     useEffect( () => {
-        map.current?.querySourceFeatures('vif').forEach(feature => {
-            map.current?.setFeatureState({
-                id: feature.id,
-                source: 'vif'
-            }, { active: isActive(level, feature) })
-        })
-
-        map.current?.querySourceFeatures('outline').forEach(feature => {
-            map.current?.setFeatureState({
-                id: feature.id,
-                source: 'outline'
-            }, { active: isActive(level, feature) })
-        })
-
+        if (map.current !== null) {
+            setActiveSegments(map.current, level)
+        }
     }, [level])
 
     return (
