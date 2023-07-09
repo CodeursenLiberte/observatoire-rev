@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function About() {
   return (
-    <section className="section">
+    <section className="section has-text-centered">
       <div className="container">
         <h2 className="title is-3">À propos</h2>
         <p className="block">Les données affichées sont mises à la disposition du public par la région Île-de-France et régulièrement mises à jour.</p>

@@ -42,9 +42,11 @@ export type Tronçon = {
   properties: TronçonProperties,
 }
 
+export type LengthStats = {[index: number]: number}
+
 export type RouteStats = {
   code: string,
-  built: number,
+  stats: LengthStats,
   total: number,
   bounds: Bounds
 }
@@ -71,5 +73,5 @@ export enum TypeMOA {
   Commune = 1,
   Departement,
   EPCI,
-  Unknow
+  Unknown
 }

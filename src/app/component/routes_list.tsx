@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { RoutesMap, Level } from '../types'
+import { RoutesMap } from '../types'
 
 export default function RouteList({routes}: {routes: RoutesMap}) {
-  return <section className="section has-text-centered">
+  return <section className="section has-text-centered route-list">
     <div className="container">
       <h2 className="title is-3">Informations par&nbsp;ligne</h2>
         {Object.keys(routes).map(route =>

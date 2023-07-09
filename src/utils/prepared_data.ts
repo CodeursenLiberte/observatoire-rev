@@ -130,9 +130,16 @@ export const routes: RoutesMap = _.fromPairs(routeList.map((route) => [route, ro
 function routeStats(code: string): RouteStats {
   const t = _.filter(tronçonsArray, feature => feature.properties.route === code)
   const total = _(t).map('properties.length').sum()
-  const built = _(t).filter(feature => feature.properties.status === TronçonStatus.Built).map('properties.length').sum()
+  const stats: LengthStats = {
+    [TronçonStatus.PreExisting]: _(t).filter(f => f.properties.status === TronçonStatus.PreExisting).sumBy('properties.length'),
+    [TronçonStatus.Built]: _(t).filter(f => f.properties.status === TronçonStatus.Built).sumBy('properties.length'),
+    [TronçonStatus.Building]: _(t).filter(f => f.properties.status === TronçonStatus.Building).sumBy('properties.length'),
+    [TronçonStatus.Planned]: _(t).filter(f => f.properties.status === TronçonStatus.Planned).sumBy('properties.length'),
+    [TronçonStatus.Blocked]: _(t).filter(f => f.properties.status === TronçonStatus.Blocked).sumBy('properties.length'),
+    [TronçonStatus.Unknown]: _(t).filter(f => f.properties.status === TronçonStatus.Unknown).sumBy('properties.length'),
+  }
   const [xmin, ymin, xmax, ymax] = bbox({type: 'FeatureCollection', features: t})
-  return {code, built, total, bounds: [xmin, ymin, xmax, ymax]}
+  return {code, stats, total, bounds: [xmin, ymin, xmax, ymax]}
 }
 
 export const globalStats: GlobalStats  = _(tronçons)

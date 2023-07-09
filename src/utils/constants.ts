@@ -22,5 +22,5 @@ export const moaLabel = {
   [TypeMOA.Commune]: 'Commune',
   [TypeMOA.Departement]: 'Département',
   [TypeMOA.EPCI]: '',
-  [TypeMOA.Unknow]: ''
+  [TypeMOA.Unknown]: ''
 }
