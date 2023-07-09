@@ -23,6 +23,7 @@ export enum TronçonStatus {
 }
 
 export type TronçonProperties = {
+  id: string,
   length: number,
   departement: string|undefined,
   status: TronçonStatus,
@@ -56,7 +57,7 @@ export type Level = { level: 'region' } |
                     { level: 'segment', props: TronçonProperties}
 
 export type GlobalData = {
-  tronçons: FeatureCollection<LineString>,
+  tronçons: FeatureCollection<LineString, TronçonProperties>,
   globalBounds: [number, number, number, number],
   outlines: FeatureCollection<MultiLineString>,
   variantOutlines: FeatureCollection<MultiLineString>,

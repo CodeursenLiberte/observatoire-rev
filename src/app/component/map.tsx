@@ -1,23 +1,25 @@
 'use client'
 import React, { useRef, useEffect } from 'react';
-import maplibregl, { LngLatBounds } from 'maplibre-gl';
+import maplibregl, { Feature, LngLatBounds, MapGeoJSONFeature } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import styles from '../page.module.css'
 import _ from 'lodash'
-import { Feature, FeatureCollection, LineString } from '@turf/helpers';
+import { FeatureCollection, LineString } from '@turf/helpers';
 import { Level, TronçonProperties, TronçonStatus } from '../types';
+import { useRouter } from 'next/navigation';
 
 type Props = {
     outlines: FeatureCollection,
-    variantOutlines: Feature,
+    variantOutlines: FeatureCollection,
     bounds: [number, number, number, number],
     segments: FeatureCollection<LineString, TronçonProperties>,
     level: Level,
 }
 
-export default function Map({outlines, variantOutlines, bounds, segments, level}: Props) {
+export default function Map({outlines, variantOutlines, bounds, segments, level }: Props) {
     const mapContainer = useRef<null | HTMLElement>(null);
     const map = useRef<null | maplibregl.Map>(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (map.current) return;
@@ -28,7 +30,7 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
         })
         .on('load', () => {
             newMap.fitBounds(new LngLatBounds(bounds))
-            newMap.addSource('vif', { type: 'geojson', data: segments, generateId: true })
+            newMap.addSource('vif', { type: 'geojson', data: segments, promoteId: 'id' })
                 .addSource('outline', { type: 'geojson', data: outlines, generateId: true })
                 .addSource('variant-outline', { type: 'geojson', data: variantOutlines })
                 .addLayer({
@@ -133,29 +135,40 @@ export default function Map({outlines, variantOutlines, bounds, segments, level}
                     },
                     filter: ['!', ['get', 'variant']],
                 })
-        })
-
-        map.current = newMap;
+            })
+            .on('click', 'couleur', (tronçon) => {
+                if (tronçon.features !== undefined && tronçon.features.length > 0) {
+                    router.push(`?level=segment&id=${tronçon.features[0].id}`)
+                }
+            })
+            map.current = newMap;
     });
 
     useEffect( () => { map.current?.fitBounds(bounds, {padding: 10})}, [bounds])
+
+    function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
+        if (level.level === 'route') {
+            return feature.properties.route === level.props.code
+        } else if (level.level === 'segment') {
+            return feature.properties.id === level.props.id
+        } else {
+            return true;
+        }
+    }
+
     useEffect( () => {
         map.current?.querySourceFeatures('vif').forEach(feature => {
-            const active = level.level !== 'route' ||
-                (level.level === 'route' && feature.properties.route === level.props.code)
             map.current?.setFeatureState({
                 id: feature.id,
                 source: 'vif'
-            }, { active })
+            }, { active: isActive(level, feature) })
         })
 
         map.current?.querySourceFeatures('outline').forEach(feature => {
-            const active = level.level !== 'route' ||
-                (level.level === 'route' && feature.properties.route === level.props.code)
             map.current?.setFeatureState({
                 id: feature.id,
                 source: 'outline'
-            }, { active })
+            }, { active: isActive(level, feature) })
         })
 
     }, [level])

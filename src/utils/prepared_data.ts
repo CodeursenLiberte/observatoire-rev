@@ -60,19 +60,21 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] = troncons.featu
         const dep = departementsGeojson.features.find((dep) => booleanWithin(simpleLineString, dep.geometry))
         const commune = communes.features.find((commune) => booleanWithin(simpleLineString, commune.geometry))
         const properties: TronçonProperties = {
+            // A single tronçon can be used by many lines, the concatenation allows to deduplicate
+            id: feature.properties.CODE_TRONCON + feature.properties.NUM_LIGNE,
             // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
             length: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ? 0 : feature.properties.LONGUEUR,
             commune: commune?.properties.nom,
             departement: dep?.properties.code,
             route: feature.properties.NUM_LIGNE,
             variant: feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" || feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante initiale",
-            status: status(feature.properties.NIVEAU_VALID_AMENAG || "", feature.properties.APPORT_RERV || "")
+            status: status(feature.properties.NIVEAU_VALID_AMENAG || "", feature.properties.APPORT_RERV || ""),
         }
 
-        return lineString(feature.geometry.coordinates[0], properties, {id: feature.properties.GIDTRONCON})
+        return lineString(feature.geometry.coordinates[0], properties, {bbox: bbox(simpleLineString)})
     })
 
-export const tronçons = featureCollection(tronçonsArray)
+export const tronçons = featureCollection(_.uniqBy(tronçonsArray, (f) => f.properties.id))
 
 const departementsList: [string, Departement][] = _(departementsGeojson.features)
     .map(d => {
