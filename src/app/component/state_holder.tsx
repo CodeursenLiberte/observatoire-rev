@@ -74,7 +74,6 @@ export default function ({ data }: { data: GlobalData }) {
           bounds={bounds}
           segments={data.tronçons}
           level={level}
-          setLevel={setLevel}
         />
       </section>
       {current}

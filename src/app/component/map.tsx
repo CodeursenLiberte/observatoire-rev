@@ -26,7 +26,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
         id: feature.id,
         source: "vif",
       },
-      { active: isActive(level, feature) }
+      { inactive: !isActive(level, feature) }
     );
   });
 
@@ -36,7 +36,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
         id: feature.id,
         source: "outline",
       },
-      { active: isActive(level, feature) }
+      { inactive: !isActive(level, feature) }
     );
   });
 }
@@ -65,6 +65,7 @@ export default function Map({
 
     const newMap = new maplibregl.Map({
       container: mapContainer.current || "",
+      bounds: new LngLatBounds(bounds),
       style: `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
     })
       .on("load", () => {
@@ -146,9 +147,9 @@ export default function Map({
               "line-color": "#7f7f7f",
               "line-opacity": [
                 "case",
-                ["boolean", ["feature-state", "active"], false],
-                1,
+                ["boolean", ["feature-state", "inactive"], false],
                 0.5,
+                1,
               ],
             },
             layout: {
@@ -165,9 +166,9 @@ export default function Map({
               "line-dasharray": [2, 1],
               "line-opacity": [
                 "case",
-                ["boolean", ["feature-state", "active"], false],
-                1,
+                ["boolean", ["feature-state", "inactive"], false],
                 0.2,
+                1,
               ],
             },
             filter: ["get", "variant"],
@@ -224,9 +225,9 @@ export default function Map({
               ],
               "line-opacity": [
                 "case",
-                ["boolean", ["feature-state", "active"], false],
-                1,
+                ["boolean", ["feature-state", "inactive"], false],
                 0.2,
+                1,
               ],
             },
             layout: {
@@ -235,13 +236,13 @@ export default function Map({
             },
             filter: ["!", ["get", "variant"]],
           });
-      })
+          setActiveSegments(newMap, level);
+        })
       .on("click", "couleur", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
           router.push(`?level=segment&id=${tronçon.features[0].id}`);
         }
-      });
-    setActiveSegments(newMap, level);
+      })
     map.current = newMap;
   });
 
