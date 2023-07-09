@@ -1,5 +1,5 @@
-@import '~bulma/bulma';
-@import '@fortawesome/fontawesome-free/css/all.css';
+@import "~bulma/bulma";
+@import "@fortawesome/fontawesome-free/css/all.css";
 
 .segment-status-ruler {
   width: 100%;
@@ -18,7 +18,7 @@
   background: white;
   padding: 0;
   border: solid 1px #979797;
-  box-shadow: 0 4px 8px #3E73A1, 0 6px 24px #3E73A1;
+  box-shadow: 0 4px 8px #3e73a1, 0 6px 24px #3e73a1;
 }
 
 .main-content-header {
@@ -89,7 +89,7 @@
   width: 249px;
   margin-left: auto;
   margin-right: auto;
-  border-top: solid 1px #C3C1B9;
+  border-top: solid 1px #c3c1b9;
   padding-top: 1rem;
   margin-top: 3rem;
 }
@@ -110,7 +110,7 @@
   width: 56px;
   height: 56px;
   border-radius: 10px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   border: solid 1px #c3cbcc;
   outline: 5px solid RGBA(0, 0, 0, 0.03);
 }
