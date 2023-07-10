@@ -86,11 +86,14 @@ function status(niveau_validation: string, apport_rerv: string): TronçonStatus 
   }
 }
 
-const moaTypeMapping = {
-  Commune: TypeMOA.Commune,
-  Département: TypeMOA.Departement,
-  "EPCI/EPT": TypeMOA.EPCI,
-};
+function moaType(type: string): TypeMOA {
+  switch(type) {
+    case "Commune": return TypeMOA.Commune; break;
+    case "Département": return TypeMOA.Departement; break;
+    case "EPCI/EPT": return TypeMOA.EPCI; break;
+    default: return TypeMOA.Unknown;
+  }
+}
 
 const tronçonsArray: Feature<LineString, TronçonProperties>[] =
   troncons.features.map((feature) => {
@@ -120,7 +123,7 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
         feature.properties.NIVEAU_VALID_AMENAG || "",
         feature.properties.APPORT_RERV || ""
       ),
-      typeMOA: moaTypeMapping[feature.properties.TYPE_MOA] || TypeMOA.Unknown,
+      typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
       moa: feature.properties.NOM_MOA || "",
     };
 
