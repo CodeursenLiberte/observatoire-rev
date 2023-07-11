@@ -14,12 +14,12 @@ export type Departement = {
 export type DepartementsMap = { [index: string]: Departement };
 
 export enum TronçonStatus {
-  Planned = 1,
-  PreExisting,
-  Building,
-  Built,
-  Blocked,
-  Unknown,
+  Planned = "Planned",
+  PreExisting = "PerExisting",
+  Building = "Building",
+  Built = "Built",
+  Blocked = "Blocked",
+  Unknown = "Unknown",
 }
 
 export type TronçonProperties = {
@@ -27,7 +27,7 @@ export type TronçonProperties = {
   length: number;
   departement: string | undefined;
   status: TronçonStatus;
-  route: string;
+  routes: string[];
   variant: boolean;
   commune: string | undefined;
   typeMOA: TypeMOA;
@@ -41,7 +41,7 @@ export type Tronçon = {
   properties: TronçonProperties;
 };
 
-export type LengthStats = { [index: number]: number };
+export type LengthStats = { [index: string]: number };
 
 export type RouteStats = {
   code: string;

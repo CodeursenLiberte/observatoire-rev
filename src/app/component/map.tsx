@@ -7,13 +7,14 @@ import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
 import { useRouter } from "next/navigation";
-import { statusColor } from "@/utils/constants";
+import { fadedStatusColor, statusColor } from "@/utils/constants";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
-    return feature.properties.route === level.props.code;
+    // Not sure why, but it seems that the array gets serialized as a string
+    return JSON.parse(feature.properties.routes).includes(level.props.code);
   } else if (level.level === "segment") {
-    return feature.properties.id === level.props.id;
+    return feature.properties.id === level.props.id;feature.properties.routes
   } else {
     return true;
   }
@@ -30,7 +31,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
     );
   });
 
-  map.querySourceFeatures("outline").forEach((feature) => {
+ map.querySourceFeatures("outline").forEach((feature) => {
     map.setFeatureState(
       {
         id: feature.id,
@@ -63,6 +64,7 @@ export default function Map({
   useEffect(() => {
     if (map.current) return;
 
+    // prettier-ignore
     const newMap = new maplibregl.Map({
       container: mapContainer.current || "",
       bounds: new LngLatBounds(bounds),
@@ -90,15 +92,13 @@ export default function Map({
             source: "variant-outline",
             type: "line",
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
-              "line-gap-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                3,
-                15,
-                10,
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 1,
+                15, 3
+              ],
+              "line-gap-width": ["interpolate", ["linear"], ["zoom"],
+                10, 3,
+                15, 10,
               ],
               "line-color": "#7f7f7f",
               "line-opacity": 0.5,
@@ -113,8 +113,7 @@ export default function Map({
             source: "outline",
             type: "line",
             paint: {
-              "line-width": [
-                "interpolate",
+              "line-width": ["interpolate",
                 ["linear"],
                 ["zoom"],
                 10,
@@ -135,20 +134,15 @@ export default function Map({
             type: "line",
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
-              "line-gap-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                3,
-                15,
-                10,
+              "line-gap-width": ["interpolate", ["linear"], ["zoom"],
+                10, 3,
+                15, 10,
               ],
               "line-color": "#7f7f7f",
               "line-opacity": [
                 "case",
                 ["boolean", ["feature-state", "inactive"], false],
-                0.5,
+                0.2,
                 1,
               ],
             },
@@ -162,7 +156,10 @@ export default function Map({
             source: "vif",
             type: "line",
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 1,
+                15, 3
+              ],
               "line-dasharray": [2, 1],
               "line-opacity": [
                 "case",
@@ -209,24 +206,18 @@ export default function Map({
                 ],
               ],
               "line-color": [
-                "match",
+                "get",
                 ["get", "status"],
-                TronçonStatus.PreExisting,
-                statusColor[TronçonStatus.PreExisting],
-                TronçonStatus.Built,
-                statusColor[TronçonStatus.Built],
-                TronçonStatus.Building,
-                statusColor[TronçonStatus.Building],
-                TronçonStatus.Planned,
-                statusColor[TronçonStatus.Planned],
-                TronçonStatus.Blocked,
-                statusColor[TronçonStatus.Blocked],
-                statusColor[TronçonStatus.Unknown], // default value
+                ["case",
+                  ["boolean", ["feature-state", "inactive"], false],
+                  ["literal", fadedStatusColor],
+                  ["literal", statusColor]
+                ]
               ],
               "line-opacity": [
                 "case",
                 ["boolean", ["feature-state", "inactive"], false],
-                0.2,
+                0.5,
                 1,
               ],
             },

@@ -14,9 +14,19 @@ export const statusColor = {
   [TronçonStatus.Built]: "#2ee35c",
   [TronçonStatus.Building]: "#fff200",
   [TronçonStatus.Planned]: "#ff8400",
-  [TronçonStatus.Blocked]: "#F84E45",
+  [TronçonStatus.Blocked]: "#DA2F4C",
   [TronçonStatus.Unknown]: "#7E7E7E",
 };
+
+export const fadedStatusColor = {
+  [TronçonStatus.PreExisting]: "#a3d1af",
+  [TronçonStatus.Built]: "#8aefa4",
+  [TronçonStatus.Building]: "#f0ea75",
+  [TronçonStatus.Planned]: "#f7b56e",
+  [TronçonStatus.Blocked]: "#ea8696",
+  [TronçonStatus.Unknown]: "#b3b3b3",
+};
+
 
 export const moaLabel = {
   [TypeMOA.Commune]: "Commune",

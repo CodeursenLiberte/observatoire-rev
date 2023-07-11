@@ -37,7 +37,7 @@ function closeEnough(a: Position, b: Position): boolean {
 
 function groupLineStrings(
   coords: Array<Array<Position>>,
-  route: string
+  routes: string[]
 ): Feature<MultiLineString> {
   let result: Array<Array<Position>> = [];
   for (const linestring of coords) {
@@ -69,7 +69,7 @@ function groupLineStrings(
       result.push(linestring);
     }
   }
-  return multiLineString(result, { route });
+  return multiLineString(result, { routes });
 }
 
 function status(niveau_validation: string, apport_rerv: string): TronçonStatus {
@@ -88,9 +88,9 @@ function status(niveau_validation: string, apport_rerv: string): TronçonStatus 
 
 function moaType(type: string): TypeMOA {
   switch(type) {
-    case "Commune": return TypeMOA.Commune; break;
-    case "Département": return TypeMOA.Departement; break;
-    case "EPCI/EPT": return TypeMOA.EPCI; break;
+    case "Commune": return TypeMOA.Commune;
+    case "Département": return TypeMOA.Departement;
+    case "EPCI/EPT": return TypeMOA.EPCI;
     default: return TypeMOA.Unknown;
   }
 }
@@ -107,7 +107,7 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
     );
     const properties: TronçonProperties = {
       // A single tronçon can be used by many lines, the concatenation allows to deduplicate
-      id: feature.properties.CODE_TRONCON + feature.properties.NUM_LIGNE,
+      id: feature.properties.CODE_TRONCON,
       // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
       length:
         feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante"
@@ -115,7 +115,7 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
           : feature.properties.LONGUEUR,
       commune: commune?.properties.nom.replace(" Arrondissement", ""),
       departement: dep?.properties.code,
-      route: feature.properties.NUM_LIGNE,
+      routes: [feature.properties.NUM_LIGNE],
       variant:
         feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
         feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante initiale",
@@ -132,9 +132,12 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
     });
   });
 
-export const tronçons = featureCollection(
-  _.uniqBy(tronçonsArray, (f) => f.properties.id)
-);
+
+const routesId = _(tronçonsArray).map(t => ({id: t.properties.id, route: t.properties.routes[0]})).groupBy('id').mapValues(x => _.map(x, 'route')).value();
+const uniqueTronçons = _.uniqBy(tronçonsArray, f => f.properties.id)
+uniqueTronçons.forEach( t => t.properties.routes = routesId[t.properties.id])
+export const tronçons = featureCollection(uniqueTronçons);
+
 
 const departementsList: [string, Departement][] = _(
   departementsGeojson.features
@@ -167,14 +170,14 @@ export const departements: DepartementsMap = _.fromPairs(departementsList);
 const [xmin, ymin, xmax, ymax] = bbox(tronçons);
 export const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
 
-const outlineFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
+const outlineFeatures: Feature<MultiLineString>[] = _(uniqueTronçons)
   .reject("properties.variant")
   .orderBy(["properties.status"])
-  .groupBy("properties.route")
-  .map((features, route) =>
+  .groupBy("properties.routes")
+  .map((features, routes) =>
     groupLineStrings(
       features.map((f) => f.geometry.coordinates),
-      route
+      [routes]
     )
   )
   .value();
@@ -188,7 +191,7 @@ const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
   .map((features, route) =>
     groupLineStrings(
       features.map((f) => f.geometry.coordinates),
-      route
+      [route]
     )
   )
   .value();
@@ -216,7 +219,7 @@ export const routes: RoutesMap = _.fromPairs(
 function routeStats(code: string): RouteStats {
   const t = _.filter(
     tronçonsArray,
-    (feature) => feature.properties.route === code
+    feature => feature.properties.routes.includes(code)
   );
   function length(status: TronçonStatus): number {
     return _(t)
