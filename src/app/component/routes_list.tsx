@@ -8,7 +8,7 @@ export default function RouteList({ routes }: { routes: RoutesMap }) {
         <h2 className="title is-3">Informations par&nbsp;ligne</h2>
         <div className="route-list-icons">
           {Object.keys(routes).map((route) => (
-            <Link key={route} href={`./?level=route&id=${route}`}>
+            <Link key={route} href={`?level=route&id=${route}`}>
               <button className="button route-button">{route}</button>
             </Link>
           ))}
