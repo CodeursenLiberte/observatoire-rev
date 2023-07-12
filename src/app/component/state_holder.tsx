@@ -8,6 +8,7 @@ import GlobalStats from "./global_stats";
 import { useSearchParams } from "next/navigation";
 import Segment from "./segment";
 import { statusColor, statusLabel } from "@/utils/constants";
+import About from "./about";
 
 function Legend({ status }: { status: TronçonStatus }) {
   return (
@@ -67,7 +68,7 @@ export default function ({ data }: { data: GlobalData }) {
   }
   return (
     <>
-      <section className="hero">
+      <section className="hero cocarto-map">
         <Map
           outlines={data.outlines}
           variantOutlines={data.variantOutlines}
@@ -76,18 +77,21 @@ export default function ({ data }: { data: GlobalData }) {
           level={level}
         />
       </section>
-      {current}
-      <section className="section">
-        <div className="container cocarto-container--narrow cocarto-legends-container">
-          <Legend status={TronçonStatus.PreExisting} />
-          <Legend status={TronçonStatus.Built} />
-          <Legend status={TronçonStatus.Building} />
-          <Legend status={TronçonStatus.Planned} />
-          <Legend status={TronçonStatus.Blocked} />
-          <Legend status={TronçonStatus.Unknown} />
-        </div>
-      </section>
-      <RouteList routes={data.routes} />
+      <div className="cocarto-panel">
+        {current}
+        <section className="section">
+          <div className="container cocarto-container--narrow cocarto-legends-container">
+            <Legend status={TronçonStatus.PreExisting} />
+            <Legend status={TronçonStatus.Built} />
+            <Legend status={TronçonStatus.Building} />
+            <Legend status={TronçonStatus.Planned} />
+            <Legend status={TronçonStatus.Blocked} />
+            <Legend status={TronçonStatus.Unknown} />
+          </div>
+        </section>
+        <RouteList routes={data.routes} />
+        <About />
+      </div>
     </>
   );
 }

@@ -9,7 +9,6 @@ import {
   variantOutlines,
   globalStats,
 } from "@/utils/prepared_data";
-import About from "./component/about";
 import { GlobalData } from "./types";
 
 const inter = Source_Sans_3({ subsets: ["latin"] });
@@ -39,9 +38,8 @@ export default function RootLayout() {
         />
       </head>
       <body className={inter.className}>
-        <main>
+        <main className="cocarto-main">
           <StateHolder data={data} />
-          <About />
         </main>
       </body>
     </html>

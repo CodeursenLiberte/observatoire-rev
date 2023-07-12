@@ -55,6 +55,7 @@ export type RoutesMap = { [index: string]: RouteStats };
 export type GlobalStats = {
   stats: LengthStats;
   total: number;
+  date: "12 juillet"
 };
 
 export type Level =
