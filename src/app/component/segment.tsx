@@ -15,7 +15,7 @@ export default function ({ segment }: { segment: TronçonProperties }) {
           <h3 className="title is-4">{segment.commune}</h3>
         </div>
         <div className="level-right">
-          <Link href="/">
+          <Link href=".">
             <span className="icon is-large rounded-border">
               <i className="fas fa-2x fa-close"></i>
             </span>
