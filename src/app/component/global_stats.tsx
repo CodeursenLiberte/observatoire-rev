@@ -8,8 +8,10 @@ export default function GlobalStats({
 }) {
   return (
     <section className="section has-text-centered region-stats pb-0">
-      <ProgressBar stats={globalStats.stats} total={globalStats.total} />
-      <h1 className="title is-3">Observatoire du Réseau Vélo Île-de-France</h1>
+      <div className="container cocarto-container--narrow">
+        <ProgressBar stats={globalStats.stats} total={globalStats.total} />
+        <h1 className="title is-3">Observatoire du Réseau Vélo Île-de-France</h1>
+      </div>
     </section>
   );
 }

@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function About() {
   return (
     <section className="section has-text-centered">
-      <div className="container">
+      <div className="container cocarto-container--narrow">
         <h2 className="title is-3">À propos</h2>
         <p className="block">
           Les données affichées sont mises à la disposition du public par la
@@ -20,14 +20,12 @@ export default function About() {
           leur niveau.
         </p>
 
-        <div className="container has-text-centered">
-          <figure className="image is-128x128 is-inline-block">
-            <img
-              src="logo_cvidf.png"
-              alt="Logo du collectif vélo Île-de-France"
-            />
-          </figure>
-        </div>
+        <figure className="image is-128x128 is-inline-block">
+          <img
+            src="logo_cvidf.png"
+            alt="Logo du collectif vélo Île-de-France"
+          />
+        </figure>
       </div>
     </section>
   );

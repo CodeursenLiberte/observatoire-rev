@@ -77,13 +77,15 @@ export default function ({ data }: { data: GlobalData }) {
         />
       </section>
       {current}
-      <section className="section legend-section">
-        <Legend status={TronçonStatus.PreExisting} />
-        <Legend status={TronçonStatus.Built} />
-        <Legend status={TronçonStatus.Building} />
-        <Legend status={TronçonStatus.Planned} />
-        <Legend status={TronçonStatus.Blocked} />
-        <Legend status={TronçonStatus.Unknown} />
+      <section className="section">
+        <div className="container cocarto-container--narrow cocarto-legends-container">
+          <Legend status={TronçonStatus.PreExisting} />
+          <Legend status={TronçonStatus.Built} />
+          <Legend status={TronçonStatus.Building} />
+          <Legend status={TronçonStatus.Planned} />
+          <Legend status={TronçonStatus.Blocked} />
+          <Legend status={TronçonStatus.Unknown} />
+        </div>
       </section>
       <RouteList routes={data.routes} />
     </>

@@ -7,7 +7,16 @@
   border-radius: 6px;
 }
 
-.main-content {
+
+@media screen and (max-width: 960px) {
+  
+}
+
+.cocarto-container--narrow {
+  max-width: 358px;
+}
+
+.cocarto-detail-container {
   border-radius: 20px;
   width: 90%;
   margin-top: -24px;
@@ -17,15 +26,29 @@
   position: relative;
   background: white;
   padding: 0;
-  border: solid 1px #979797;
-  box-shadow: 0 4px 8px #3e73a1, 0 6px 24px #3e73a1;
+  border: solid 0 #979797;
+  box-shadow: 0 4px 8px #3e73a139, 0 6px 24px #3e73a137;
 }
 
-.main-content-header {
+.cocarto-detail-header {
   background-color: #f7f7f7;
-  height: 72px;
-  border-bottom: solid 1px #9f9e9e;
+  height: 64px;
+  border-bottom: solid 0 #9f9e9e;
   border-radius: 20px 20px 0 0;
+  margin-bottom: 0;
+}
+
+.close-button{
+  color: black;
+}
+
+.route-code-level {
+  margin-top: -32px;
+}
+
+.route-code {
+  border-top: solid 1px #9f9e9e;
+  border-bottom: solid 1px #9f9e9e;
 }
 
 .route-list {
@@ -85,13 +108,11 @@
   margin-right: 12px;
 }
 
-.legend-section {
+.cocarto-legends-container {
   width: 249px;
   margin-left: auto;
   margin-right: auto;
   border-top: solid 1px #c3c1b9;
-  padding-top: 1rem;
-  margin-top: 3rem;
 }
 
 .rounded-border {

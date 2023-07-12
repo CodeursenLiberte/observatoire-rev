@@ -4,7 +4,7 @@ import { RoutesMap } from "../types";
 export default function RouteList({ routes }: { routes: RoutesMap }) {
   return (
     <section className="section has-text-centered route-list">
-      <div className="container">
+      <div className="container cocarto-container--narrow">
         <h2 className="title is-3">Informations par&nbsp;ligne</h2>
         <div className="route-list-icons">
           {Object.keys(routes).map((route) => (
