@@ -28,7 +28,7 @@ import {
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
-import troncons from "../../data/vif.json";
+import troncons from "../../data/reseau.geo.json";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
 function closeEnough(a: Position, b: Position): boolean {
@@ -98,7 +98,7 @@ function moaType(type: string): TypeMOA {
 const tronçonsArray: Feature<LineString, TronçonProperties>[] =
   troncons.features.map((feature) => {
     // booleanWithin doesn’t support MultiLineString
-    const simpleLineString = lineString(feature.geometry.coordinates[0]);
+    const simpleLineString = lineString(feature.geometry.coordinates);
     const dep = departementsGeojson.features.find((dep) =>
       booleanWithin(simpleLineString, dep.geometry)
     );
@@ -127,7 +127,7 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
       moa: feature.properties.NOM_MOA || "",
     };
 
-    return lineString(feature.geometry.coordinates[0], properties, {
+    return lineString(feature.geometry.coordinates, properties, {
       bbox: bbox(simpleLineString),
     });
   });
