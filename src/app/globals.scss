@@ -75,7 +75,7 @@
   border-radius: 29px;
   border: solid 6px #eaeae5;
   box-sizing: content-box;
-  margin: 16px;
+  margin: 16px 16px 8px;
   display: flex;
   flex-direction: row;
 }
@@ -92,6 +92,14 @@
 
 .progress-bar-part-right {
   border-radius: 0 23px 23px 0;
+}
+
+.progress-bar-pointer {
+  width: 17px;
+  height: 8px;
+  background: black;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform: translateX(-50%);
 }
 
 .progress-bar-percent {
