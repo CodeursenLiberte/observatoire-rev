@@ -2,7 +2,7 @@ import Link from "next/link";
 import { RouteStats } from "../types";
 import ProgressBar from "./progress_bar";
 
-export default function RouteDetails({ route }: { route: RouteStats }) {
+export default function RouteDetails({ route, setHash }: { route: RouteStats, setHash: (hash: string) => void }) {
   return (
     <section className="section has-text-centered">
       <div className="container cocarto-container--narrow cocarto-detail-container">
@@ -14,16 +14,14 @@ export default function RouteDetails({ route }: { route: RouteStats }) {
           </div>
           <div className="level-right">
             <div className="level-item">
-              <Link href="/" className="close-button">
-                <span className="icon is-large rounded-border">
-                  <i className="fas fa-thin fa-2x fa-close"></i>
-                </span>
-              </Link>
+              <span className="icon is-large rounded-border is-clickable" onClick={() => setHash("region")}>
+                <i className="fas fa-thin fa-2x fa-close"></i>
+              </span>
             </div>
           </div>
         </nav>
         <div className="mx-4 mb-2">au 12 juillet 2022</div>
-        
+
         <ProgressBar stats={route.stats} total={route.total} />
       </div>
     </section>

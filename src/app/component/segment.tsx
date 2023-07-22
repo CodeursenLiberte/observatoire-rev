@@ -2,7 +2,7 @@ import { statusColor, statusLabel, moaLabel } from "@/utils/constants";
 import Link from "next/link";
 import { TronçonProperties } from "../types";
 
-export default function ({ segment }: { segment: TronçonProperties }) {
+export default function ({ segment, setHash }: { segment: TronçonProperties, setHash: (hash: string) => void  }) {
   return (
     <section className="section">
       <div className="container cocarto-container--narrow cocarto-detail-container">
@@ -16,14 +16,12 @@ export default function ({ segment }: { segment: TronçonProperties }) {
             <h3 className="title is-4">{segment.commune}</h3>
           </div>
           <div className="level-right">
-            <Link href="/" className="lol">
-              <span className="icon is-large rounded-border">
-                <i className="fas fa-2x fa-close"></i>
-              </span>
-            </Link>
+            <span className="icon is-large rounded-border is-clickable" onClick={() => setHash("region")}>
+              <i className="fas fa-2x fa-close"></i>
+            </span>
           </div>
         </nav>
-  
+
         <div className="mx-4 mb-6">
           <div className="block">
             <label className="label has-text-weight-light">Avancement</label>
@@ -33,7 +31,7 @@ export default function ({ segment }: { segment: TronçonProperties }) {
               style={{ background: statusColor[segment.status] }}
             ></div>
           </div>
-  
+
           <div className="block">
             <label className="label has-text-weight-light">
               Collectivité responsable
