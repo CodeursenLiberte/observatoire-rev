@@ -24,14 +24,17 @@ function Legend({ status }: { status: TronçonStatus }) {
 
 export default function ({ data }: { data: GlobalData }) {
   const [bounds, setBounds] = useState(data.globalBounds);
+  const [hash, setHash] = useState("")
   const [level, setLevel] = useState<Level>({ level: "region" });
-  const searchParams = useSearchParams();
+
+  useEffect(() => setHash(window.location.hash), [])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    const level = searchParams.get("level");
-    const id = searchParams.get("id");
-    if (level === null) {
+    window.location.hash = hash
+    const [level, id] = hash.replace('#', '').split("/")
+
+    if (level === "" || level === "region") {
       setBounds(data.globalBounds);
       setLevel({ level: "region" });
     } else {
@@ -52,7 +55,7 @@ export default function ({ data }: { data: GlobalData }) {
         }
       }
     }
-  }, [searchParams]);
+  }, [hash]);
 
   let current;
   switch (level.level) {
@@ -60,10 +63,10 @@ export default function ({ data }: { data: GlobalData }) {
       current = <GlobalStats globalStats={data.globalStats} />;
       break;
     case "route":
-      current = <RouteDetails route={level.props} />;
+      current = <RouteDetails route={level.props} setHash={setHash} />;
       break;
     case "segment":
-      current = <Segment segment={level.props} />;
+      current = <Segment segment={level.props} setHash={setHash} />;
       break;
   }
   return (
@@ -75,6 +78,7 @@ export default function ({ data }: { data: GlobalData }) {
           bounds={bounds}
           segments={data.tronçons}
           level={level}
+          setHash={setHash}
         />
       </section>
       <div className="cocarto-panel">
@@ -89,7 +93,7 @@ export default function ({ data }: { data: GlobalData }) {
             <Legend status={TronçonStatus.Unknown} />
           </div>
         </section>
-        <RouteList routes={data.routes} />
+        <RouteList routes={data.routes}  setHash={setHash} />
         <About />
       </div>
     </>

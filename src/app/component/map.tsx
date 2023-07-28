@@ -1,12 +1,11 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import maplibregl, { LngLatBounds, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import styles from "../page.module.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { useRouter } from "next/navigation";
 import { fadedStatusColor, statusColor } from "@/utils/constants";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
@@ -48,6 +47,7 @@ type Props = {
   bounds: [number, number, number, number];
   segments: FeatureCollection<LineString, TronçonProperties>;
   level: Level;
+  setHash: (hash: string) => void
 };
 
 export default function Map({
@@ -56,10 +56,11 @@ export default function Map({
   bounds,
   segments,
   level,
+  setHash,
 }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
-  const router = useRouter();
+  const [mapReady, setMapReady] = useState(false)
 
   useEffect(() => {
     if (map.current) return;
@@ -227,25 +228,30 @@ export default function Map({
             },
             filter: ["!", ["get", "variant"]],
           });
-          setActiveSegments(newMap, level);
         })
       .on("click", "couleur", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
-          router.push(`?level=segment&id=${tronçon.features[0].id}`);
+          setHash(`segment/${tronçon.features[0].id}`);
         }
       })
+      // TODO: find a better way to know if everything is loaded
+      setTimeout( () => setMapReady(true), 3000);
     map.current = newMap;
   });
 
   useEffect(() => {
-    map.current?.fitBounds(bounds, { padding: 10 });
-  }, [bounds]);
+    if (map.current !== null) {
+      map.current.fitBounds(bounds, { padding: 10 });
+      setActiveSegments(map.current, level);
+    }
+  }, [level, bounds]);
 
   useEffect(() => {
     if (map.current !== null) {
       setActiveSegments(map.current, level);
+      map.current.fitBounds(bounds, { padding: 10 })
     }
-  }, [level]);
+  }, [mapReady])
 
   return (
     <div ref={(el) => (mapContainer.current = el)} className={styles.map} />
