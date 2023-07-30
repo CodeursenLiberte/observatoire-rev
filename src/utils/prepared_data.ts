@@ -21,10 +21,9 @@ import {
   Bounds,
   RouteStats,
   GlobalStats,
-  DepartementsMap,
-  Departement,
   TypeMOA,
   LengthStats,
+  GlobalData,
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
@@ -136,39 +135,9 @@ const tronçonsArray: Feature<LineString, TronçonProperties>[] =
 const routesId = _(tronçonsArray).map(t => ({id: t.properties.id, route: t.properties.routes[0]})).groupBy('id').mapValues(x => _.map(x, 'route')).value();
 const uniqueTronçons = _.uniqBy(tronçonsArray, f => f.properties.id)
 uniqueTronçons.forEach( t => t.properties.routes = routesId[t.properties.id])
-export const tronçons = featureCollection(uniqueTronçons);
-
-
-const departementsList: [string, Departement][] = _(
-  departementsGeojson.features
-)
-  .map((d) => {
-    const t = _.filter(
-      tronçonsArray,
-      (feature) => feature.properties.departement === d.properties.code
-    );
-    const total = _(t).map("properties.length").sum();
-    const built = _(t)
-      .filter((feature) => feature.properties.status === TronçonStatus.Built)
-      .map("properties.length")
-      .sum();
-    const [xmin, ymin, xmax, ymax] = bbox(d);
-    const result: Departement = {
-      name: d.properties.nom,
-      code: d.properties.code,
-      bounds: [xmin, ymin, xmax, ymax],
-      stats: { built, total },
-    };
-    return result;
-  })
-  .sortBy("code")
-  .map((dep) => [dep.code, dep] as [string, Departement])
-  .value();
-
-export const departements: DepartementsMap = _.fromPairs(departementsList);
-
+const tronçons = featureCollection(uniqueTronçons);
 const [xmin, ymin, xmax, ymax] = bbox(tronçons);
-export const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
+const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
 
 const outlineFeatures: Feature<MultiLineString>[] = _(uniqueTronçons)
   .reject("properties.variant")
@@ -181,7 +150,7 @@ const outlineFeatures: Feature<MultiLineString>[] = _(uniqueTronçons)
     )
   )
   .value();
-export const outlines: FeatureCollection<MultiLineString> =
+const outlines: FeatureCollection<MultiLineString> =
   featureCollection(outlineFeatures);
 
 const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
@@ -196,7 +165,7 @@ const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
   )
   .value();
 
-export const variantOutlines: FeatureCollection<MultiLineString> =
+const variantOutlines: FeatureCollection<MultiLineString> =
   featureCollection(variantOutlinesFeatures);
 
 const routeList = [
@@ -212,7 +181,8 @@ const routeList = [
   "V10",
   "V20",
 ];
-export const routes: RoutesMap = _.fromPairs(
+
+const routes: RoutesMap = _.fromPairs(
   routeList.map((route) => [route, routeStats(route)])
 );
 
@@ -256,9 +226,17 @@ const stats: LengthStats = {
   [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
   [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
 };
-export const globalStats: GlobalStats = {
+
+const globalStats: GlobalStats = {
   stats,
   total,
 };
 
-export const totalLength: number = _(globalStats).values().sum();
+export const data: GlobalData = {
+  globalStats,
+  routes,
+  tronçons,
+  outlines,
+  globalBounds,
+  variantOutlines,
+}

@@ -1,15 +1,7 @@
 import "./globals.scss";
 import { Source_Sans_3 } from "next/font/google";
 import StateHolder from "./component/state_holder";
-import {
-  routes,
-  tronçons,
-  outlines,
-  globalBounds,
-  variantOutlines,
-  globalStats,
-} from "@/utils/prepared_data";
-import { GlobalData } from "./types";
+import { data } from "@/utils/prepared_data";
 
 const inter = Source_Sans_3({ subsets: ["latin"] });
 
@@ -19,15 +11,6 @@ export const metadata = {
 };
 
 export default function RootLayout() {
-  const data: GlobalData = {
-    routes,
-    outlines,
-    tronçons,
-    globalBounds,
-    variantOutlines,
-    globalStats,
-  };
-
   return (
     <html lang="fr">
       <head>

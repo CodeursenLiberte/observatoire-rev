@@ -2,17 +2,6 @@ import { FeatureCollection, LineString, MultiLineString } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
-export type Departement = {
-  name: string;
-  code: string;
-  stats: {
-    total: number;
-    built: number;
-  };
-  bounds: Bounds;
-};
-export type DepartementsMap = { [index: string]: Departement };
-
 export enum TronçonStatus {
   Planned = "Planned",
   PreExisting = "PerExisting",
@@ -59,7 +48,6 @@ export type GlobalStats = {
 
 export type Level =
   | { level: "region" }
-  | { level: "departement"; props: Departement }
   | { level: "route"; props: RouteStats }
   | { level: "segment"; props: TronçonProperties };
 
