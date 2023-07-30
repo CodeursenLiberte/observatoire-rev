@@ -94,6 +94,8 @@ function moaType(type: string): TypeMOA {
   }
 }
 
+export async function prepareData() : Promise<GlobalData> {
+
 const tronçonsArray: Feature<LineString, TronçonProperties>[] =
   troncons.features.map((feature) => {
     // booleanWithin doesn’t support MultiLineString
@@ -232,11 +234,12 @@ const globalStats: GlobalStats = {
   total,
 };
 
-export const data: GlobalData = {
+  return {
   globalStats,
   routes,
   tronçons,
   outlines,
   globalBounds,
   variantOutlines,
+}
 }

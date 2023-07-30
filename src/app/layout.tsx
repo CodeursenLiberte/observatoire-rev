@@ -1,7 +1,7 @@
 import "./globals.scss";
 import { Source_Sans_3 } from "next/font/google";
 import StateHolder from "./component/state_holder";
-import { data } from "@/utils/prepared_data";
+import { prepareData } from "@/utils/prepared_data";
 
 const inter = Source_Sans_3({ subsets: ["latin"] });
 
@@ -10,7 +10,8 @@ export const metadata = {
   description: "Suivi de l’avancée du plan vélo de la région Île-de-France",
 };
 
-export default function RootLayout() {
+export default async function RootLayout() {
+  const data = await prepareData()
   return (
     <html lang="fr">
       <head>
