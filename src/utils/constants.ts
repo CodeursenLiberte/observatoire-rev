@@ -27,7 +27,6 @@ export const fadedStatusColor = {
   [TronçonStatus.Unknown]: "#b3b3b3",
 };
 
-
 export const moaLabel = {
   [TypeMOA.Commune]: "Commune",
   [TypeMOA.Departement]: "Département",

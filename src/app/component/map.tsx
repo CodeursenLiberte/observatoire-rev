@@ -13,7 +13,7 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
     // Not sure why, but it seems that the array gets serialized as a string
     return JSON.parse(feature.properties.routes).includes(level.props.code);
   } else if (level.level === "segment") {
-    return feature.properties.id === level.props.id;feature.properties.routes
+    return feature.properties.id === level.props.id;
   } else {
     return true;
   }
@@ -30,7 +30,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
     );
   });
 
- map.querySourceFeatures("outline").forEach((feature) => {
+  map.querySourceFeatures("outline").forEach((feature) => {
     map.setFeatureState(
       {
         id: feature.id,
@@ -47,7 +47,7 @@ type Props = {
   bounds: [number, number, number, number];
   segments: FeatureCollection<LineString, TronçonProperties>;
   level: Level;
-  setHash: (hash: string) => void
+  setHash: (hash: string) => void;
 };
 
 export default function Map({
@@ -60,7 +60,7 @@ export default function Map({
 }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
-  const [mapReady, setMapReady] = useState(false)
+  const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
     if (map.current) return;
@@ -234,8 +234,8 @@ export default function Map({
           setHash(`segment/${tronçon.features[0].id}`);
         }
       })
-      // TODO: find a better way to know if everything is loaded
-      setTimeout( () => setMapReady(true), 3000);
+    // TODO: find a better way to know if everything is loaded
+    setTimeout(() => setMapReady(true), 3000);
     map.current = newMap;
   });
 
@@ -249,9 +249,9 @@ export default function Map({
   useEffect(() => {
     if (map.current !== null) {
       setActiveSegments(map.current, level);
-      map.current.fitBounds(bounds, { padding: 10 })
+      map.current.fitBounds(bounds, { padding: 10 });
     }
-  }, [mapReady])
+  }, [mapReady]);
 
   return (
     <div ref={(el) => (mapContainer.current = el)} className={styles.map} />

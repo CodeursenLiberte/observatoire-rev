@@ -23,15 +23,15 @@ function Legend({ status }: { status: TronçonStatus }) {
 
 export default function ({ data }: { data: GlobalData }) {
   const [bounds, setBounds] = useState(data.globalBounds);
-  const [hash, setHash] = useState("")
+  const [hash, setHash] = useState("");
   const [level, setLevel] = useState<Level>({ level: "region" });
 
-  useEffect(() => setHash(window.location.hash), [])
+  useEffect(() => setHash(window.location.hash), []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    window.location.hash = hash
-    const [level, id] = hash.replace('#', '').split("/")
+    window.location.hash = hash;
+    const [level, id] = hash.replace("#", "").split("/");
 
     if (level === "" || level === "region") {
       setBounds(data.globalBounds);
@@ -92,7 +92,7 @@ export default function ({ data }: { data: GlobalData }) {
             <Legend status={TronçonStatus.Unknown} />
           </div>
         </section>
-        <RouteList routes={data.routes}  setHash={setHash} />
+        <RouteList routes={data.routes} setHash={setHash} />
         <About />
       </div>
     </>

@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 export default async function RootLayout() {
-  const data = await prepareData()
+  const data = await prepareData();
   return (
     <html lang="fr">
       <head>

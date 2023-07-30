@@ -4,7 +4,6 @@ export const metadata: Metadata = {
   title: "Observatoire Vélo Île-de-France",
 };
 
-
 export default function GlobalStats() {
   return (
     <section className="section">
