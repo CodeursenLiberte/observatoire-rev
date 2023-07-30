@@ -24,10 +24,10 @@ import {
   TypeMOA,
   LengthStats,
   GlobalData,
+  OriginalProperties
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
-import troncons from "../../data/reseau.geo.json";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
 function closeEnough(a: Position, b: Position): boolean {
@@ -98,8 +98,17 @@ function moaType(type: string): TypeMOA {
   }
 }
 
+async function fetchFromCocarto(): Promise<FeatureCollection<LineString, OriginalProperties>> {
+  const res = await fetch(`https://cocarto.com/fr/layers/4b724a41-d283-496b-b783-1fc8960a860e.geojson?token=${process.env.COCARTO_TOKEN}`)
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+  return res.json()
+}
+
 export async function prepareData(): Promise<GlobalData> {
-  const tronçonsArray: Feature<LineString, TronçonProperties>[] =
+  const troncons = await fetchFromCocarto()
+  const tronçonsArray: Feature<LineString, TronçonProperties>[] =// This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
       // booleanWithin doesn’t support MultiLineString
       const simpleLineString = lineString(feature.geometry.coordinates);

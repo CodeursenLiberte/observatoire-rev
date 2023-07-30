@@ -2,6 +2,17 @@ import { FeatureCollection, LineString, MultiLineString } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
+export type OriginalProperties = {
+  NUM_LIGNE: string;
+  CODE_TRONCON: string;
+  LONGUEUR: number;
+  NIVEAU_VALID_SUPPORT_VIAIRE: string;
+  NIVEAU_VALID_AMENAG: string;
+  APPORT_RERV: string;
+  NOM_MOA: string;
+  TYPE_MOA: string;
+}
+
 export enum TronçonStatus {
   Planned = "Planned",
   PreExisting = "PerExisting",
