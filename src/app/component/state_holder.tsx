@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Level, GlobalData, TronçonStatus } from "../types";
 import RouteDetails from "./route_details";
 import GlobalStats from "./global_stats";
-import { useSearchParams } from "next/navigation";
 import Segment from "./segment";
 import { statusColor, statusLabel } from "@/utils/constants";
 import About from "./about";

@@ -1,5 +1,4 @@
 import { statusColor, statusLabel, moaLabel } from "@/utils/constants";
-import Link from "next/link";
 import { TronçonProperties } from "../types";
 
 export default function ({ segment, setHash }: { segment: TronçonProperties, setHash: (hash: string) => void  }) {
