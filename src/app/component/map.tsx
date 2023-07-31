@@ -10,8 +10,7 @@ import { fadedStatusColor, statusColor } from "@/utils/constants";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
-    // Not sure why, but it seems that the array gets serialized as a string
-    return JSON.parse(feature.properties.routes).includes(level.props.code);
+    return feature.properties.route === level.props.code;
   } else if (level.level === "segment") {
     return feature.properties.id === level.props.id;
   } else {
@@ -21,12 +20,16 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
 
 function setActiveSegments(map: maplibregl.Map, level: Level) {
   map.querySourceFeatures("vif").forEach((feature) => {
+    const active = isActive(level, feature)
     map.setFeatureState(
       {
         id: feature.id,
         source: "vif",
       },
-      { inactive: !isActive(level, feature) }
+      {
+        inactive: !active,
+        "active-outline": active && level.level !== 'region',
+      }
     );
   });
 }
@@ -113,7 +116,7 @@ export default function Map({
             },
             filter: ["get", "variant"],
           })
-          .addLayer({ id: "outline-grey",
+          .addLayer({ id: "outline-grey-inactive",
             source: "vif",
             type: "line",
             paint: {
@@ -128,6 +131,27 @@ export default function Map({
               "line-cap": "round",
             },
             filter: ["!", ["get", "variant"]],
+          })
+          .addLayer({ id: "outline-grey-active",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 7,
+                15, 20
+              ],
+              "line-color": "#4c4c4c",
+              "line-opacity": [
+                "case",
+                ["boolean", ["feature-state", "active-outline"], false],
+                1,
+                0.0,
+              ],
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
           })
           .addLayer({ id: "variant-inner-white",
             source: "vif",
@@ -179,7 +203,7 @@ export default function Map({
             },
             filter: ["get", "variant"],
           })
-          .addLayer({ id: "couleur",
+          .addLayer({ id: "couleur-inactive",
             source: "vif",
             type: "line",
             paint: {
@@ -201,16 +225,43 @@ export default function Map({
                   6,
                 ],
               ],
-              "line-color": [ "get", ["get", "status"],
-                ["case",
-                  ["boolean", ["feature-state", "inactive"], false],
-                  ["literal", fadedStatusColor],
-                  ["literal", statusColor]
-                ]
+              "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
+            },
+            layout: {
+              "line-cap": "round",
+              "line-join": "round",
+            },
+            filter: ["!", ["get", "variant"]],
+          })
+          .addLayer({ id: "couleur-active",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // at zoom level 10, the line-width is either 3 or 2
+                10, [ "match", ["get", "status"],
+                  TronçonStatus.PreExisting, 3,
+                  TronçonStatus.Built, 3,
+                  TronçonStatus.Building, 3,
+                  2,
+                ],
+                15, [ "match", ["get", "status"],
+                  TronçonStatus.PreExisting, 10,
+                  TronçonStatus.Built, 10,
+                  TronçonStatus.Building, 10,
+                  6,
+                ],
               ],
-              "line-opacity": [ "case",
+              "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
+              // We cannot use feature-state in filter, only in paint
+              // Hence we hide the active layer with opacity
+              "line-opacity": [
+                "case",
                 ["boolean", ["feature-state", "inactive"], false],
-                0.5,
+                0.0,
                 1,
               ],
             },

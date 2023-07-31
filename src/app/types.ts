@@ -27,7 +27,7 @@ export type TronçonProperties = {
   length: number;
   departement: string | undefined;
   status: TronçonStatus;
-  routes: string[];
+  route: string;
   variant: boolean;
   commune: string | undefined;
   typeMOA: TypeMOA;

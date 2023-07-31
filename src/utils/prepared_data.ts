@@ -61,7 +61,7 @@ async function fetchFromCocarto(): Promise<FeatureCollection<LineString, Origina
 
 export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto()
-  const tronçonsArray: Feature<LineString, TronçonProperties>[] =// This will activate the closest `error.js` Error Boundary
+  const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
       const dep = departementsGeojson.features.find((dep) =>
         booleanWithin(feature.geometry, dep.geometry)
@@ -79,7 +79,7 @@ export async function prepareData(): Promise<GlobalData> {
             : feature.properties.LONGUEUR,
         commune: commune?.properties.nom.replace(" Arrondissement", ""),
         departement: dep?.properties.code,
-        routes: [feature.properties.NUM_LIGNE],
+        route: feature.properties.NUM_LIGNE,
         variant:
           feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
           feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE ===
@@ -97,7 +97,7 @@ export async function prepareData(): Promise<GlobalData> {
       });
     });
 
-  const routesId = _(tronçonsArray)
+ /* const routesId = _(tronçonsArray)
     .map((t) => ({ id: t.properties.id, route: t.properties.routes[0] }))
     .groupBy("id")
     .mapValues((x) => _.map(x, "route"))
@@ -106,8 +106,8 @@ export async function prepareData(): Promise<GlobalData> {
   const uniqueTronçons = _.uniqBy(tronçonsArray, (f) => f.properties.id);
   uniqueTronçons.forEach(
     (t) => (t.properties.routes = routesId[t.properties.id])
-  );
-  const tronçons = featureCollection(uniqueTronçons);
+  );*/
+  const tronçons = featureCollection(tronçonsArray);
   const [xmin, ymin, xmax, ymax] = bbox(tronçons);
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
 
@@ -131,7 +131,7 @@ export async function prepareData(): Promise<GlobalData> {
 
   function routeStats(code: string): RouteStats {
     const t = _.filter(tronçonsArray, (feature) =>
-      feature.properties.routes.includes(code)
+      feature.properties.route === code
     );
     function length(status: TronçonStatus): number {
       return _(t)
