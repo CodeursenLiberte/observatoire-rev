@@ -72,8 +72,6 @@ export default function ({ data }: { data: GlobalData }) {
     <>
       <section className="hero cocarto-map">
         <Map
-          outlines={data.outlines}
-          variantOutlines={data.variantOutlines}
           bounds={bounds}
           segments={data.tronçons}
           level={level}

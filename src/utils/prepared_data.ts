@@ -1,13 +1,6 @@
-// Try to build outlines from individual segments
-// We must do that do avoid cap that are ugly
-
 import departementsGeojson from "../../data/departements-ile-de-france.geo.json";
-import distance from "@turf/distance";
 import {
-  Position,
   Feature,
-  multiLineString,
-  MultiLineString,
   FeatureCollection,
   featureCollection,
   lineString,
@@ -30,46 +23,6 @@ import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
-function closeEnough(a: Position, b: Position): boolean {
-  return distance(a, b, { units: "meters" }) < 10;
-}
-
-function groupLineStrings(
-  coords: Array<Array<Position>>,
-  routes: string[]
-): Feature<MultiLineString> {
-  let result: Array<Array<Position>> = [];
-  for (const linestring of coords) {
-    let found = false;
-    for (let i = 0; i < result.length; i++) {
-      let concatenated = result[i];
-      if (closeEnough(concatenated[concatenated.length - 1], linestring[0])) {
-        found = true;
-        result[i] = concatenated.concat(linestring);
-      } else if (
-        closeEnough(concatenated[0], linestring[linestring.length - 1])
-      ) {
-        found = true;
-        result[i] = linestring.concat(concatenated);
-      } else if (closeEnough(concatenated[0], linestring[0])) {
-        found = true;
-        result[i] = linestring.reverse().concat(concatenated);
-      } else if (
-        closeEnough(
-          concatenated[concatenated.length - 1],
-          linestring[linestring.length - 1]
-        )
-      ) {
-        found = true;
-        result[i] = concatenated.concat(linestring.reverse());
-      }
-    }
-    if (!found) {
-      result.push(linestring);
-    }
-  }
-  return multiLineString(result, { routes });
-}
 
 function status(niveau_validation: string, apport_rerv: string): TronçonStatus {
   if (apport_rerv === "Aménagement prééxistant") {
@@ -151,6 +104,7 @@ export async function prepareData(): Promise<GlobalData> {
     .groupBy("id")
     .mapValues((x) => _.map(x, "route"))
     .value();
+
   const uniqueTronçons = _.uniqBy(tronçonsArray, (f) => f.properties.id);
   uniqueTronçons.forEach(
     (t) => (t.properties.routes = routesId[t.properties.id])
@@ -158,36 +112,6 @@ export async function prepareData(): Promise<GlobalData> {
   const tronçons = featureCollection(uniqueTronçons);
   const [xmin, ymin, xmax, ymax] = bbox(tronçons);
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
-
-  const outlineFeatures: Feature<MultiLineString>[] = _(uniqueTronçons)
-    .reject("properties.variant")
-    .orderBy(["properties.status"])
-    .groupBy("properties.routes")
-    .map((features, routes) =>
-      groupLineStrings(
-        features.map((f) => f.geometry.coordinates),
-        [routes]
-      )
-    )
-    .value();
-  const outlines: FeatureCollection<MultiLineString> =
-    featureCollection(outlineFeatures);
-
-  const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
-    .filter("properties.variant")
-    .orderBy(["properties.status"])
-    .groupBy("properties.route")
-    .map((features, route) =>
-      groupLineStrings(
-        features.map((f) => f.geometry.coordinates),
-        [route]
-      )
-    )
-    .value();
-
-  const variantOutlines: FeatureCollection<MultiLineString> = featureCollection(
-    variantOutlinesFeatures
-  );
 
   const routeList = [
     "V1",
@@ -256,8 +180,6 @@ export async function prepareData(): Promise<GlobalData> {
     globalStats,
     routes,
     tronçons,
-    outlines,
     globalBounds,
-    variantOutlines,
   };
 }

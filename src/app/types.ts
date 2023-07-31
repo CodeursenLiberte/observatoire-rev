@@ -65,8 +65,6 @@ export type Level =
 export type GlobalData = {
   tronçons: FeatureCollection<LineString, TronçonProperties>;
   globalBounds: [number, number, number, number];
-  outlines: FeatureCollection<MultiLineString>;
-  variantOutlines: FeatureCollection<MultiLineString>;
   routes: RoutesMap;
   globalStats: GlobalStats;
 };

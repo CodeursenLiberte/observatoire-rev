@@ -29,21 +29,9 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
       { inactive: !isActive(level, feature) }
     );
   });
-
-  map.querySourceFeatures("outline").forEach((feature) => {
-    map.setFeatureState(
-      {
-        id: feature.id,
-        source: "outline",
-      },
-      { inactive: !isActive(level, feature) }
-    );
-  });
 }
 
 type Props = {
-  outlines: FeatureCollection;
-  variantOutlines: FeatureCollection;
   bounds: [number, number, number, number];
   segments: FeatureCollection<LineString, TronçonProperties>;
   level: Level;
@@ -51,8 +39,6 @@ type Props = {
 };
 
 export default function Map({
-  outlines,
-  variantOutlines,
   bounds,
   segments,
   level,
@@ -78,15 +64,6 @@ export default function Map({
             type: "geojson",
             data: segments,
             promoteId: "id",
-          })
-          .addSource("outline", {
-            type: "geojson",
-            data: outlines,
-            generateId: true,
-          })
-          .addSource("variant-outline", {
-            type: "geojson",
-            data: variantOutlines,
           })
           .addLayer({ id: "base-outer-white-variant",
             source: "vif",
