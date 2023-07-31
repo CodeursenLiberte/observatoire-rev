@@ -88,39 +88,13 @@ export default function Map({
             type: "geojson",
             data: variantOutlines,
           })
-          .addLayer({
-            id: "variant-outline",
-            source: "variant-outline",
+          .addLayer({ id: "base-outer-white-variant",
+            source: "vif",
             type: "line",
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 1,
-                15, 3
-              ],
-              "line-gap-width": ["interpolate", ["linear"], ["zoom"],
-                10, 3,
-                15, 10,
-              ],
-              "line-color": "#7f7f7f",
-              "line-opacity": 0.5,
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-          })
-          .addLayer({
-            id: "base-outer",
-            source: "outline",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                8,
-                15,
-                30,
+                10, 7,
+                15, 26,
               ],
               "line-color": "#fff",
             },
@@ -128,32 +102,89 @@ export default function Map({
               "line-join": "round",
               "line-cap": "round",
             },
+            filter: ["get", "variant"],
           })
-          .addLayer({
-            id: "base-inner",
-            source: "outline",
+          .addLayer({ id: "base-outer-white",
+            source: "vif",
             type: "line",
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3],
-              "line-gap-width": ["interpolate", ["linear"], ["zoom"],
-                10, 3,
-                15, 10,
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 8,
+                15, 30,
               ],
-              "line-color": "#7f7f7f",
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.2,
-                1,
-              ],
+              "line-color": "#fff",
             },
             layout: {
               "line-join": "round",
               "line-cap": "round",
             },
+            filter: ["!", ["get", "variant"]],
           })
-          .addLayer({
-            id: "variantes",
+          .addLayer({ id: "variant-outline-grey",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 4,
+                15, 10
+              ],
+              "line-color": "#7f7f7f",
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            filter: ["get", "variant"],
+          })
+          .addLayer({ id: "outline-grey",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 5,
+                15, 16
+              ],
+              "line-color": "#7f7f7f",
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            filter: ["!", ["get", "variant"]],
+          })
+          .addLayer({ id: "variant-inner-white",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 3,
+                15, 8
+              ],
+              "line-color": "#fff",
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            filter: ["get", "variant"],
+          })
+          .addLayer({ id: "inner-white",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 4,
+                15, 10
+              ],
+              "line-color": "#fff",
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            filter: ["!", ["get", "variant"]],
+          })
+          .addLayer({ id: "variantes",
             source: "vif",
             type: "line",
             paint: {
@@ -171,8 +202,7 @@ export default function Map({
             },
             filter: ["get", "variant"],
           })
-          .addLayer({
-            id: "couleur",
+          .addLayer({ id: "couleur",
             source: "vif",
             type: "line",
             paint: {
@@ -181,42 +211,27 @@ export default function Map({
                 ["linear"],
                 ["zoom"],
                 // at zoom level 10, the line-width is either 3 or 2
-                10,
-                [
-                  "match",
-                  ["get", "status"],
-                  TronçonStatus.PreExisting,
-                  3,
-                  TronçonStatus.Built,
-                  3,
-                  TronçonStatus.Building,
-                  3,
+                10, [ "match", ["get", "status"],
+                  TronçonStatus.PreExisting, 3,
+                  TronçonStatus.Built, 3,
+                  TronçonStatus.Building, 3,
                   2,
                 ],
-                15,
-                [
-                  "match",
-                  ["get", "status"],
-                  TronçonStatus.PreExisting,
-                  10,
-                  TronçonStatus.Built,
-                  10,
-                  TronçonStatus.Building,
-                  10,
+                15, [ "match", ["get", "status"],
+                  TronçonStatus.PreExisting, 10,
+                  TronçonStatus.Built, 10,
+                  TronçonStatus.Building, 10,
                   6,
                 ],
               ],
-              "line-color": [
-                "get",
-                ["get", "status"],
+              "line-color": [ "get", ["get", "status"],
                 ["case",
                   ["boolean", ["feature-state", "inactive"], false],
                   ["literal", fadedStatusColor],
                   ["literal", statusColor]
                 ]
               ],
-              "line-opacity": [
-                "case",
+              "line-opacity": [ "case",
                 ["boolean", ["feature-state", "inactive"], false],
                 0.5,
                 1,
