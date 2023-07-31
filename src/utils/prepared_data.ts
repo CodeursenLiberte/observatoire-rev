@@ -17,14 +17,17 @@ import {
   TypeMOA,
   LengthStats,
   GlobalData,
-  OriginalProperties
+  OriginalProperties,
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
-
-function status(niveau_validation: string, apport_rerv: string, phase: string): TronçonStatus {
+function status(
+  niveau_validation: string,
+  apport_rerv: string,
+  phase: string,
+): TronçonStatus {
   if (apport_rerv === "Aménagement prééxistant") {
     return TronçonStatus.PreExisting;
   } else if (phase === "2 - 2030") {
@@ -53,23 +56,27 @@ function moaType(type: string): TypeMOA {
   }
 }
 
-async function fetchFromCocarto(): Promise<FeatureCollection<LineString, OriginalProperties>> {
-  const res = await fetch(`https://cocarto.com/fr/layers/4b724a41-d283-496b-b783-1fc8960a860e.geojson?token=${process.env.COCARTO_TOKEN}`)
+async function fetchFromCocarto(): Promise<
+  FeatureCollection<LineString, OriginalProperties>
+> {
+  const res = await fetch(
+    `https://cocarto.com/fr/layers/4b724a41-d283-496b-b783-1fc8960a860e.geojson?token=${process.env.COCARTO_TOKEN}`,
+  );
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error("Failed to fetch data");
   }
-  return res.json()
+  return res.json();
 }
 
 export async function prepareData(): Promise<GlobalData> {
-  const troncons = await fetchFromCocarto()
+  const troncons = await fetchFromCocarto();
   const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
       const dep = departementsGeojson.features.find((dep) =>
-        booleanWithin(feature.geometry, dep.geometry)
+        booleanWithin(feature.geometry, dep.geometry),
       );
       const commune = communes.features.find((commune) =>
-        booleanWithin(feature.geometry, commune.geometry)
+        booleanWithin(feature.geometry, commune.geometry),
       );
       const properties: TronçonProperties = {
         // A single tronçon can be used by many lines, the concatenation allows to deduplicate
@@ -89,7 +96,7 @@ export async function prepareData(): Promise<GlobalData> {
         status: status(
           feature.properties.NIVEAU_VALID_AMENAG || "",
           feature.properties.APPORT_RERV || "",
-          feature.properties.PHASE
+          feature.properties.PHASE,
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
@@ -100,7 +107,7 @@ export async function prepareData(): Promise<GlobalData> {
       });
     });
 
- /* const routesId = _(tronçonsArray)
+  /* const routesId = _(tronçonsArray)
     .map((t) => ({ id: t.properties.id, route: t.properties.routes[0] }))
     .groupBy("id")
     .mapValues((x) => _.map(x, "route"))
@@ -129,12 +136,13 @@ export async function prepareData(): Promise<GlobalData> {
   ];
 
   const routes: RoutesMap = _.fromPairs(
-    routeList.map((route) => [route, routeStats(route)])
+    routeList.map((route) => [route, routeStats(route)]),
   );
 
   function routeStats(code: string): RouteStats {
-    const t = _.filter(tronçonsArray, (feature) =>
-      feature.properties.route === code
+    const t = _.filter(
+      tronçonsArray,
+      (feature) => feature.properties.route === code,
     );
     function length(status: TronçonStatus): number {
       return _(t)

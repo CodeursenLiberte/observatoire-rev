@@ -12,7 +12,7 @@ export type OriginalProperties = {
   NOM_MOA: string;
   TYPE_MOA: string;
   PHASE: string;
-}
+};
 
 export enum TronçonStatus {
   Planned = "Planned",

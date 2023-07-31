@@ -20,7 +20,7 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
 
 function setActiveSegments(map: maplibregl.Map, level: Level) {
   map.querySourceFeatures("vif").forEach((feature) => {
-    const active = isActive(level, feature)
+    const active = isActive(level, feature);
     map.setFeatureState(
       {
         id: feature.id,
@@ -28,8 +28,8 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
       },
       {
         inactive: !active,
-        "active-outline": active && level.level !== 'region',
-      }
+        "active-outline": active && level.level !== "region",
+      },
     );
   });
 }
@@ -41,12 +41,7 @@ type Props = {
   setHash: (hash: string) => void;
 };
 
-export default function Map({
-  bounds,
-  segments,
-  level,
-  setHash,
-}: Props) {
+export default function Map({ bounds, segments, level, setHash }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
