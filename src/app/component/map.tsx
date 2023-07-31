@@ -267,6 +267,7 @@ export default function Map({
         }
       }).on("mousemove", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
+          newMap.getCanvas().style.cursor = "pointer";
           if (hoveredSegment) {
             newMap.setFeatureState(
                 {source: 'vif', id: hoveredSegment},
@@ -280,6 +281,7 @@ export default function Map({
           );
         }
       }).on('mouseleave', 'base-outer-white', () => {
+        newMap.getCanvas().style.cursor = "";
         if (hoveredSegment) {
             newMap.setFeatureState(
                 {source: 'vif', id: hoveredSegment},
