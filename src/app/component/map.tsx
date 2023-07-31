@@ -41,7 +41,12 @@ type Props = {
   setHash: (hash: string) => void;
 };
 
-export default function Map({ bounds, segments, level, setHash }: Props) {
+export default function Map({
+  bounds,
+  segments,
+  level,
+  setHash,
+}: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
