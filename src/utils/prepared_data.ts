@@ -63,13 +63,11 @@ export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto()
   const tronçonsArray: Feature<LineString, TronçonProperties>[] =// This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
-      // booleanWithin doesn’t support MultiLineString
-      const simpleLineString = lineString(feature.geometry.coordinates);
       const dep = departementsGeojson.features.find((dep) =>
-        booleanWithin(simpleLineString, dep.geometry)
+        booleanWithin(feature.geometry, dep.geometry)
       );
       const commune = communes.features.find((commune) =>
-        booleanWithin(simpleLineString, commune.geometry)
+        booleanWithin(feature.geometry, commune.geometry)
       );
       const properties: TronçonProperties = {
         // A single tronçon can be used by many lines, the concatenation allows to deduplicate
@@ -95,7 +93,7 @@ export async function prepareData(): Promise<GlobalData> {
       };
 
       return lineString(feature.geometry.coordinates, properties, {
-        bbox: bbox(simpleLineString),
+        bbox: bbox(feature.geometry),
       });
     });
 
