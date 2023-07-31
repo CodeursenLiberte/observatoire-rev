@@ -10,10 +10,17 @@ import { statusColor, statusLabel } from "@/utils/constants";
 import About from "./about";
 
 function Legend({ status }: { status: TronçonStatus }) {
+  const style = {
+    background: statusColor[status],
+    border: 'none'
+  };
+  if (status === TronçonStatus.SecondPhase) {
+    style.border = 'solid 1px #7f7f7f'
+  }
   return (
     <div>
       <span
-        style={{ background: statusColor[status] }}
+        style={style}
         className="legend-color"
       />
       <span>{statusLabel[status]}</span>
@@ -87,6 +94,7 @@ export default function ({ data }: { data: GlobalData }) {
             <Legend status={TronçonStatus.Building} />
             <Legend status={TronçonStatus.Planned} />
             <Legend status={TronçonStatus.Blocked} />
+            <Legend status={TronçonStatus.SecondPhase} />
             <Legend status={TronçonStatus.Unknown} />
           </div>
         </section>

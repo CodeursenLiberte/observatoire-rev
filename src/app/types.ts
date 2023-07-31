@@ -11,6 +11,7 @@ export type OriginalProperties = {
   APPORT_RERV: string;
   NOM_MOA: string;
   TYPE_MOA: string;
+  PHASE: string;
 }
 
 export enum TronçonStatus {
@@ -19,6 +20,7 @@ export enum TronçonStatus {
   Building = "Building",
   Built = "Built",
   Blocked = "Blocked",
+  SecondPhase = "SecondPhase",
   Unknown = "Unknown",
 }
 

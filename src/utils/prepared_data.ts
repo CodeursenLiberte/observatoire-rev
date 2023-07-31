@@ -24,9 +24,11 @@ import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
 
-function status(niveau_validation: string, apport_rerv: string): TronçonStatus {
+function status(niveau_validation: string, apport_rerv: string, phase: string): TronçonStatus {
   if (apport_rerv === "Aménagement prééxistant") {
     return TronçonStatus.PreExisting;
+  } else if (phase === "2 - 2030") {
+    return TronçonStatus.SecondPhase;
   } else {
     return (
       {
@@ -86,7 +88,8 @@ export async function prepareData(): Promise<GlobalData> {
             "Variante initiale",
         status: status(
           feature.properties.NIVEAU_VALID_AMENAG || "",
-          feature.properties.APPORT_RERV || ""
+          feature.properties.APPORT_RERV || "",
+          feature.properties.PHASE
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
