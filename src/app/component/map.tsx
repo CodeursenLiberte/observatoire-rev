@@ -59,7 +59,7 @@ export default function Map({
     const newMap = new maplibregl.Map({
       container: mapContainer.current || "",
       bounds: new LngLatBounds(bounds),
-      style: `https://api.maptiler.com/maps/dataviz/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
+      style: `https://api.maptiler.com/maps/db0b0c2f-dcff-45fd-aa4d-0ddb0228e342/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
     })
       .on("load", () => {
         newMap.fitBounds(new LngLatBounds(bounds));
