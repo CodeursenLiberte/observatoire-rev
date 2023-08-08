@@ -14,7 +14,7 @@ export default function ({
         <nav className="level is-mobile cocarto-detail-header px-4">
           <div className="level-left">
             <div className="level-item">
-              <h3 className="title is-4">{segment.routes.join(", ")}</h3>
+              <h3 className="title is-4">{segment.route}</h3>
             </div>
           </div>
           <div className="level-item">

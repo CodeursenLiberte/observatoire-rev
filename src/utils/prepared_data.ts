@@ -1,13 +1,6 @@
-// Try to build outlines from individual segments
-// We must do that do avoid cap that are ugly
-
 import departementsGeojson from "../../data/departements-ile-de-france.geo.json";
-import distance from "@turf/distance";
 import {
-  Position,
   Feature,
-  multiLineString,
-  MultiLineString,
   FeatureCollection,
   featureCollection,
   lineString,
@@ -24,56 +17,21 @@ import {
   TypeMOA,
   LengthStats,
   GlobalData,
-  OriginalProperties
+  OriginalProperties,
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
 
-function closeEnough(a: Position, b: Position): boolean {
-  return distance(a, b, { units: "meters" }) < 10;
-}
-
-function groupLineStrings(
-  coords: Array<Array<Position>>,
-  routes: string[]
-): Feature<MultiLineString> {
-  let result: Array<Array<Position>> = [];
-  for (const linestring of coords) {
-    let found = false;
-    for (let i = 0; i < result.length; i++) {
-      let concatenated = result[i];
-      if (closeEnough(concatenated[concatenated.length - 1], linestring[0])) {
-        found = true;
-        result[i] = concatenated.concat(linestring);
-      } else if (
-        closeEnough(concatenated[0], linestring[linestring.length - 1])
-      ) {
-        found = true;
-        result[i] = linestring.concat(concatenated);
-      } else if (closeEnough(concatenated[0], linestring[0])) {
-        found = true;
-        result[i] = linestring.reverse().concat(concatenated);
-      } else if (
-        closeEnough(
-          concatenated[concatenated.length - 1],
-          linestring[linestring.length - 1]
-        )
-      ) {
-        found = true;
-        result[i] = concatenated.concat(linestring.reverse());
-      }
-    }
-    if (!found) {
-      result.push(linestring);
-    }
-  }
-  return multiLineString(result, { routes });
-}
-
-function status(niveau_validation: string, apport_rerv: string): TronçonStatus {
+function status(
+  niveau_validation: string,
+  apport_rerv: string,
+  phase: string,
+): TronçonStatus {
   if (apport_rerv === "Aménagement prééxistant") {
     return TronçonStatus.PreExisting;
+  } else if (phase === "2 - 2030") {
+    return TronçonStatus.SecondPhase;
   } else {
     return (
       {
@@ -98,25 +56,27 @@ function moaType(type: string): TypeMOA {
   }
 }
 
-async function fetchFromCocarto(): Promise<FeatureCollection<LineString, OriginalProperties>> {
-  const res = await fetch(`https://cocarto.com/fr/layers/4b724a41-d283-496b-b783-1fc8960a860e.geojson?token=${process.env.COCARTO_TOKEN}`)
+async function fetchFromCocarto(): Promise<
+  FeatureCollection<LineString, OriginalProperties>
+> {
+  const res = await fetch(
+    `https://cocarto.com/fr/layers/4b724a41-d283-496b-b783-1fc8960a860e.geojson?token=${process.env.COCARTO_TOKEN}`,
+  );
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error("Failed to fetch data");
   }
-  return res.json()
+  return res.json();
 }
 
 export async function prepareData(): Promise<GlobalData> {
-  const troncons = await fetchFromCocarto()
-  const tronçonsArray: Feature<LineString, TronçonProperties>[] =// This will activate the closest `error.js` Error Boundary
+  const troncons = await fetchFromCocarto();
+  const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
-      // booleanWithin doesn’t support MultiLineString
-      const simpleLineString = lineString(feature.geometry.coordinates);
       const dep = departementsGeojson.features.find((dep) =>
-        booleanWithin(simpleLineString, dep.geometry)
+        booleanWithin(feature.geometry, dep.geometry),
       );
       const commune = communes.features.find((commune) =>
-        booleanWithin(simpleLineString, commune.geometry)
+        booleanWithin(feature.geometry, commune.geometry),
       );
       const properties: TronçonProperties = {
         // A single tronçon can be used by many lines, the concatenation allows to deduplicate
@@ -128,66 +88,38 @@ export async function prepareData(): Promise<GlobalData> {
             : feature.properties.LONGUEUR,
         commune: commune?.properties.nom.replace(" Arrondissement", ""),
         departement: dep?.properties.code,
-        routes: [feature.properties.NUM_LIGNE],
+        route: feature.properties.NUM_LIGNE,
         variant:
           feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
           feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE ===
             "Variante initiale",
         status: status(
           feature.properties.NIVEAU_VALID_AMENAG || "",
-          feature.properties.APPORT_RERV || ""
+          feature.properties.APPORT_RERV || "",
+          feature.properties.PHASE,
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
       };
 
       return lineString(feature.geometry.coordinates, properties, {
-        bbox: bbox(simpleLineString),
+        bbox: bbox(feature.geometry),
       });
     });
 
-  const routesId = _(tronçonsArray)
+  /* const routesId = _(tronçonsArray)
     .map((t) => ({ id: t.properties.id, route: t.properties.routes[0] }))
     .groupBy("id")
     .mapValues((x) => _.map(x, "route"))
     .value();
+
   const uniqueTronçons = _.uniqBy(tronçonsArray, (f) => f.properties.id);
   uniqueTronçons.forEach(
     (t) => (t.properties.routes = routesId[t.properties.id])
-  );
-  const tronçons = featureCollection(uniqueTronçons);
+  );*/
+  const tronçons = featureCollection(tronçonsArray);
   const [xmin, ymin, xmax, ymax] = bbox(tronçons);
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
-
-  const outlineFeatures: Feature<MultiLineString>[] = _(uniqueTronçons)
-    .reject("properties.variant")
-    .orderBy(["properties.status"])
-    .groupBy("properties.routes")
-    .map((features, routes) =>
-      groupLineStrings(
-        features.map((f) => f.geometry.coordinates),
-        [routes]
-      )
-    )
-    .value();
-  const outlines: FeatureCollection<MultiLineString> =
-    featureCollection(outlineFeatures);
-
-  const variantOutlinesFeatures: Feature<MultiLineString>[] = _(tronçonsArray)
-    .filter("properties.variant")
-    .orderBy(["properties.status"])
-    .groupBy("properties.route")
-    .map((features, route) =>
-      groupLineStrings(
-        features.map((f) => f.geometry.coordinates),
-        [route]
-      )
-    )
-    .value();
-
-  const variantOutlines: FeatureCollection<MultiLineString> = featureCollection(
-    variantOutlinesFeatures
-  );
 
   const routeList = [
     "V1",
@@ -204,12 +136,13 @@ export async function prepareData(): Promise<GlobalData> {
   ];
 
   const routes: RoutesMap = _.fromPairs(
-    routeList.map((route) => [route, routeStats(route)])
+    routeList.map((route) => [route, routeStats(route)]),
   );
 
   function routeStats(code: string): RouteStats {
-    const t = _.filter(tronçonsArray, (feature) =>
-      feature.properties.routes.includes(code)
+    const t = _.filter(
+      tronçonsArray,
+      (feature) => feature.properties.route === code,
     );
     function length(status: TronçonStatus): number {
       return _(t)
@@ -256,8 +189,6 @@ export async function prepareData(): Promise<GlobalData> {
     globalStats,
     routes,
     tronçons,
-    outlines,
     globalBounds,
-    variantOutlines,
   };
 }

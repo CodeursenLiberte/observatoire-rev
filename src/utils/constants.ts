@@ -6,6 +6,7 @@ export const statusLabel = {
   [TronçonStatus.Building]: "En travaux",
   [TronçonStatus.Planned]: "En cours de discussion",
   [TronçonStatus.Blocked]: "Au point mort",
+  [TronçonStatus.SecondPhase]: "Phase 2 (2030)",
   [TronçonStatus.Unknown]: "Inconnu",
 };
 
@@ -15,6 +16,7 @@ export const statusColor = {
   [TronçonStatus.Building]: "#fff200",
   [TronçonStatus.Planned]: "#ff8400",
   [TronçonStatus.Blocked]: "#DA2F4C",
+  [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#7E7E7E",
 };
 
@@ -24,6 +26,7 @@ export const fadedStatusColor = {
   [TronçonStatus.Building]: "#f0ea75",
   [TronçonStatus.Planned]: "#f7b56e",
   [TronçonStatus.Blocked]: "#ea8696",
+  [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#b3b3b3",
 };
 

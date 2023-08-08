@@ -10,12 +10,16 @@ import { statusColor, statusLabel } from "@/utils/constants";
 import About from "./about";
 
 function Legend({ status }: { status: TronçonStatus }) {
+  const style = {
+    background: statusColor[status],
+    border: "none",
+  };
+  if (status === TronçonStatus.SecondPhase) {
+    style.border = "solid 1px #7f7f7f";
+  }
   return (
     <div>
-      <span
-        style={{ background: statusColor[status] }}
-        className="legend-color"
-      />
+      <span style={style} className="legend-color" />
       <span>{statusLabel[status]}</span>
     </div>
   );
@@ -43,7 +47,7 @@ export default function ({ data }: { data: GlobalData }) {
         setLevel({ level: "route", props });
       } else if (level === "segment") {
         const tronçon = data.tronçons.features.find(
-          (f) => f.properties.id === id
+          (f) => f.properties.id === id,
         );
         if (tronçon !== undefined && tronçon.bbox !== undefined) {
           const [xmin, ymin, xmax, ymax] = tronçon.bbox;
@@ -72,8 +76,6 @@ export default function ({ data }: { data: GlobalData }) {
     <>
       <section className="hero cocarto-map">
         <Map
-          outlines={data.outlines}
-          variantOutlines={data.variantOutlines}
           bounds={bounds}
           segments={data.tronçons}
           level={level}
@@ -89,6 +91,7 @@ export default function ({ data }: { data: GlobalData }) {
             <Legend status={TronçonStatus.Building} />
             <Legend status={TronçonStatus.Planned} />
             <Legend status={TronçonStatus.Blocked} />
+            <Legend status={TronçonStatus.SecondPhase} />
             <Legend status={TronçonStatus.Unknown} />
           </div>
         </section>

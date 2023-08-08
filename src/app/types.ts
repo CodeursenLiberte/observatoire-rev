@@ -11,7 +11,8 @@ export type OriginalProperties = {
   APPORT_RERV: string;
   NOM_MOA: string;
   TYPE_MOA: string;
-}
+  PHASE: string;
+};
 
 export enum TronçonStatus {
   Planned = "Planned",
@@ -19,6 +20,7 @@ export enum TronçonStatus {
   Building = "Building",
   Built = "Built",
   Blocked = "Blocked",
+  SecondPhase = "SecondPhase",
   Unknown = "Unknown",
 }
 
@@ -27,7 +29,7 @@ export type TronçonProperties = {
   length: number;
   departement: string | undefined;
   status: TronçonStatus;
-  routes: string[];
+  route: string;
   variant: boolean;
   commune: string | undefined;
   typeMOA: TypeMOA;
@@ -65,8 +67,6 @@ export type Level =
 export type GlobalData = {
   tronçons: FeatureCollection<LineString, TronçonProperties>;
   globalBounds: [number, number, number, number];
-  outlines: FeatureCollection<MultiLineString>;
-  variantOutlines: FeatureCollection<MultiLineString>;
   routes: RoutesMap;
   globalStats: GlobalStats;
 };
