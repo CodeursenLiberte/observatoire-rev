@@ -1,11 +1,8 @@
 import { Metadata } from "next";
-import { globalStats, totalLength } from "@/utils/prepared_data";
-import { TronçonStatus } from "./types";
 
 export const metadata: Metadata = {
   title: "Observatoire Vélo Île-de-France",
 };
-
 
 export default function GlobalStats() {
   return (

@@ -1,15 +1,7 @@
 import "./globals.scss";
 import { Source_Sans_3 } from "next/font/google";
 import StateHolder from "./component/state_holder";
-import {
-  routes,
-  tronçons,
-  outlines,
-  globalBounds,
-  variantOutlines,
-  globalStats,
-} from "@/utils/prepared_data";
-import { GlobalData } from "./types";
+import { prepareData } from "@/utils/prepared_data";
 
 const inter = Source_Sans_3({ subsets: ["latin"] });
 
@@ -18,16 +10,8 @@ export const metadata = {
   description: "Suivi de l’avancée du plan vélo de la région Île-de-France",
 };
 
-export default function RootLayout() {
-  const data: GlobalData = {
-    routes,
-    outlines,
-    tronçons,
-    globalBounds,
-    variantOutlines,
-    globalStats,
-  };
-
+export default async function RootLayout() {
+  const data = await prepareData();
   return (
     <html lang="fr">
       <head>

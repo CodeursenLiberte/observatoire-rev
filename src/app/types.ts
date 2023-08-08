@@ -2,16 +2,16 @@ import { FeatureCollection, LineString, MultiLineString } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
-export type Departement = {
-  name: string;
-  code: string;
-  stats: {
-    total: number;
-    built: number;
-  };
-  bounds: Bounds;
-};
-export type DepartementsMap = { [index: string]: Departement };
+export type OriginalProperties = {
+  NUM_LIGNE: string;
+  CODE_TRONCON: string;
+  LONGUEUR: number;
+  NIVEAU_VALID_SUPPORT_VIAIRE: string;
+  NIVEAU_VALID_AMENAG: string;
+  APPORT_RERV: string;
+  NOM_MOA: string;
+  TYPE_MOA: string;
+}
 
 export enum TronçonStatus {
   Planned = "Planned",
@@ -59,7 +59,6 @@ export type GlobalStats = {
 
 export type Level =
   | { level: "region" }
-  | { level: "departement"; props: Departement }
   | { level: "route"; props: RouteStats }
   | { level: "segment"; props: TronçonProperties };
 
