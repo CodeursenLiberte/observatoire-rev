@@ -276,6 +276,9 @@ export default function Map({
             },
             filter: ["!", ["get", "variant"]],
           });
+          
+          newMap.moveLayer("Town labels");
+          newMap.moveLayer("City labels");
         })
       .on("click", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
