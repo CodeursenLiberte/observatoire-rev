@@ -77,11 +77,27 @@ export default function Map({
                 10, 8,
                 15, 30,
               ],
-              "line-color": [
+              "line-color": "#fff",
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+          })
+          .addLayer({ id: "hover-overlay",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-width": ["interpolate", ["linear"], ["zoom"],
+                10, 8,
+                15, 30,
+              ],
+              "line-color": "#aaa",
+              "line-opacity": [
                 "case",
                 ["boolean", ["feature-state", "hover"], false],
-                "#990",
-                "#fff",
+                1,
+                0,
               ],
             },
             layout: {
@@ -260,6 +276,9 @@ export default function Map({
             },
             filter: ["!", ["get", "variant"]],
           });
+          
+          newMap.moveLayer("Town labels");
+          newMap.moveLayer("City labels");
         })
       .on("click", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
