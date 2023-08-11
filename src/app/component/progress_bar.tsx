@@ -37,7 +37,7 @@ export default function ProgressBar(props: Props) {
         props.stats[TronçonStatus.Building])) /
     props.total;
   return (
-    <div className="pb-4">
+    <>
       <div className="progress-bar">
         <Part props={props} status={TronçonStatus.PreExisting} left />
         <Part props={props} status={TronçonStatus.Built} />
@@ -46,16 +46,18 @@ export default function ProgressBar(props: Props) {
         <Part props={props} status={TronçonStatus.Blocked} />
         <Part props={props} status={TronçonStatus.Unknown} right />
       </div>
-      <div
-        className="progress-bar-pointer"
-        style={{ marginLeft: `${part_ok}%` }}
-      ></div>
-      <div
-        className="progress-bar-percent is-size-4 has-text-weight-bold has-text-centered"
-        style={{ marginLeft: `${part_ok}%` }}
-      >
-        {Math.round(part_ok)}%
+      <div className="progress-bar--pointer">
+        <div
+          className="progress-bar--arrow"
+          style={{ marginLeft: `${part_ok}%` }}
+        ></div>
+        <div
+          className="progress-bar--percent is-size-4 has-text-weight-bold has-text-centered"
+          style={{ marginLeft: `${part_ok}%` }}
+        >
+          {Math.round(part_ok)}%
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -329,6 +329,6 @@ export default function Map({
   }, [mapReady]);
 
   return (
-    <div ref={(el) => (mapContainer.current = el)} className="map" />
+    <div ref={(el) => (mapContainer.current = el)} className="vif-map" />
   );
 }

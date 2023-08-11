@@ -22,7 +22,7 @@ export default async function RootLayout() {
         />
       </head>
       <body className={inter.className}>
-        <main className="cocarto-main">
+        <main className="vif-main">
           <StateHolder data={data} />
         </main>
       </body>

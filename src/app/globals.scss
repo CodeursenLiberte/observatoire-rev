@@ -1,44 +1,122 @@
 @import "~bulma/bulma";
 @import "@fortawesome/fontawesome-free/css/all.css";
 
-.segment-status-ruler {
-  width: 100%;
-  height: 12px;
-  border-radius: 6px;
+// Variables
+
+
+// bulma overrides
+.section {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  padding-inline: 28px; 
+  &> *:not(:first-child) {
+    padding-top: 20px;
+  }
+  &> *:not(:last-child) {
+    padding-bottom: 20px;
+  }
 }
 
-@media screen and (min-width: 960px) {
-  .cocarto-main {
+
+.title:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+// Main layout: desktop
+@media screen and (min-width: $desktop) {
+  // vif-map on the left,
+  // vif-panel on the right, scrolling its content,
+  // vif-detail in the top-left corner.
+  
+  .vif-main {
     display: grid;
     grid-template-columns: 1fr 390px;
+    position: relative;
   }
-}
-
-@media screen and (max-width: 960px) {
-  .cocarto-panel {
-    border-top: solid 1px #d8d7d3;
-  }
-}
-@media screen and (min-width: 960px) {
-  .cocarto-panel {
+  
+  .vif-map {
     height: 100vh;
-    overflow: scroll;
+    width: 100%;
+  }
+
+  .vif-panel {
+    height: 100vh;
+    overflow: scroll; 
     border-left: solid 1px #d8d7d3;
   }
+
+  .vif-global-stats {
+    > * {
+      padding-top: 20px;
+    }
+    > :nth-child(2) {
+      order: -1
+    }
+  }
+
+  .vif-detail {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+  }
 }
 
-.container.cocarto-container--narrow {
-  max-width: 358px;
+// Main layout: mobile
+@media screen and (max-width: $desktop) {
+  // vif-map at the top, 
+  // vif-panel below,
+  // vif-detail above vif-panel.
+  
+  .vif-map {
+    height: 55vh;
+    width: 100%;
+  }
+
+  .vif-panel {
+    border-top: solid 1px #d8d7d3;
+    position: relative;
+  }
+  
+  .vif-panel > *:first-child {
+    padding-top: 0;
+    margin-top: -29px;
+  }
+
+  .vif-detail {
+    position: absolute;
+    top: -29px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 }
 
-.cocarto-detail-container {
+// Element: Panel
+
+.vif-container {
+  max-width: 300px;
+  margin-inline: auto;
+}
+
+.vif-container--narrow {
+  max-width: 250px;
+  
+   &> * {
+    max-width: 215px;
+    margin-inline: auto;
+  }
+}
+
+.vif-border-top {
+  border-top: solid 1px #c3c1b9;
+}
+
+// Element: Detail
+.vif-detail {
+  width: 358px;
+  max-width: 96vw;
   border-radius: 20px;
-  width: 90%;
-  margin-top: -24px;
-  margin-left: auto;
-  margin-right: auto;
   z-index: 1000;
-  position: relative;
   background: white;
   padding: 0;
   border: solid 0 #979797;
@@ -47,7 +125,7 @@
     0 6px 24px #3e73a137;
 }
 
-.cocarto-detail-header {
+.vif-detail-header {
   background-color: #f7f7f7;
   height: 64px;
   border-bottom: solid 0 #9f9e9e;
@@ -55,106 +133,42 @@
   margin-bottom: 0;
 }
 
+.vif-detail-content {
+  max-width: 300px;
+  margin-inline: auto;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
 .close-button {
   color: black;
 }
 
-.route-code-level {
-  margin-top: -32px;
+// Component: global-stats
+.vif-global-stats {
+  display: flex;
+  flex-flow: column;
+  > * {
+    width: 100%;
+  }
 }
 
+// Component: Route
 .route-code {
   border-top: solid 1px #9f9e9e;
   border-bottom: solid 1px #9f9e9e;
 }
 
+// Component: RouteList
 .route-list {
   background-color: RGBA(0, 138, 172, 0.07);
-}
-
-.progress-bar {
-  height: 46px;
-  border-radius: 29px;
-  border: solid 6px #eaeae5;
-  box-sizing: content-box;
-  margin: 16px 16px 8px;
-  display: flex;
-  flex-direction: row;
-}
-
-.progress-bar-part {
-  flex-grow: 1;
-  margin: 0;
-  height: 46px;
-}
-
-.progress-bar-part-left {
-  border-radius: 23px 0 0 23px;
-}
-
-.progress-bar-part-right {
-  border-radius: 0 23px 23px 0;
-}
-
-.progress-bar-pointer {
-  width: 17px;
-  height: 8px;
-  background: black;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  transform: translateX(-50%);
-}
-
-.progress-bar-percent {
-  width: 69px;
-  height: 32px;
-  line-height: 32px;
-  background: black;
-  border-radius: 16px;
-  color: white;
-  transform: translateX(-50%);
-}
-
-@media screen and (max-width: 960px) {
-  .region-stats {
-    margin-top: -46px;
-  }
-}
-
-.region-stats {
-  z-index: 1000;
-  position: relative;
-  padding-top: 0;
-}
-
-.maplibregl-control-container .maplibregl-ctrl-bottom-right {
-  bottom: 25px;
-}
-
-.legend-color {
-  width: 16px;
-  height: 8px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 12px;
-}
-
-.cocarto-legends-container {
-  width: 249px;
-  margin-left: auto;
-  margin-right: auto;
-  border-top: solid 1px #c3c1b9;
-}
-
-.rounded-border {
-  border: solid 1px #cfcfcf;
-  border-radius: 24px;
-  background-color: white;
 }
 
 .route-list-icons {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
+  justify-items: center;
 }
 
 .route-button {
@@ -174,4 +188,89 @@
 .route-button:active {
   border: solid 1px RGB(0, 130, 173);
   outline: 5px solid RGBA(0, 130, 173, 0.13);
+}
+
+// Component: Progress Bar
+.progress-bar {
+  height: 46px;
+  border-radius: 29px;
+  border: solid 6px #eaeae5;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.progress-bar-part {
+  flex-grow: 1;
+  margin: 0;
+  height: 46px;
+}
+
+.progress-bar-part-left {
+  border-radius: 23px 0 0 23px;
+}
+
+.progress-bar-part-right {
+  border-radius: 0 23px 23px 0;
+}
+
+.progress-bar--pointer {
+  margin-inline: 6px;
+}
+
+.progress-bar--arrow {
+  width: 17px;
+  height: 8px;
+  margin-top: 8px;
+  background: black;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform: translateX(-50%);
+}
+
+.progress-bar--percent {
+  width: 69px;
+  height: 32px;
+  line-height: 32px;
+  background: black;
+  border-radius: 16px;
+  color: white;
+  transform: translateX(-50%);
+}
+
+// Maplibre overrides
+.maplibregl-control-container .maplibregl-ctrl-bottom-right {
+  bottom: 25px;
+}
+
+// Component: Legend
+.legend-color {
+  width: 16px;
+  height: 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+// Component: Segment
+.segment-status-ruler {
+  width: 100%;
+  height: 12px;
+  border-radius: 6px;
+}
+
+// Component: About
+.vif-container--about {
+  padding-bottom: 150px;
+}
+
+.vif-about--logo {
+  margin-inline: auto;
+  width: 128px;
+}
+
+// Utility (used for close button)
+.rounded-border {
+  border: solid 1px #cfcfcf;
+  border-radius: 24px;
+  background-color: white;
 }

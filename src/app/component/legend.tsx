@@ -19,7 +19,7 @@ function LegendItem({ status }: { status: TronçonStatus }) {
 
 export default function Legend() {
   return (
-    <div className="container cocarto-container cocarto-container--narrow cocarto-border-top">
+    <>
       <LegendItem status={TronçonStatus.PreExisting} />
       <LegendItem status={TronçonStatus.Built} />
       <LegendItem status={TronçonStatus.Building} />
@@ -27,6 +27,6 @@ export default function Legend() {
       <LegendItem status={TronçonStatus.Blocked} />
       <LegendItem status={TronçonStatus.SecondPhase} />
       <LegendItem status={TronçonStatus.Unknown} />
-    </div>
+    </>
   );
 }

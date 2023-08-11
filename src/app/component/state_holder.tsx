@@ -6,8 +6,22 @@ import { Level, GlobalData } from "../types";
 import RouteDetails from "./route_details";
 import GlobalStats from "./global_stats";
 import Segment from "./segment";
-import Legend from "./legend";
 import About from "./about";
+
+
+function currentDetail(level: Level, data: GlobalData, setHash) {
+  let current;
+  switch (level.level) {
+    case "route":
+      current = <RouteDetails route={level.props} setHash={setHash} />;
+      break;
+    case "segment":
+      current = <Segment segment={level.props} setHash={setHash} />;
+      break;
+  }
+  return current;
+}
+
 
 export default function ({ data }: { data: GlobalData }) {
   const [bounds, setBounds] = useState(data.globalBounds);
@@ -43,36 +57,22 @@ export default function ({ data }: { data: GlobalData }) {
       }
     }
   }, [hash]);
-
-  let current;
-  switch (level.level) {
-    case "region":
-      current = <GlobalStats globalStats={data.globalStats} />;
-      break;
-    case "route":
-      current = <RouteDetails route={level.props} setHash={setHash} />;
-      break;
-    case "segment":
-      current = <Segment segment={level.props} setHash={setHash} />;
-      break;
-  }
+  
   return (
     <>
-      <section className="hero cocarto-map">
-        <Map
-          bounds={bounds}
-          segments={data.tronçons}
-          level={level}
-          setHash={setHash}
-        />
-      </section>
-      <div className="cocarto-panel">
-        {current}
-        <section className="section">
-          <Legend />
-        </section>
+      <Map
+        bounds={bounds}
+        segments={data.tronçons}
+        level={level}
+        setHash={setHash}
+      />
+      <div className="vif-panel">
+        <GlobalStats globalStats={data.globalStats} />
         <RouteList routes={data.routes} setHash={setHash} />
         <About />
+        <div className="vif-detail">
+          {currentDetail(level, data, setHash)}
+        </div>
       </div>
     </>
   );

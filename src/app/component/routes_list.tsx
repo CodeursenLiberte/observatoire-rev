@@ -9,9 +9,9 @@ export default function RouteList({
   setHash: (hash: string) => void;
 }) {
   return (
-    <section className="section has-text-centered route-list">
-      <div className="container cocarto-container--narrow">
-        <h2 className="title is-3">Informations par&nbsp;ligne</h2>
+    <section className="section route-list">
+      <div className="vif-container">
+        <h2 className="title is-4 has-text-centered has-text-weight-bold">Informations par&nbsp;ligne</h2>
         <div className="route-list-icons">
           {Object.keys(routes).map((route) => (
             <button
