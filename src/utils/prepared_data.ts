@@ -107,16 +107,6 @@ export async function prepareData(): Promise<GlobalData> {
       });
     });
 
-  /* const routesId = _(tronçonsArray)
-    .map((t) => ({ id: t.properties.id, route: t.properties.routes[0] }))
-    .groupBy("id")
-    .mapValues((x) => _.map(x, "route"))
-    .value();
-
-  const uniqueTronçons = _.uniqBy(tronçonsArray, (f) => f.properties.id);
-  uniqueTronçons.forEach(
-    (t) => (t.properties.routes = routesId[t.properties.id])
-  );*/
   const tronçons = featureCollection(tronçonsArray);
   const [xmin, ymin, xmax, ymax] = bbox(tronçons);
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
