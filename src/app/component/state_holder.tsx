@@ -2,28 +2,12 @@
 import Map from "./map";
 import RouteList from "./routes_list";
 import { useEffect, useState } from "react";
-import { Level, GlobalData, TronçonStatus } from "../types";
+import { Level, GlobalData } from "../types";
 import RouteDetails from "./route_details";
 import GlobalStats from "./global_stats";
 import Segment from "./segment";
-import { statusColor, statusLabel } from "@/utils/constants";
+import Legend from "./legend";
 import About from "./about";
-
-function Legend({ status }: { status: TronçonStatus }) {
-  const style = {
-    background: statusColor[status],
-    border: "none",
-  };
-  if (status === TronçonStatus.SecondPhase) {
-    style.border = "solid 1px #7f7f7f";
-  }
-  return (
-    <div>
-      <span style={style} className="legend-color" />
-      <span>{statusLabel[status]}</span>
-    </div>
-  );
-}
 
 export default function ({ data }: { data: GlobalData }) {
   const [bounds, setBounds] = useState(data.globalBounds);
@@ -85,15 +69,7 @@ export default function ({ data }: { data: GlobalData }) {
       <div className="cocarto-panel">
         {current}
         <section className="section">
-          <div className="container cocarto-container--narrow cocarto-legends-container">
-            <Legend status={TronçonStatus.PreExisting} />
-            <Legend status={TronçonStatus.Built} />
-            <Legend status={TronçonStatus.Building} />
-            <Legend status={TronçonStatus.Planned} />
-            <Legend status={TronçonStatus.Blocked} />
-            <Legend status={TronçonStatus.SecondPhase} />
-            <Legend status={TronçonStatus.Unknown} />
-          </div>
+          <Legend />
         </section>
         <RouteList routes={data.routes} setHash={setHash} />
         <About />
