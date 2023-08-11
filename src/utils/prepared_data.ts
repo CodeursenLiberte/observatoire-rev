@@ -4,6 +4,8 @@ import {
   featureCollection,
   lineString,
   LineString,
+  MultiPolygon,
+  multiPolygon,
 } from "@turf/helpers";
 import _ from "lodash";
 import {
@@ -17,10 +19,14 @@ import {
   LengthStats,
   GlobalData,
   OriginalProperties,
+  AdminExpressProperties,
 } from "@/app/types";
 import bbox from "@turf/bbox";
+import bboxPolygon from "@turf/bbox-polygon";
+import buffer from "@turf/buffer"
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
+import { featureEach } from "@turf/meta";
 
 function status(
   niveau_validation: string,
@@ -72,11 +78,22 @@ async function fetchFromCocarto(): Promise<
 
 export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto();
+  const casted = communes as FeatureCollection<MultiPolygon, AdminExpressProperties>;
+  featureEach(casted, (feature) => {
+    feature.geometry = buffer(feature, 0.05).geometry
+    feature.bbox = bbox(feature.geometry)
+  })
   const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
-      const commune = communes.features.find((commune) =>
-        booleanWithin(feature.geometry, commune.geometry),
-      );
+      const commune = casted.features.find((commune) =>{
+        if (commune.bbox && booleanWithin(feature, bboxPolygon(commune.bbox))) {
+        //  const buffered = buffer(feature.geometry, 0.001); // one meter
+        //  const intersection = intersect(commune, buffered);
+          return booleanWithin(feature, commune)
+        } else {
+          return false;
+        }
+      });
       const properties: TronçonProperties = {
         // A single tronçon can be used by many lines, the concatenation allows to deduplicate
         id: feature.properties.CODE_TRONCON,
@@ -86,7 +103,6 @@ export async function prepareData(): Promise<GlobalData> {
             ? 0
             : feature.properties.LONGUEUR,
         commune: commune?.properties.nom.replace(" Arrondissement", ""),
-        departement: dep?.properties.code,
         route: feature.properties.NUM_LIGNE,
         variant:
           feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
@@ -182,3 +198,7 @@ export async function prepareData(): Promise<GlobalData> {
     globalBounds,
   };
 }
+function booleanIntersects(feature: Feature<LineString, OriginalProperties>, bbox: import("@turf/helpers").BBox | undefined) {
+  throw new Error("Function not implemented.");
+}
+
