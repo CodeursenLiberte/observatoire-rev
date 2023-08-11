@@ -27,8 +27,11 @@ function status(
   niveau_validation: string,
   apport_rerv: string,
   phase: string,
+  mort: boolean,
 ): TronçonStatus {
-  if (apport_rerv === "Aménagement prééxistant") {
+  if (mort) {
+    return TronçonStatus.Blocked;
+  } else if (apport_rerv === "Aménagement prééxistant") {
     return TronçonStatus.PreExisting;
   } else if (phase === "2 - 2030") {
     return TronçonStatus.SecondPhase;
@@ -97,6 +100,7 @@ export async function prepareData(): Promise<GlobalData> {
           feature.properties.NIVEAU_VALID_AMENAG || "",
           feature.properties.APPORT_RERV || "",
           feature.properties.PHASE,
+          feature.properties["Au point mort"]
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
