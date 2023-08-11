@@ -100,7 +100,7 @@ export async function prepareData(): Promise<GlobalData> {
           feature.properties.NIVEAU_VALID_AMENAG || "",
           feature.properties.APPORT_RERV || "",
           feature.properties.PHASE,
-          feature.properties["Au point mort"]
+          feature.properties["Au point mort"] || false,
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
