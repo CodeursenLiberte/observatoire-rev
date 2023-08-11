@@ -2,7 +2,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import maplibregl, { LngLatBounds, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import styles from "../page.module.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
@@ -330,6 +329,6 @@ export default function Map({
   }, [mapReady]);
 
   return (
-    <div ref={(el) => (mapContainer.current = el)} className={styles.map} />
+    <div ref={(el) => (mapContainer.current = el)} className="map" />
   );
 }
