@@ -28,7 +28,6 @@ export enum TronçonStatus {
 export type TronçonProperties = {
   id: string;
   length: number;
-  departement: string | undefined;
   status: TronçonStatus;
   route: string;
   variant: boolean;

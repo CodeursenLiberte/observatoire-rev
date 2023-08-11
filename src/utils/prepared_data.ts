@@ -1,4 +1,3 @@
-import departementsGeojson from "../../data/departements-ile-de-france.geo.json";
 import {
   Feature,
   FeatureCollection,
@@ -75,9 +74,6 @@ export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto();
   const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
-      const dep = departementsGeojson.features.find((dep) =>
-        booleanWithin(feature.geometry, dep.geometry),
-      );
       const commune = communes.features.find((commune) =>
         booleanWithin(feature.geometry, commune.geometry),
       );
