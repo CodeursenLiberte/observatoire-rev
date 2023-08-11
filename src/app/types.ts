@@ -12,6 +12,7 @@ export type OriginalProperties = {
   NOM_MOA: string;
   TYPE_MOA: string;
   PHASE: string;
+  "Au point mort": boolean | null;
 };
 
 export enum TronçonStatus {
