@@ -23,7 +23,7 @@ const Part = ({
   const width = (100 * props.stats[status]) / props.total;
   return (
     <div
-      style={{ width: `${width}%`, background: statusColor[status] }}
+      style={{ width: `${width}%`, flexGrow: `${width}`, background: statusColor[status] }}
       className={className}
     />
   );
@@ -44,6 +44,7 @@ export default function ProgressBar(props: Props) {
         <Part props={props} status={TronçonStatus.Building} />
         <Part props={props} status={TronçonStatus.Planned} />
         <Part props={props} status={TronçonStatus.Blocked} />
+        <Part props={props} status={TronçonStatus.SecondPhase} />
         <Part props={props} status={TronçonStatus.Unknown} right />
       </div>
       <div className="progress-bar--pointer">

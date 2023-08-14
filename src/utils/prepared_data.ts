@@ -162,6 +162,7 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.Building]: length(TronçonStatus.Building),
       [TronçonStatus.Planned]: length(TronçonStatus.Planned),
       [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
+      [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
       [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
     };
     const [xmin, ymin, xmax, ymax] = bbox({
@@ -183,6 +184,7 @@ export async function prepareData(): Promise<GlobalData> {
     [TronçonStatus.Building]: length(TronçonStatus.Building),
     [TronçonStatus.Planned]: length(TronçonStatus.Planned),
     [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
+    [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
   };
 
