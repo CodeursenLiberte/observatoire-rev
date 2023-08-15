@@ -316,7 +316,7 @@ export default function Map({
 
   useEffect(() => {
     if (map.current !== null) {
-      map.current.fitBounds(bounds, { padding: 10 });
+      map.current.fitBounds(bounds, { padding: 100 });
       setActiveSegments(map.current, level);
     }
   }, [level, bounds]);
