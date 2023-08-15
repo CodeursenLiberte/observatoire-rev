@@ -20,12 +20,7 @@ export default function ({
           <h3 className="title is-4">{segment.commune}</h3>
         </div>
         <div className="level-right">
-          <span
-            className="icon is-large rounded-border is-clickable"
-            onClick={() => setHash("region")}
-          >
-            <i className="fas fa-2x fa-close"></i>
-          </span>
+          <a className="close-button" onClick={() => setHash("region")}></a>
         </div>
       </nav>
 
