@@ -2,7 +2,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import maplibregl, { LngLatBounds, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import styles from "../page.module.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
@@ -41,12 +40,7 @@ type Props = {
   setHash: (hash: string) => void;
 };
 
-export default function Map({
-  bounds,
-  segments,
-  level,
-  setHash,
-}: Props) {
+export default function Map({ bounds, segments, level, setHash }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
@@ -317,7 +311,7 @@ export default function Map({
 
   useEffect(() => {
     if (map.current !== null) {
-      map.current.fitBounds(bounds, { padding: 10 });
+      map.current.fitBounds(bounds, { padding: 100 });
       setActiveSegments(map.current, level);
     }
   }, [level, bounds]);
@@ -329,7 +323,5 @@ export default function Map({
     }
   }, [mapReady]);
 
-  return (
-    <div ref={(el) => (mapContainer.current = el)} className={styles.map} />
-  );
+  return <div ref={(el) => (mapContainer.current = el)} className="vif-map" />;
 }

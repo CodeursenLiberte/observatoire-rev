@@ -2,14 +2,14 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <section className="section has-text-centered">
-      <div className="container cocarto-container--narrow">
-        <h2 className="title is-3">À propos</h2>
-        <p className="block">
+    <section className="section">
+      <div className="vif-container vif-container--about">
+        <h2 className="title is-size-4 has-text-centered">À propos</h2>
+        <p className="block has-text-centered">
           Les données affichées sont mises à la disposition du public par la
           région Île-de-France et régulièrement mises à jour.
         </p>
-        <p className="block">
+        <p className="block has-text-centered">
           Cet observatoire a été mis en place par le{" "}
           <Link href="https://velo-iledefrance.fr/">
             Collectif Vélo Île-de-France
@@ -20,7 +20,7 @@ export default function About() {
           leur niveau.
         </p>
 
-        <figure className="image is-128x128 is-inline-block">
+        <figure className="vif-about--logo">
           <img
             src="logo_cvidf.png"
             alt="Logo du collectif vélo Île-de-France"

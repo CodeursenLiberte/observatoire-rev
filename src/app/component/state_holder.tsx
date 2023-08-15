@@ -2,27 +2,27 @@
 import Map from "./map";
 import RouteList from "./routes_list";
 import { useEffect, useState } from "react";
-import { Level, GlobalData, TronçonStatus } from "../types";
+import { Level, GlobalData } from "../types";
 import RouteDetails from "./route_details";
 import GlobalStats from "./global_stats";
 import Segment from "./segment";
-import { statusColor, statusLabel } from "@/utils/constants";
 import About from "./about";
 
-function Legend({ status }: { status: TronçonStatus }) {
-  const style = {
-    background: statusColor[status],
-    border: "none",
-  };
-  if (status === TronçonStatus.SecondPhase) {
-    style.border = "solid 1px #7f7f7f";
+function currentDetail(
+  level: Level,
+  data: GlobalData,
+  setHash: (hash: string) => void,
+) {
+  let current;
+  switch (level.level) {
+    case "route":
+      current = <RouteDetails route={level.props} setHash={setHash} />;
+      break;
+    case "segment":
+      current = <Segment segment={level.props} setHash={setHash} />;
+      break;
   }
-  return (
-    <div>
-      <span style={style} className="legend-color" />
-      <span>{statusLabel[status]}</span>
-    </div>
-  );
+  return current;
 }
 
 export default function ({ data }: { data: GlobalData }) {
@@ -60,43 +60,19 @@ export default function ({ data }: { data: GlobalData }) {
     }
   }, [hash]);
 
-  let current;
-  switch (level.level) {
-    case "region":
-      current = <GlobalStats globalStats={data.globalStats} />;
-      break;
-    case "route":
-      current = <RouteDetails route={level.props} setHash={setHash} />;
-      break;
-    case "segment":
-      current = <Segment segment={level.props} setHash={setHash} />;
-      break;
-  }
   return (
     <>
-      <section className="hero cocarto-map">
-        <Map
-          bounds={bounds}
-          segments={data.tronçons}
-          level={level}
-          setHash={setHash}
-        />
-      </section>
-      <div className="cocarto-panel">
-        {current}
-        <section className="section">
-          <div className="container cocarto-container--narrow cocarto-legends-container">
-            <Legend status={TronçonStatus.PreExisting} />
-            <Legend status={TronçonStatus.Built} />
-            <Legend status={TronçonStatus.Building} />
-            <Legend status={TronçonStatus.Planned} />
-            <Legend status={TronçonStatus.Blocked} />
-            <Legend status={TronçonStatus.SecondPhase} />
-            <Legend status={TronçonStatus.Unknown} />
-          </div>
-        </section>
-        <RouteList routes={data.routes} setHash={setHash} />
+      <Map
+        bounds={bounds}
+        segments={data.tronçons}
+        level={level}
+        setHash={setHash}
+      />
+      <div className="vif-panel">
+        <GlobalStats globalStats={data.globalStats} />
+        <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
+        <div className="vif-detail">{currentDetail(level, data, setHash)}</div>
       </div>
     </>
   );

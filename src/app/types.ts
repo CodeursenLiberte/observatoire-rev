@@ -1,4 +1,10 @@
-import { Feature, FeatureCollection, LineString, MultiLineString, Polygon } from "@turf/helpers";
+import {
+  Feature,
+  FeatureCollection,
+  LineString,
+  MultiLineString,
+  Polygon,
+} from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
@@ -38,7 +44,7 @@ export type TronçonProperties = {
 
 export type AdminExpressProperties = {
   nom: string;
-}
+};
 
 // It’s actually a geojson, with typed properties
 export type Tronçon = {

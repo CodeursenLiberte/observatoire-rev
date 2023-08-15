@@ -10,28 +10,26 @@ export default function RouteDetails({
   setHash: (hash: string) => void;
 }) {
   return (
-    <section className="section has-text-centered">
-      <div className="container cocarto-container--narrow cocarto-detail-container">
-        <nav className="level is-mobile cocarto-detail-header px-4">
-          <div className="level-left"></div>
-          <div className="level-item">
-            <h3 className="title is-1 route-code">{route.code}</h3>
-          </div>
-          <div className="level-right">
-            <div className="level-item">
-              <span
-                className="icon is-large rounded-border is-clickable"
-                onClick={() => setHash("region")}
-              >
-                <i className="fas fa-thin fa-2x fa-close"></i>
-              </span>
-            </div>
-          </div>
-        </nav>
-        <div className="mx-4 mb-2">au 12 juillet 2022</div>
-
+    <>
+      <div className="vif-detail-header vif-detail-header--route">
+        <h3
+          className="route-code route-code--large"
+          style={
+            {
+              "--route-color": `var(--route-color-${route.code})`,
+            } as React.CSSProperties
+          }
+        >
+          {route.code}
+        </h3>
+        <a
+          className="vif-detail--close-button"
+          onClick={() => setHash("region")}
+        ></a>
+      </div>
+      <div className="vif-detail-content">
         <ProgressBar stats={route.stats} total={route.total} />
       </div>
-    </section>
+    </>
   );
 }

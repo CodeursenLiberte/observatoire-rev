@@ -23,7 +23,7 @@ import {
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import bboxPolygon from "@turf/bbox-polygon";
-import buffer from "@turf/buffer"
+import buffer from "@turf/buffer";
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
 import { featureEach } from "@turf/meta";
@@ -78,18 +78,21 @@ async function fetchFromCocarto(): Promise<
 
 export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto();
-  const casted = communes as FeatureCollection<MultiPolygon, AdminExpressProperties>;
+  const casted = communes as FeatureCollection<
+    MultiPolygon,
+    AdminExpressProperties
+  >;
   featureEach(casted, (feature) => {
-    feature.geometry = buffer(feature, 0.05).geometry
-    feature.bbox = bbox(feature.geometry)
-  })
+    feature.geometry = buffer(feature, 0.05).geometry;
+    feature.bbox = bbox(feature.geometry);
+  });
   const tronçonsArray: Feature<LineString, TronçonProperties>[] = // This will activate the closest `error.js` Error Boundary
     troncons.features.map((feature) => {
-      const commune = casted.features.find((commune) =>{
+      const commune = casted.features.find((commune) => {
         if (commune.bbox && booleanWithin(feature, bboxPolygon(commune.bbox))) {
-        //  const buffered = buffer(feature.geometry, 0.001); // one meter
-        //  const intersection = intersect(commune, buffered);
-          return booleanWithin(feature, commune)
+          //  const buffered = buffer(feature.geometry, 0.001); // one meter
+          //  const intersection = intersect(commune, buffered);
+          return booleanWithin(feature, commune);
         } else {
           return false;
         }
@@ -155,7 +158,6 @@ export async function prepareData(): Promise<GlobalData> {
         .filter((f) => f.properties.status === status)
         .sumBy("properties.length");
     }
-    const total = _(t).map("properties.length").sum();
     const stats: LengthStats = {
       [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
       [TronçonStatus.Built]: length(TronçonStatus.Built),
@@ -163,7 +165,10 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.Planned]: length(TronçonStatus.Planned),
       [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
       [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
+      [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
+    const total =
+      _(t).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
     const [xmin, ymin, xmax, ymax] = bbox({
       type: "FeatureCollection",
       features: t,
@@ -176,7 +181,6 @@ export async function prepareData(): Promise<GlobalData> {
       .filter((f) => f.properties.status === status)
       .sumBy("properties.length");
   }
-  const total = _(tronçonsArray).map("properties.length").sum();
   const stats: LengthStats = {
     [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
     [TronçonStatus.Built]: length(TronçonStatus.Built),
@@ -184,7 +188,11 @@ export async function prepareData(): Promise<GlobalData> {
     [TronçonStatus.Planned]: length(TronçonStatus.Planned),
     [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
     [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
+    [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
   };
+  const total =
+    _(tronçonsArray).map("properties.length").sum() -
+    stats[TronçonStatus.SecondPhase];
 
   const globalStats: GlobalStats = {
     stats,
@@ -198,7 +206,9 @@ export async function prepareData(): Promise<GlobalData> {
     globalBounds,
   };
 }
-function booleanIntersects(feature: Feature<LineString, OriginalProperties>, bbox: import("@turf/helpers").BBox | undefined) {
+function booleanIntersects(
+  feature: Feature<LineString, OriginalProperties>,
+  bbox: import("@turf/helpers").BBox | undefined,
+) {
   throw new Error("Function not implemented.");
 }
-
