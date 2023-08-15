@@ -8,7 +8,6 @@ import GlobalStats from "./global_stats";
 import Segment from "./segment";
 import About from "./about";
 
-
 function currentDetail(level: Level, data: GlobalData, setHash) {
   let current;
   switch (level.level) {
@@ -21,7 +20,6 @@ function currentDetail(level: Level, data: GlobalData, setHash) {
   }
   return current;
 }
-
 
 export default function ({ data }: { data: GlobalData }) {
   const [bounds, setBounds] = useState(data.globalBounds);
@@ -57,7 +55,7 @@ export default function ({ data }: { data: GlobalData }) {
       }
     }
   }, [hash]);
-  
+
   return (
     <>
       <Map
@@ -70,9 +68,7 @@ export default function ({ data }: { data: GlobalData }) {
         <GlobalStats globalStats={data.globalStats} />
         <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
-        <div className="vif-detail">
-          {currentDetail(level, data, setHash)}
-        </div>
+        <div className="vif-detail">{currentDetail(level, data, setHash)}</div>
       </div>
     </>
   );

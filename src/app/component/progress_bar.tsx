@@ -23,7 +23,11 @@ const Part = ({
   const width = (100 * props.stats[status]) / props.total;
   return (
     <div
-      style={{ width: `${width}%`, flexGrow: `${width}`, background: statusColor[status] }}
+      style={{
+        width: `${width}%`,
+        flexGrow: `${width}`,
+        background: statusColor[status],
+      }}
       className={className}
     />
   );

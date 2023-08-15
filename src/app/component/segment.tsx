@@ -11,15 +11,27 @@ export default function ({
   return (
     <>
       <div className="vif-detail-header vif-detail-header--segment">
-        <h3 className="route-code route-code--small" style={{"--route-color": `var(--route-color-${segment.route})`}}>{segment.route}</h3>
+        <h3
+          className="route-code route-code--small"
+          style={{ "--route-color": `var(--route-color-${segment.route})` }}
+        >
+          {segment.route}
+        </h3>
         <h3 className="is-size-4">{segment.commune}</h3>
-        <a className="vif-detail--close-button" onClick={() => setHash("region")}></a>
+        <a
+          className="vif-detail--close-button"
+          onClick={() => setHash("region")}
+        ></a>
       </div>
 
       <div className="vif-detail-content">
         <div className="segment--block">
-          <label className="has-text-weight-normal has-text-grey">Avancement</label>
-          <p className="is-size-4 has-text-weight-semibold">{statusLabel[segment.status]}</p>
+          <label className="has-text-weight-normal has-text-grey">
+            Avancement
+          </label>
+          <p className="is-size-4 has-text-weight-semibold">
+            {statusLabel[segment.status]}
+          </p>
           <div
             className="segment--status-ruler"
             style={{ background: statusColor[segment.status] }}

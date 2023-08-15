@@ -164,7 +164,8 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
       [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
-    const total = _(t).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
+    const total =
+      _(t).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
     const [xmin, ymin, xmax, ymax] = bbox({
       type: "FeatureCollection",
       features: t,
@@ -186,7 +187,9 @@ export async function prepareData(): Promise<GlobalData> {
     [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
     [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
   };
-  const total = _(tronçonsArray).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
+  const total =
+    _(tronçonsArray).map("properties.length").sum() -
+    stats[TronçonStatus.SecondPhase];
 
   const globalStats: GlobalStats = {
     stats,

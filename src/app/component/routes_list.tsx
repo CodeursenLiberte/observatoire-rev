@@ -13,16 +13,23 @@ export default function RouteList({
   return (
     <section className="section route-list">
       <div className="vif-container">
-        <h2 className="title is-4 has-text-centered has-text-weight-bold">Informations par&nbsp;ligne</h2>
+        <h2 className="title is-4 has-text-centered has-text-weight-bold">
+          Informations par&nbsp;ligne
+        </h2>
         <div className="route-list-icons">
           {Object.keys(routes).map((route) => (
             <button
               key={route}
               className="button route-button"
               onClick={() => setHash(`route/${route}`)}
-              aria-pressed={level.level === "route" && level.props.code === route}
+              aria-pressed={
+                level.level === "route" && level.props.code === route
+              }
             >
-              <div className="route-code route-code--small" style={{"--route-color": `var(--route-color-${route})`}}>
+              <div
+                className="route-code route-code--small"
+                style={{ "--route-color": `var(--route-color-${route})` }}
+              >
                 {route}
               </div>
             </button>

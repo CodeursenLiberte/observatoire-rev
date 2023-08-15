@@ -3,20 +3,18 @@
 
 // Variables
 
-
 // bulma overrides
 .section {
   padding-top: 20px;
   padding-bottom: 40px;
-  padding-inline: 28px; 
-  &> *:not(:first-child) {
+  padding-inline: 28px;
+  & > *:not(:first-child) {
     padding-top: 20px;
   }
-  &> *:not(:last-child) {
+  & > *:not(:last-child) {
     padding-bottom: 20px;
   }
 }
-
 
 .title:not(:last-child) {
   margin-bottom: 20px;
@@ -27,13 +25,13 @@
   // vif-map on the left,
   // vif-panel on the right, scrolling its content,
   // vif-detail in the top-left corner.
-  
+
   .vif-main {
     display: grid;
     grid-template-columns: 1fr 390px;
     position: relative;
   }
-  
+
   .vif-map {
     height: 100vh;
     width: 100%;
@@ -41,7 +39,7 @@
 
   .vif-panel {
     height: 100vh;
-    overflow: scroll; 
+    overflow: scroll;
     border-left: solid 1px #d8d7d3;
   }
 
@@ -50,7 +48,7 @@
       padding-top: 20px;
     }
     > :nth-child(2) {
-      order: -1
+      order: -1;
     }
   }
 
@@ -63,10 +61,10 @@
 
 // Main layout: mobile
 @media screen and (max-width: $desktop) {
-  // vif-map at the top, 
+  // vif-map at the top,
   // vif-panel below,
   // vif-detail above vif-panel.
-  
+
   .vif-map {
     height: 55vh;
     width: 100%;
@@ -76,7 +74,7 @@
     border-top: solid 1px #d8d7d3;
     position: relative;
   }
-  
+
   .vif-panel > *:first-child {
     padding-top: 0;
     margin-top: -29px;
@@ -100,8 +98,8 @@
 
 .vif-container--narrow {
   max-width: 250px;
-  
-   &> * {
+
+  & > * {
     max-width: 215px;
     margin-inline: auto;
   }
@@ -203,9 +201,10 @@
   --route-color-V10: #f3a5ba;
   --route-color-V20: #8c5c2a;
   position: relative;
-  &:before,&:after {
+  &:before,
+  &:after {
     border: solid;
-    border-color:  var(--route-color);
+    border-color: var(--route-color);
     border-radius: 4px;
     position: absolute;
     width: 80%;
@@ -224,7 +223,8 @@
   border-radius: 4px;
   width: 32px;
   height: 32px;
-  &:before,&:after {
+  &:before,
+  &:after {
     border-width: 1.5px;
   }
 }
@@ -235,7 +235,8 @@
   font-size: 1.8rem;
   width: 56px;
   height: 56px;
-  &:before,&:after {
+  &:before,
+  &:after {
     border-width: 2px;
   }
 }

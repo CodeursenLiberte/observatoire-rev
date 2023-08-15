@@ -12,8 +12,16 @@ export default function RouteDetails({
   return (
     <>
       <div className="vif-detail-header vif-detail-header--route">
-        <h3 className="route-code route-code--large" style={{"--route-color": `var(--route-color-${route.code})`}}>{route.code}</h3>
-        <a className="vif-detail--close-button" onClick={() => setHash("region")}></a>
+        <h3
+          className="route-code route-code--large"
+          style={{ "--route-color": `var(--route-color-${route.code})` }}
+        >
+          {route.code}
+        </h3>
+        <a
+          className="vif-detail--close-button"
+          onClick={() => setHash("region")}
+        ></a>
       </div>
       <div className="vif-detail-content">
         <ProgressBar stats={route.stats} total={route.total} />
