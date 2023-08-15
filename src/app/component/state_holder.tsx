@@ -8,7 +8,11 @@ import GlobalStats from "./global_stats";
 import Segment from "./segment";
 import About from "./about";
 
-function currentDetail(level: Level, data: GlobalData, setHash) {
+function currentDetail(
+  level: Level,
+  data: GlobalData,
+  setHash: (hash: string) => void,
+) {
   let current;
   switch (level.level) {
     case "route":

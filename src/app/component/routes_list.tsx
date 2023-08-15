@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RoutesMap } from "../types";
+import { Level, RoutesMap } from "../types";
 
 export default function RouteList({
   routes,
@@ -28,7 +28,11 @@ export default function RouteList({
             >
               <div
                 className="route-code route-code--small"
-                style={{ "--route-color": `var(--route-color-${route})` }}
+                style={
+                  {
+                    "--route-color": `var(--route-color-${route})`,
+                  } as React.CSSProperties
+                }
               >
                 {route}
               </div>

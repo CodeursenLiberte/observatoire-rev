@@ -14,7 +14,11 @@ export default function RouteDetails({
       <div className="vif-detail-header vif-detail-header--route">
         <h3
           className="route-code route-code--large"
-          style={{ "--route-color": `var(--route-color-${route.code})` }}
+          style={
+            {
+              "--route-color": `var(--route-color-${route.code})`,
+            } as React.CSSProperties
+          }
         >
           {route.code}
         </h3>

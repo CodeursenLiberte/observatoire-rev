@@ -13,7 +13,11 @@ export default function ({
       <div className="vif-detail-header vif-detail-header--segment">
         <h3
           className="route-code route-code--small"
-          style={{ "--route-color": `var(--route-color-${segment.route})` }}
+          style={
+            {
+              "--route-color": `var(--route-color-${segment.route})`,
+            } as React.CSSProperties
+          }
         >
           {segment.route}
         </h3>
