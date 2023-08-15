@@ -18,11 +18,13 @@ export default function RouteList({
           {Object.keys(routes).map((route) => (
             <button
               key={route}
-              className="button route-button route-code"
+              className="button route-button"
               onClick={() => setHash(`route/${route}`)}
               aria-pressed={level.level === "route" && level.props.code === route}
             >
-              {route}
+              <div className="route-code route-code--small" style={{"--route-color": `var(--route-color-${route})`}}>
+                {route}
+              </div>
             </button>
           ))}
         </div>

@@ -11,7 +11,7 @@ export default function ({
   return (
     <>
       <div className="vif-detail-header vif-detail-header--segment">
-        <h3 className="route-code route-code--small">{segment.route}</h3>
+        <h3 className="route-code route-code--small" style={{"--route-color": `var(--route-color-${segment.route})`}}>{segment.route}</h3>
         <h3 className="is-size-4">{segment.commune}</h3>
         <a className="vif-detail--close-button" onClick={() => setHash("region")}></a>
       </div>

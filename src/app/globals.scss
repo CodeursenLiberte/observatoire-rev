@@ -191,6 +191,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  --route-color-V1: #e0041b;
+  --route-color-V2: #fdce00;
+  --route-color-V3: #02804d;
+  --route-color-V4: #0263af;
+  --route-color-V5: #bf4393;
+  --route-color-V6: #d5c700;
+  --route-color-V7: #99d3e1;
+  --route-color-V8: #642383;
+  --route-color-V9: #f18c42;
+  --route-color-V10: #f3a5ba;
+  --route-color-V20: #8c5c2a;
+  position: relative;
+  &:before,&:after {
+    border: solid;
+    border-color:  var(--route-color);
+    border-radius: 4px;
+    position: absolute;
+    width: 80%;
+    content: "";
+  }
+  &:before {
+    top: 10%;
+  }
+  &:after {
+    bottom: 10%;
+  }
 }
 
 .route-code--small {
@@ -198,6 +224,9 @@
   border-radius: 4px;
   width: 32px;
   height: 32px;
+  &:before,&:after {
+    border-width: 1.5px;
+  }
 }
 
 .route-code--large {
@@ -206,6 +235,9 @@
   font-size: 1.8rem;
   width: 56px;
   height: 56px;
+  &:before,&:after {
+    border-width: 2px;
+  }
 }
 
 // Component: RouteList
@@ -227,6 +259,7 @@
   background-color: #fafafa;
   border: solid 1px #c3cbcc;
   outline: 5px solid RGBA(0, 0, 0, 0.03);
+  padding: 0;
 }
 
 .route-button:hover {
