@@ -44,7 +44,6 @@ export default function ProgressBar(props: Props) {
         <Part props={props} status={TronçonStatus.Building} />
         <Part props={props} status={TronçonStatus.Planned} />
         <Part props={props} status={TronçonStatus.Blocked} />
-        <Part props={props} status={TronçonStatus.SecondPhase} />
         <Part props={props} status={TronçonStatus.Unknown} right />
       </div>
       <div className="progress-bar--pointer">

@@ -155,16 +155,16 @@ export async function prepareData(): Promise<GlobalData> {
         .filter((f) => f.properties.status === status)
         .sumBy("properties.length");
     }
-    const total = _(t).map("properties.length").sum();
     const stats: LengthStats = {
       [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
       [TronçonStatus.Built]: length(TronçonStatus.Built),
       [TronçonStatus.Building]: length(TronçonStatus.Building),
       [TronçonStatus.Planned]: length(TronçonStatus.Planned),
       [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
-      [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
       [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
+      [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
+    const total = _(t).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
     const [xmin, ymin, xmax, ymax] = bbox({
       type: "FeatureCollection",
       features: t,
@@ -177,16 +177,16 @@ export async function prepareData(): Promise<GlobalData> {
       .filter((f) => f.properties.status === status)
       .sumBy("properties.length");
   }
-  const total = _(tronçonsArray).map("properties.length").sum();
   const stats: LengthStats = {
     [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
     [TronçonStatus.Built]: length(TronçonStatus.Built),
     [TronçonStatus.Building]: length(TronçonStatus.Building),
     [TronçonStatus.Planned]: length(TronçonStatus.Planned),
     [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
-    [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
+    [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
   };
+  const total = _(tronçonsArray).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
 
   const globalStats: GlobalStats = {
     stats,
