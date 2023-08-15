@@ -126,11 +126,28 @@
 }
 
 .vif-detail-header {
+  position: relative;
   background-color: #f7f7f7;
   height: 64px;
   border-bottom: solid 0 #9f9e9e;
   border-radius: 20px 20px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-inline: 20px;
+}
+
+.vif-detail-header--segment {
   margin-bottom: 0;
+  justify-content: start;
+}
+
+.vif-detail-header--route {
+  margin-bottom: 56px;
+  justify-content: center;
+  .route-code--large {
+    transform: translateY(50%);
+  }
 }
 
 .vif-detail-content {
@@ -140,8 +157,21 @@
   margin-bottom: 40px;
 }
 
-.close-button {
-  color: black;
+.vif-detail--close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border: solid 1px #cfcfcf;
+  border-radius: 24px;
+  background-color: white;
+  content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon id='Shape' fill='%23505050' points='6.41421356 5 12.0710678 10.6568542 17.7279221 5 19.1421356 6.41421356 13.4852814 12.0710678 19.1421356 17.7279221 17.7279221 19.1421356 12.0710678 13.4852814 6.41421356 19.1421356 5 17.7279221 10.6568542 12.0710678 5 6.41421356'%3E%3C/polygon%3E%3C/svg%3E");
+  padding: 7px;
+}
+
+.vif-detail--close-button:hover {
+  background-color: #eee;
 }
 
 // Component: global-stats
@@ -155,8 +185,27 @@
 
 // Component: Route
 .route-code {
-  border-top: solid 1px #9f9e9e;
-  border-bottom: solid 1px #9f9e9e;
+  font-weight: 700;
+  color: black;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-code--small {
+  font-size: 1rem;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+}
+
+.route-code--large {
+  border-radius: 8px;
+  border: solid 2px #d7e0e3;
+  font-size: 1.8rem;
+  width: 56px;
+  height: 56px;
 }
 
 // Component: RouteList
@@ -264,9 +313,19 @@
 }
 
 // Component: Segment
-.segment-status-ruler {
+.segment--block {
+  * + * {
+    margin-top: 0px;
+  }
+}
+
+.segment--block + .segment--block {
+  margin-top: 20px;
+}
+
+.segment--status-ruler {
   width: 100%;
-  height: 12px;
+  height: 10px;
   border-radius: 6px;
 }
 
@@ -278,19 +337,4 @@
 .vif-about--logo {
   margin-inline: auto;
   width: 128px;
-}
-
-// Utility
-.close-button {
-  width: 40px;
-  height: 40px;
-  border: solid 1px #cfcfcf;
-  border-radius: 24px;
-  background-color: white;
-  content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon id='Shape' fill='%23505050' points='6.41421356 5 12.0710678 10.6568542 17.7279221 5 19.1421356 6.41421356 13.4852814 12.0710678 19.1421356 17.7279221 17.7279221 19.1421356 12.0710678 13.4852814 6.41421356 19.1421356 5 17.7279221 10.6568542 12.0710678 5 6.41421356'%3E%3C/polygon%3E%3C/svg%3E");
-  padding: 7px;
-}
-
-.close-button:hover {
-  background-color: #eee;
 }

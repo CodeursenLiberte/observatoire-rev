@@ -18,7 +18,7 @@ export default function RouteList({
           {Object.keys(routes).map((route) => (
             <button
               key={route}
-              className="button route-button"
+              className="button route-button route-code"
               onClick={() => setHash(`route/${route}`)}
               aria-pressed={level.level === "route" && level.props.code === route}
             >

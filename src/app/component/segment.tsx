@@ -10,35 +10,27 @@ export default function ({
 }) {
   return (
     <>
-      <nav className="level is-mobile vif-detail-header px-4">
-        <div className="level-left">
-          <div className="level-item">
-            <h3 className="title is-4">{segment.route}</h3>
-          </div>
-        </div>
-        <div className="level-item">
-          <h3 className="title is-4">{segment.commune}</h3>
-        </div>
-        <div className="level-right">
-          <a className="close-button" onClick={() => setHash("region")}></a>
-        </div>
-      </nav>
+      <div className="vif-detail-header vif-detail-header--segment">
+        <h3 className="route-code route-code--small">{segment.route}</h3>
+        <h3 className="is-size-4">{segment.commune}</h3>
+        <a className="vif-detail--close-button" onClick={() => setHash("region")}></a>
+      </div>
 
       <div className="vif-detail-content">
-        <div className="block">
-          <label className="label has-text-weight-light">Avancement</label>
-          <p className="title is-size-3 has-text-weight-bold">{statusLabel[segment.status]}</p>
+        <div className="segment--block">
+          <label className="has-text-weight-normal has-text-grey">Avancement</label>
+          <p className="is-size-4 has-text-weight-semibold">{statusLabel[segment.status]}</p>
           <div
-            className="segment-status-ruler"
+            className="segment--status-ruler"
             style={{ background: statusColor[segment.status] }}
           ></div>
         </div>
 
-        <div className="block">
-          <label className="label has-text-weight-light">
+        <div className="segment--block">
+          <label className="has-text-weight-normal has-text-grey">
             Collectivité responsable
           </label>
-          <p className="title is-4">
+          <p className="is-size-5 has-text-weight-semibold">
             {moaLabel[segment.typeMOA]} {segment.moa}
           </p>
         </div>
