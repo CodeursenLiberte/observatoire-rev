@@ -1,4 +1,4 @@
-import { FeatureCollection, LineString, MultiLineString } from "@turf/helpers";
+import { Feature, FeatureCollection, LineString, MultiLineString, Polygon } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
@@ -28,7 +28,6 @@ export enum TronçonStatus {
 export type TronçonProperties = {
   id: string;
   length: number;
-  departement: string | undefined;
   status: TronçonStatus;
   route: string;
   variant: boolean;
@@ -36,6 +35,10 @@ export type TronçonProperties = {
   typeMOA: TypeMOA;
   moa: string;
 };
+
+export type AdminExpressProperties = {
+  nom: string;
+}
 
 // It’s actually a geojson, with typed properties
 export type Tronçon = {
