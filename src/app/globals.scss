@@ -84,7 +84,7 @@
 
   .vif-detail {
     position: absolute;
-    top: -29px;
+    top: -30px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -202,6 +202,14 @@
   box-sizing: content-box;
   display: flex;
   flex-direction: row;
+}
+
+@media screen and (max-width: $desktop) {
+  // Tweak the main progress bar border on mobile
+  .vif-global-stats .progress-bar {
+    border-color: #f1ede2;
+    outline: solid 1px #ddd;
+  }
 }
 
 .progress-bar-part {
