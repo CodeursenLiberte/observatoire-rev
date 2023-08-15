@@ -3,9 +3,11 @@ import { RoutesMap } from "../types";
 
 export default function RouteList({
   routes,
+  level,
   setHash,
 }: {
   routes: RoutesMap;
+  level: Level;
   setHash: (hash: string) => void;
 }) {
   return (
@@ -18,6 +20,7 @@ export default function RouteList({
               key={route}
               className="button route-button"
               onClick={() => setHash(`route/${route}`)}
+              aria-pressed={level.level === "route" && level.props.code === route}
             >
               {route}
             </button>

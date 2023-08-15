@@ -68,7 +68,7 @@ export default function ({ data }: { data: GlobalData }) {
       />
       <div className="vif-panel">
         <GlobalStats globalStats={data.globalStats} />
-        <RouteList routes={data.routes} setHash={setHash} />
+        <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
         <div className="vif-detail">
           {currentDetail(level, data, setHash)}
