@@ -32,7 +32,8 @@ function setBounds(map: maplibregl.Map, level: Level, bounds: [number, number, n
 }
 
 function setActiveSegments(map: maplibregl.Map, level: Level) {
-  map.querySourceFeatures("vif").forEach((feature) => {
+  const features = map.querySourceFeatures("vif"); // querySourceFeatures depends on the current map viewport
+  features.forEach((feature) => {
     const active = isActive(level, feature);
     map.setFeatureState(
       {
@@ -58,6 +59,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [mapViewport, setMapViewport] = useState<null | LngLatBounds>(null);
   let hoveredSegment: null | string | number = null;
 
   useEffect(() => {
@@ -70,7 +72,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       style: `https://api.maptiler.com/maps/db0b0c2f-dcff-45fd-aa4d-0ddb0228e342/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
     })
       .on("load", () => {
-        setBounds(map.current, level, bounds);
         newMap
           .addSource("vif", {
             type: "geojson",
@@ -288,6 +289,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           newMap.moveLayer("Town labels");
           newMap.moveLayer("City labels");
         })
+      .on("moveend", () => { setMapViewport(newMap.getBounds()) })
       .on("click", () => setHash("region") )
       .on("click", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
@@ -317,26 +319,26 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             );
         }
         hoveredSegment = null;
+      });
+
+    newMap.once("idle", () => {
+      setMapReady(true);
     });
 
-    // TODO: find a better way to know if everything is loaded
-    setTimeout(() => setMapReady(true), 3000);
     map.current = newMap;
   });
 
   useEffect(() => {
     if (map.current !== null) {
-      setActiveSegments(map.current, level);
       setBounds(map.current, level, bounds);
     }
-  }, [level, bounds]);
+  }, [mapReady, level, bounds]);
 
   useEffect(() => {
     if (map.current !== null) {
       setActiveSegments(map.current, level);
-      setBounds(map.current, level, bounds);
     }
-  }, [mapReady]);
+  }, [mapViewport, level]);
 
   return <div ref={(el) => (mapContainer.current = el)} className="vif-map" />;
 }
