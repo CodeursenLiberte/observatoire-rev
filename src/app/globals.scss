@@ -171,6 +171,17 @@
   background-color: #eee;
 }
 
+// Element: generic block
+.vif--block {
+  * + * {
+    margin-top: 0px;
+  }
+}
+
+.vif--block + .vif--block {
+  margin-top: 20px;
+}
+
 // Component: global-stats
 .vif-global-stats {
   display: flex;
@@ -281,7 +292,7 @@
   height: 46px;
   border-radius: 29px;
   border: solid 6px #eaeae5;
-  box-sizing: content-box;  
+  box-sizing: content-box;
 }
 
 .progress-bar--parts {
@@ -343,16 +354,6 @@
 }
 
 // Component: Segment
-.segment--block {
-  * + * {
-    margin-top: 0px;
-  }
-}
-
-.segment--block + .segment--block {
-  margin-top: 20px;
-}
-
 .segment--status-ruler {
   width: 100%;
   height: 10px;

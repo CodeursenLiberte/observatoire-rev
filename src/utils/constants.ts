@@ -46,3 +46,20 @@ export const moaLabel = {
   [TypeMOA.EPCI]: "",
   [TypeMOA.Unknown]: "",
 };
+
+export const routeName = {
+  V1: ["Le Mesnil-Aubry", "Arpajon"],
+  V2: ["Aéroport Charles-de-Gaulle", "Vélizy-Villacoublay"],
+  V3: [
+    "Parc des Expositions Villepinte / Claye-Souilly",
+    "Maurepas – La Verrière",
+  ],
+  V4: ["Val d’Europe", "Cergy-Pontoise"],
+  V5: ["Pontault-Combault", "Poissy"],
+  V6: ["Tournan-en-Brie / Verneuil-l’Etang", "Cergy-Pontoise"],
+  V7: ["Saint-Fargeau-Ponthierry / Melun", "Mantes-la-Jolie"],
+  V8: ["Plaisir", "Paris"],
+  V9: ["Val d’Europe", "Saint-Nom-la-Bretèche"],
+  V10: ["Petite ceinture"],
+  V20: ["Grande ceinture"],
+};

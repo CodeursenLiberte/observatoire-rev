@@ -29,7 +29,7 @@ export default function ({
       </div>
 
       <div className="vif-detail-content">
-        <div className="segment--block">
+        <div className="vif--block">
           <label className="has-text-weight-normal has-text-grey">
             Avancement
           </label>
@@ -42,7 +42,7 @@ export default function ({
           ></div>
         </div>
 
-        <div className="segment--block">
+        <div className="vif--block">
           <label className="has-text-weight-normal has-text-grey">
             Collectivité responsable
           </label>
