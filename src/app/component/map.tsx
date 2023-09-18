@@ -17,8 +17,11 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   }
 }
 
-function setBounds(map: maplibregl.Map, level: Level, bounds: [number, number, number, number]) {
-  const paddingRatio = level.level === "segment" ? 4 : 10;
+function setBounds(
+  map: maplibregl.Map,
+  bounds: [number, number, number, number],
+  paddingRatio: number,
+) {
   const xPadding = map.getContainer().offsetWidth / paddingRatio;
   const yPadding = map.getContainer().offsetHeight / paddingRatio;
   map.fitBounds(bounds, {
@@ -328,9 +331,28 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
     map.current = newMap;
   });
 
+  const oldLevel = useRef<Level>(level);
+  const oldBounds = useRef<[number, number, number, number]>(bounds);
+
   useEffect(() => {
     if (map.current !== null) {
-      setBounds(map.current, level, bounds);
+      var toBounds = bounds;
+      var paddingRatio;
+
+      if (oldLevel.current.level === "segment" && level.level === "region") {
+        // When exiting a segment, only zoom out a bit, do not return to the whole region.
+        toBounds = oldBounds.current;
+        paddingRatio = 2.2;
+      } else if (level.level === "segment") {
+        paddingRatio = 4;
+      } else {
+        paddingRatio = 10;
+      }
+
+      setBounds(map.current, toBounds, paddingRatio);
+
+      oldLevel.current = level;
+      oldBounds.current = bounds;
     }
   }, [mapReady, level, bounds]);
 
