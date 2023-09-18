@@ -17,6 +17,20 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   }
 }
 
+function setBounds(map: maplibregl.Map, level: Level, bounds: [number, number, number, number]) {
+  const paddingRatio = level.level === "segment" ? 4 : 10;
+  const xPadding = map.getContainer().offsetWidth / paddingRatio;
+  const yPadding = map.getContainer().offsetHeight / paddingRatio;
+  map.fitBounds(bounds, {
+    padding: {
+      top: yPadding,
+      bottom: yPadding,
+      left: xPadding,
+      right: xPadding,
+    },
+  });
+}
+
 function setActiveSegments(map: maplibregl.Map, level: Level) {
   map.querySourceFeatures("vif").forEach((feature) => {
     const active = isActive(level, feature);
@@ -56,7 +70,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       style: `https://api.maptiler.com/maps/db0b0c2f-dcff-45fd-aa4d-0ddb0228e342/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
     })
       .on("load", () => {
-        newMap.fitBounds(new LngLatBounds(bounds));
+        setBounds(map.current, level, bounds);
         newMap
           .addSource("vif", {
             type: "geojson",
@@ -312,15 +326,15 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
 
   useEffect(() => {
     if (map.current !== null) {
-      map.current.fitBounds(bounds, { padding: 100 });
       setActiveSegments(map.current, level);
+      setBounds(map.current, level, bounds);
     }
   }, [level, bounds]);
 
   useEffect(() => {
     if (map.current !== null) {
       setActiveSegments(map.current, level);
-      map.current.fitBounds(bounds, { padding: 10 });
+      setBounds(map.current, level, bounds);
     }
   }, [mapReady]);
 

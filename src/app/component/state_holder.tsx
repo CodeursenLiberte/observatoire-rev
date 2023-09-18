@@ -40,22 +40,20 @@ export default function ({ data }: { data: GlobalData }) {
     if (level === "" || level === "region") {
       setBounds(data.globalBounds);
       setLevel({ level: "region" });
-    } else {
-      if (level === "route" && id !== null) {
-        const props = data.routes[id];
-        setBounds(props.bounds);
-        setLevel({ level: "route", props });
-      } else if (level === "segment") {
-        const tronçon = data.tronçons.features.find(
-          (f) => f.properties.id === id,
-        );
-        if (tronçon !== undefined && tronçon.bbox !== undefined) {
-          const [xmin, ymin, xmax, ymax] = tronçon.bbox;
-          setBounds([xmin, ymin, xmax, ymax]);
-          setLevel({ level: "segment", props: tronçon.properties });
-        } else {
-          console.warn("something weird", tronçon);
-        }
+    } else if (level === "route" && id !== null) {
+      const props = data.routes[id];
+      setBounds(props.bounds);
+      setLevel({ level: "route", props });
+    } else if (level === "segment") {
+      const tronçon = data.tronçons.features.find(
+        (f) => f.properties.id === id,
+      );
+      if (tronçon !== undefined && tronçon.bbox !== undefined) {
+        const [xmin, ymin, xmax, ymax] = tronçon.bbox;
+        setBounds([xmin, ymin, xmax, ymax]);
+        setLevel({ level: "segment", props: tronçon.properties });
+      } else {
+        console.warn("something weird", tronçon);
       }
     }
   }, [hash]);
