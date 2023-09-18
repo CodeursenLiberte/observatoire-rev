@@ -10,7 +10,11 @@ export default function GlobalStats({
   return (
     <section className="section vif-global-stats">
       <div className="vif-container">
-        <ProgressBar stats={globalStats.stats} total={globalStats.total} />
+        <ProgressBar
+          stats={globalStats.stats}
+          total={globalStats.total}
+          global={true}
+        />
       </div>
       <div className="vif-container vif-container--narrow">
         <h1 className="title is-size-3 has-text-centered has-text-weight-bold">

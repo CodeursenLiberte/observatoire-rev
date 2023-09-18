@@ -28,7 +28,7 @@ export default function RouteDetails({
         ></a>
       </div>
       <div className="vif-detail-content">
-        <ProgressBar stats={route.stats} total={route.total} />
+        <ProgressBar stats={route.stats} total={route.total} global={false} />
       </div>
     </>
   );
