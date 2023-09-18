@@ -54,6 +54,7 @@ export default function ProgressBar(props: Props) {
           {Math.round(part_ok)}%
         </div>
       </div>
+      <div className="title is-size-5 has-text-centered">Réalisation du plan vélo</div>
     </>
   );
 }
