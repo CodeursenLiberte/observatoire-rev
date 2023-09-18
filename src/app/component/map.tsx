@@ -274,6 +274,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           newMap.moveLayer("Town labels");
           newMap.moveLayer("City labels");
         })
+      .on("click", () => setHash("region") )
       .on("click", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
           setHash(`segment/${tronçon.features[0].id}`);
