@@ -1,6 +1,23 @@
 import { statusColor, statusLabel, moaLabel } from "@/utils/constants";
 import { TronçonProperties } from "../types";
 
+function blockingCommune(segment: TronçonProperties) {
+  if (segment.blockingCommune) {
+    return (
+      <div className="vif--block">
+        <label className="has-text-weight-normal has-text-grey">
+          Collectivité responsable du blocage
+        </label>
+        <p className="is-size-5 has-text-weight-semibold">
+          {segment.blockingCommune}
+        </p>
+      </div>
+    );
+  } else {
+    return "";
+  }
+}
+
 export default function ({
   segment,
   setHash,
@@ -29,7 +46,7 @@ export default function ({
       </div>
 
       <div className="vif-detail-content">
-        <div className="segment--block">
+        <div className="vif--block">
           <label className="has-text-weight-normal has-text-grey">
             Avancement
           </label>
@@ -42,14 +59,15 @@ export default function ({
           ></div>
         </div>
 
-        <div className="segment--block">
+        <div className="vif--block">
           <label className="has-text-weight-normal has-text-grey">
-            Collectivité responsable
+            Collectivité en charge de l’aménagement
           </label>
           <p className="is-size-5 has-text-weight-semibold">
             {moaLabel[segment.typeMOA]} {segment.moa}
           </p>
         </div>
+        {blockingCommune(segment)}
       </div>
     </>
   );

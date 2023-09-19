@@ -36,6 +36,12 @@
     width: 100%;
   }
 
+  .vif-map--logo {
+    top: 20px;
+    right: 20px;
+    width: 128px;
+  }
+
   .vif-panel {
     height: 100vh;
     overflow: scroll;
@@ -69,6 +75,12 @@
     width: 100%;
   }
 
+  .vif-map--logo {
+    top: 20px;
+    right: 20px;
+    width: 96px;
+  }
+
   .vif-panel {
     border-top: solid 1px #d8d7d3;
     position: relative;
@@ -86,6 +98,14 @@
     right: 0;
     margin: 0 auto;
   }
+}
+
+// Element: Map
+
+.vif-map--logo {
+  // margin-inline: auto;
+  z-index: 10;
+  position: absolute;
 }
 
 // Element: Panel
@@ -169,6 +189,17 @@
 
 .vif-detail--close-button:hover {
   background-color: #eee;
+}
+
+// Element: generic block
+.vif--block {
+  * + * {
+    margin-top: 0px;
+  }
+}
+
+.vif--block + .vif--block {
+  margin-top: 20px;
 }
 
 // Component: global-stats
@@ -281,7 +312,7 @@
   height: 46px;
   border-radius: 29px;
   border: solid 6px #eaeae5;
-  box-sizing: content-box;  
+  box-sizing: content-box;
 }
 
 .progress-bar--parts {
@@ -306,6 +337,7 @@
 
 .progress-bar--pointer {
   margin-inline: 6px;
+  margin-block-end: 8px;
 }
 
 .progress-bar--arrow {
@@ -342,16 +374,6 @@
 }
 
 // Component: Segment
-.segment--block {
-  * + * {
-    margin-top: 0px;
-  }
-}
-
-.segment--block + .segment--block {
-  margin-top: 20px;
-}
-
 .segment--status-ruler {
   width: 100%;
   height: 10px;
@@ -361,9 +383,4 @@
 // Component: About
 .vif-container--about {
   padding-bottom: 150px;
-}
-
-.vif-about--logo {
-  margin-inline: auto;
-  width: 128px;
 }

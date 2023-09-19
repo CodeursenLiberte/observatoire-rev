@@ -11,9 +11,9 @@ export const statusLabel = {
 };
 
 export const statusColor = {
-  [TronçonStatus.PreExisting]: "#60AE73",
-  [TronçonStatus.Built]: "#2ee35c",
-  [TronçonStatus.Building]: "#fff200",
+  [TronçonStatus.PreExisting]: "#4f9c5f",
+  [TronçonStatus.Built]: "#2ed546",
+  [TronçonStatus.Building]: "#8cdc4f",
   [TronçonStatus.Planned]: "#ff8400",
   [TronçonStatus.Blocked]: "#DA2F4C",
   [TronçonStatus.SecondPhase]: "#FFF",
@@ -23,11 +23,21 @@ export const statusColor = {
 export const fadedStatusColor = {
   [TronçonStatus.PreExisting]: "#a3d1af",
   [TronçonStatus.Built]: "#8aefa4",
-  [TronçonStatus.Building]: "#f0ea75",
+  [TronçonStatus.Building]: "#b7ec8a",
   [TronçonStatus.Planned]: "#f7b56e",
   [TronçonStatus.Blocked]: "#ea8696",
   [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#b3b3b3",
+};
+
+export const globalBarColor = {
+  [TronçonStatus.PreExisting]: statusColor[TronçonStatus.PreExisting],
+  [TronçonStatus.Built]: statusColor[TronçonStatus.Built],
+  [TronçonStatus.Building]: statusColor[TronçonStatus.Building],
+  [TronçonStatus.Planned]: statusColor[TronçonStatus.Unknown],
+  [TronçonStatus.Blocked]: statusColor[TronçonStatus.Unknown],
+  [TronçonStatus.SecondPhase]: "#FFF",
+  [TronçonStatus.Unknown]: statusColor[TronçonStatus.Unknown],
 };
 
 export const moaLabel = {
@@ -35,4 +45,21 @@ export const moaLabel = {
   [TypeMOA.Departement]: "Département",
   [TypeMOA.EPCI]: "",
   [TypeMOA.Unknown]: "",
+};
+
+export const routeName: { [index: string]: string[] } = {
+  V1: ["Le Mesnil-Aubry", "Arpajon"],
+  V2: ["Aéroport Charles-de-Gaulle", "Vélizy-Villacoublay"],
+  V3: [
+    "Parc des Expositions Villepinte / Claye-Souilly",
+    "Maurepas – La Verrière",
+  ],
+  V4: ["Val d’Europe", "Cergy-Pontoise"],
+  V5: ["Pontault-Combault", "Poissy"],
+  V6: ["Tournan-en-Brie / Verneuil-l’Etang", "Cergy-Pontoise"],
+  V7: ["Saint-Fargeau-Ponthierry / Melun", "Mantes-la-Jolie"],
+  V8: ["Plaisir", "Paris"],
+  V9: ["Val d’Europe", "Saint-Nom-la-Bretèche"],
+  V10: ["Petite ceinture"],
+  V20: ["Grande ceinture"],
 };

@@ -1,10 +1,4 @@
-import {
-  Feature,
-  FeatureCollection,
-  LineString,
-  MultiLineString,
-  Polygon,
-} from "@turf/helpers";
+import { FeatureCollection, LineString } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
@@ -19,6 +13,7 @@ export type OriginalProperties = {
   TYPE_MOA: string;
   PHASE: string;
   "Au point mort": boolean | null;
+  "Collectivité responsable du blocage": string | null;
 };
 
 export enum TronçonStatus {
@@ -40,6 +35,7 @@ export type TronçonProperties = {
   commune: string | undefined;
   typeMOA: TypeMOA;
   moa: string;
+  blockingCommune: string | null;
 };
 
 export type AdminExpressProperties = {

@@ -5,7 +5,6 @@ import {
   lineString,
   LineString,
   MultiPolygon,
-  multiPolygon,
 } from "@turf/helpers";
 import _ from "lodash";
 import {
@@ -119,6 +118,8 @@ export async function prepareData(): Promise<GlobalData> {
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
+        blockingCommune:
+          feature.properties["Collectivité responsable du blocage"],
       };
 
       return lineString(feature.geometry.coordinates, properties, {
@@ -205,10 +206,4 @@ export async function prepareData(): Promise<GlobalData> {
     tronçons,
     globalBounds,
   };
-}
-function booleanIntersects(
-  feature: Feature<LineString, OriginalProperties>,
-  bbox: import("@turf/helpers").BBox | undefined,
-) {
-  throw new Error("Function not implemented.");
 }

@@ -17,8 +17,26 @@ function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   }
 }
 
+function setBounds(
+  map: maplibregl.Map,
+  bounds: [number, number, number, number],
+  paddingRatio: number,
+) {
+  const xPadding = map.getContainer().offsetWidth / paddingRatio;
+  const yPadding = map.getContainer().offsetHeight / paddingRatio;
+  map.fitBounds(bounds, {
+    padding: {
+      top: yPadding,
+      bottom: yPadding,
+      left: xPadding,
+      right: xPadding,
+    },
+  });
+}
+
 function setActiveSegments(map: maplibregl.Map, level: Level) {
-  map.querySourceFeatures("vif").forEach((feature) => {
+  const features = map.querySourceFeatures("vif"); // querySourceFeatures depends on the current map viewport
+  features.forEach((feature) => {
     const active = isActive(level, feature);
     map.setFeatureState(
       {
@@ -44,6 +62,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
   const mapContainer = useRef<null | HTMLElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [mapViewport, setMapViewport] = useState<null | LngLatBounds>(null);
   let hoveredSegment: null | string | number = null;
 
   useEffect(() => {
@@ -56,7 +75,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       style: `https://api.maptiler.com/maps/db0b0c2f-dcff-45fd-aa4d-0ddb0228e342/style.json?key=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`,
     })
       .on("load", () => {
-        newMap.fitBounds(new LngLatBounds(bounds));
         newMap
           .addSource("vif", {
             type: "geojson",
@@ -274,6 +292,8 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           newMap.moveLayer("Town labels");
           newMap.moveLayer("City labels");
         })
+      .on("moveend", () => { setMapViewport(newMap.getBounds()) })
+      .on("click", () => setHash("region") )
       .on("click", "base-outer-white", (tronçon) => {
         if (tronçon.features !== undefined && tronçon.features.length > 0) {
           setHash(`segment/${tronçon.features[0].id}`);
@@ -302,26 +322,51 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             );
         }
         hoveredSegment = null;
+      });
+
+    newMap.once("idle", () => {
+      setMapReady(true);
     });
 
-    // TODO: find a better way to know if everything is loaded
-    setTimeout(() => setMapReady(true), 3000);
     map.current = newMap;
   });
 
+  const oldLevel = useRef<Level>(level);
+  const oldBounds = useRef<[number, number, number, number]>(bounds);
+
   useEffect(() => {
     if (map.current !== null) {
-      map.current.fitBounds(bounds, { padding: 100 });
-      setActiveSegments(map.current, level);
+      var toBounds = bounds;
+      var paddingRatio;
+
+      if (oldLevel.current.level === "segment" && level.level === "region") {
+        // When exiting a segment, only zoom out a bit, do not return to the whole region.
+        toBounds = oldBounds.current;
+        paddingRatio = 2.2;
+      } else if (level.level === "segment") {
+        paddingRatio = 4;
+      } else {
+        paddingRatio = 10;
+      }
+
+      setBounds(map.current, toBounds, paddingRatio);
+
+      oldLevel.current = level;
+      oldBounds.current = bounds;
     }
-  }, [level, bounds]);
+  }, [mapReady, level, bounds]);
 
   useEffect(() => {
     if (map.current !== null) {
       setActiveSegments(map.current, level);
-      map.current.fitBounds(bounds, { padding: 10 });
     }
-  }, [mapReady]);
+  }, [mapViewport, level]);
 
-  return <div ref={(el) => (mapContainer.current = el)} className="vif-map" />;
+  return (
+    <div ref={(el) => (mapContainer.current = el)} className="vif-map">
+      <figure className="vif-map--logo">
+        <img src="logo_cvidf.png" alt="Logo du collectif vélo Île-de-France" />
+      </figure>
+    </div>
+  );
 }
