@@ -5,7 +5,6 @@ import {
   lineString,
   LineString,
   MultiPolygon,
-  multiPolygon,
 } from "@turf/helpers";
 import _ from "lodash";
 import {

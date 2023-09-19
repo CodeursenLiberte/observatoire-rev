@@ -1,10 +1,4 @@
-import {
-  Feature,
-  FeatureCollection,
-  LineString,
-  MultiLineString,
-  Polygon,
-} from "@turf/helpers";
+import { FeatureCollection, LineString } from "@turf/helpers";
 
 export type Bounds = [number, number, number, number];
 
