@@ -36,6 +36,12 @@
     width: 100%;
   }
 
+  .vif-map--logo {
+    top: 20px;
+    right: 20px;
+    width: 128px;
+  }
+
   .vif-panel {
     height: 100vh;
     overflow: scroll;
@@ -69,6 +75,12 @@
     width: 100%;
   }
 
+  .vif-map--logo {
+    top: 20px;
+    right: 20px;
+    width: 96px;
+  }
+
   .vif-panel {
     border-top: solid 1px #d8d7d3;
     position: relative;
@@ -86,6 +98,14 @@
     right: 0;
     margin: 0 auto;
   }
+}
+
+// Element: Map
+
+.vif-map--logo {
+  // margin-inline: auto;
+  z-index: 10;
+  position: absolute;
 }
 
 // Element: Panel
@@ -363,9 +383,4 @@
 // Component: About
 .vif-container--about {
   padding-bottom: 150px;
-}
-
-.vif-about--logo {
-  margin-inline: auto;
-  width: 128px;
 }

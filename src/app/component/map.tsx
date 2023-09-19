@@ -362,5 +362,11 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
     }
   }, [mapViewport, level]);
 
-  return <div ref={(el) => (mapContainer.current = el)} className="vif-map" />;
+  return (
+    <div ref={(el) => (mapContainer.current = el)} className="vif-map">
+      <figure className="vif-map--logo">
+        <img src="logo_cvidf.png" alt="Logo du collectif vélo Île-de-France" />
+      </figure>
+    </div>
+  );
 }
