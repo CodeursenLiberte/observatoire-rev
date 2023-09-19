@@ -3,7 +3,7 @@ import { RouteStats } from "../types";
 import ProgressBar from "./progress_bar";
 import { routeName } from "@/utils/constants";
 
-function routeDescription(name: [string]): string {
+function routeDescription(name: string[]) {
   if (name.length === 1) {
     return (
       <span>

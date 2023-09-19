@@ -47,7 +47,7 @@ export const moaLabel = {
   [TypeMOA.Unknown]: "",
 };
 
-export const routeName = {
+export const routeName: { [index: string]: string[] } = {
   V1: ["Le Mesnil-Aubry", "Arpajon"],
   V2: ["Aéroport Charles-de-Gaulle", "Vélizy-Villacoublay"],
   V3: [
