@@ -205,9 +205,3 @@ export async function prepareData(): Promise<GlobalData> {
     globalBounds,
   };
 }
-function booleanIntersects(
-  feature: Feature<LineString, OriginalProperties>,
-  bbox: import("@turf/helpers").BBox | undefined,
-) {
-  throw new Error("Function not implemented.");
-}
