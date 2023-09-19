@@ -118,6 +118,8 @@ export async function prepareData(): Promise<GlobalData> {
         ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
+        blockingCommune:
+          feature.properties["Collectivité responsable du blocage"],
       };
 
       return lineString(feature.geometry.coordinates, properties, {

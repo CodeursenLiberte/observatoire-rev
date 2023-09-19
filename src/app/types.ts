@@ -13,6 +13,7 @@ export type OriginalProperties = {
   TYPE_MOA: string;
   PHASE: string;
   "Au point mort": boolean | null;
+  "Collectivité responsable du blocage": string | null;
 };
 
 export enum TronçonStatus {
@@ -34,6 +35,7 @@ export type TronçonProperties = {
   commune: string | undefined;
   typeMOA: TypeMOA;
   moa: string;
+  blockingCommune: string | null;
 };
 
 export type AdminExpressProperties = {
