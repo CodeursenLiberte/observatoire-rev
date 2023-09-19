@@ -14,7 +14,7 @@ function blockingCommune(segment: TronçonProperties) {
       </div>
     );
   } else {
-    return "";
+    return null;
   }
 }
 
