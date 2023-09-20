@@ -106,16 +106,20 @@ export async function prepareData(): Promise<GlobalData> {
             : feature.properties.LONGUEUR,
         commune: commune?.properties.nom.replace(" Arrondissement", ""),
         route: feature.properties.NUM_LIGNE,
-        variant:
-          feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
-          feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE ===
-            "Variante initiale",
         status: status(
           feature.properties.NIVEAU_VALID_AMENAG || "",
           feature.properties.APPORT_RERV || "",
           feature.properties.PHASE,
           feature.properties["Au point mort"] || false,
         ),
+        variant:
+          !feature.properties["Au point mort"] &&
+          !feature.properties.APPORT_RERV == "Aménagement prééxistant" &&
+          feature.properties.PHASE === "1 - 2025" &&
+          feature.properties.NIVEAU_VALID_AMENAG === "A l'étude" &&
+          ["Variante", "Variante initiale"].includes(
+            feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
+          ),
         typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
         moa: feature.properties.NOM_MOA || "",
         blockingCommune:
