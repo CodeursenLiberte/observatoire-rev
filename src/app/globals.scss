@@ -103,9 +103,12 @@
 // Element: Map
 
 .vif-map--logo {
-  // margin-inline: auto;
   z-index: 10;
   position: absolute;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  padding: 4px;
 }
 
 // Element: Panel
