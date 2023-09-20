@@ -233,12 +233,14 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   TronçonStatus.PreExisting, 3,
                   TronçonStatus.Built, 3,
                   TronçonStatus.Building, 3,
+                  TronçonStatus.Blocked, 3,
                   2,
                 ],
                 15, [ "match", ["get", "status"],
                   TronçonStatus.PreExisting, 10,
                   TronçonStatus.Built, 10,
                   TronçonStatus.Building, 10,
+                  TronçonStatus.Blocked, 10,
                   6,
                 ],
               ],
@@ -263,12 +265,14 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   TronçonStatus.PreExisting, 3,
                   TronçonStatus.Built, 3,
                   TronçonStatus.Building, 3,
+                  TronçonStatus.Blocked, 3,
                   2,
                 ],
                 15, [ "match", ["get", "status"],
                   TronçonStatus.PreExisting, 10,
                   TronçonStatus.Built, 10,
                   TronçonStatus.Building, 10,
+                  TronçonStatus.Blocked, 10,
                   6,
                 ],
               ],
@@ -346,7 +350,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       } else if (level.level === "segment") {
         paddingRatio = 4;
       } else {
-        paddingRatio = 10;
+        paddingRatio = 1000;
       }
 
       setBounds(map.current, toBounds, paddingRatio);
