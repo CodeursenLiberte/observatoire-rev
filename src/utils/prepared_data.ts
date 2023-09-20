@@ -114,7 +114,7 @@ export async function prepareData(): Promise<GlobalData> {
         ),
         variant:
           !feature.properties["Au point mort"] &&
-          !feature.properties.APPORT_RERV == "Aménagement prééxistant" &&
+          feature.properties.APPORT_RERV !== "Aménagement prééxistant" &&
           feature.properties.PHASE === "1 - 2025" &&
           feature.properties.NIVEAU_VALID_AMENAG === "A l'étude" &&
           ["Variante", "Variante initiale"].includes(
