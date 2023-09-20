@@ -131,9 +131,13 @@ export async function prepareData(): Promise<GlobalData> {
       });
     });
 
-  const tronçons = featureCollection(tronçonsArray);
-  const [xmin, ymin, xmax, ymax] = bbox(tronçons);
+  const phase1Tronçons = tronçonsArray.filter(
+    (feature) => feature.properties.status !== TronçonStatus.SecondPhase,
+  );
+  const [xmin, ymin, xmax, ymax] = bbox(featureCollection(phase1Tronçons));
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
+
+  const tronçons = featureCollection(tronçonsArray);
 
   const routeList = [
     "V1",

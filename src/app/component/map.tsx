@@ -350,7 +350,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       } else if (level.level === "segment") {
         paddingRatio = 4;
       } else {
-        paddingRatio = 10;
+        paddingRatio = 1000;
       }
 
       setBounds(map.current, toBounds, paddingRatio);
