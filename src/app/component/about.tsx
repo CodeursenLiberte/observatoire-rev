@@ -15,11 +15,8 @@ export default function About() {
           appelé&nbsp;RER&nbsp;V.
         </p>
 
-        <p className="block has-text-centered">
-          Les données affichées sont mises à la disposition du public par la
-          région <span style={{ whiteSpace: "nowrap" }}>Île-de-France</span> et
-          régulièrement mises à&nbsp;jour.
-        </p>
+        
+    
 
         <p className="block has-text-centered">
           Réalisé par{" "}
