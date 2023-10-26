@@ -5,7 +5,7 @@ import _ from "lodash";
 export const statusLabel = {
   [TronçonStatus.PreExisting]: "Préexistant au 01/01/2022",
   [TronçonStatus.Built]: "Livré",
-  [TronçonStatus.Building]: "En travaux",
+  [TronçonStatus.Building]: "Travaux en cours ou à venir",
   [TronçonStatus.Planned]: "À l'étude",
   [TronçonStatus.Blocked]: "Bloqué",
   [TronçonStatus.SecondPhase]: "Phase 2 (2030)",
@@ -15,7 +15,7 @@ export const statusLabel = {
 export const shortStatusLabel = {
   [TronçonStatus.PreExisting]: "Préexistant",
   [TronçonStatus.Built]: "Livré",
-  [TronçonStatus.Building]: "En travaux",
+  [TronçonStatus.Building]: "Travaux en cours ou à venir",
   [TronçonStatus.Planned]: "À l'étude",
   [TronçonStatus.Blocked]: "Bloqué",
   [TronçonStatus.SecondPhase]: "Phase 2",
