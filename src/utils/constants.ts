@@ -23,14 +23,14 @@ export const shortStatusLabel = {
 };
 
 export const statusColor = {
-  [TronçonStatus.PreExisting]: "#B6D2BE",
-  [TronçonStatus.Built]: "#0BBC3F",
+  [TronçonStatus.PreExisting]: "#B0C7B6",
+  [TronçonStatus.Built]: "#0AB532",
   [TronçonStatus.Building]: "#79E70F",
-  [TronçonStatus.Planned]: "#7FCCDD",
-  [TronçonStatus.Blocked]: "#E95353",
+  [TronçonStatus.Planned]: "#84D2FF",
+  [TronçonStatus.Blocked]: "#DA2F4C",
   [TronçonStatus.SecondPhase]: "#FFF",
-  [TronçonStatus.Unknown]: "#E7E7E7",
-  ["Background"]: "#ddddd5",
+  [TronçonStatus.Unknown]: "#BAB7B3",
+  ["Background"]: "#ddddd5",  
 };
 
 export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.2).hex());
