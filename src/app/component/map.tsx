@@ -5,7 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { fadedStatusColor, borderStatusColor, statusColor, statusIndex } from "@/utils/constants";
+import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor, statusIndex } from "@/utils/constants";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -44,8 +44,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
         source: "vif",
       },
       {
-        inactive: !active,
-        "active-outline": active && level.level !== "region",
+        inactive: !active
       },
     );
   });
@@ -125,7 +124,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 10, 7,
                 15, 16
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", borderStatusColor] ],
+              "line-color": [ "get", ["get", "status"], ["literal", fadedBorderStatusColor] ],
             },
             layout: {
               "line-join": "round",
@@ -137,15 +136,15 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             type: "line",
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 8,
-                15, 20
+                10, 7,
+                15, 16
               ],
-              "line-color": "#4c4c4c",
+              "line-color": [ "get", ["get", "status"], ["literal", borderStatusColor] ],
               "line-opacity": [
                 "case",
-                ["boolean", ["feature-state", "active-outline"], false],
-                1,
+                ["boolean", ["feature-state", "inactive"], false],
                 0.0,
+                1,
               ],
             },
             layout: {
@@ -179,7 +178,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ["zoom"],
                 // at zoom level 10, the line-width is either 4 or 3
                 10, [ "match", ["get", "status"],
-                  TronçonStatus.Planned, 2,
+                  TronçonStatus.Planned, 2.5,
                   4,
                 ],
                 15, [ "match", ["get", "status"],
@@ -205,7 +204,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ["zoom"],
                 // at zoom level 10, the line-width is either 5 or 3
                 10, [ "match", ["get", "status"],
-                  TronçonStatus.Planned, 2,
+                  TronçonStatus.Planned, 2.5,
                   4,
                 ],
                 15, [ "match", ["get", "status"],
