@@ -5,7 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { fadedStatusColor, statusColor, statusIndex } from "@/utils/constants";
+import { fadedStatusColor, borderStatusColor, statusColor, statusIndex } from "@/utils/constants";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -117,22 +117,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-cap": "round",
             },
           })
-          .addLayer({ id: "variant-outline-grey",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 6,
-                15, 16
-              ],
-              "line-color": "#7f7f7f",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["get", "variant"],
-          })
           .addLayer({ id: "outline-grey-inactive",
             source: "vif",
             type: "line",
@@ -141,13 +125,12 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 10, 7,
                 15, 16
               ],
-              "line-color": "#7f7f7f",
+              "line-color": [ "get", ["get", "status"], ["literal", borderStatusColor] ],
             },
             layout: {
               "line-join": "round",
               "line-cap": "round",
             },
-            filter: ["!", ["get", "variant"]],
           })
           .addLayer({ id: "outline-grey-active",
             source: "vif",
@@ -170,22 +153,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-cap": "round",
             },
           })
-          .addLayer({ id: "variant-inner-white",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 5,
-                15, 10
-              ],
-              "line-color": "#fff",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["get", "variant"],
-          })
           .addLayer({ id: "inner-white",
             source: "vif",
             type: "line",
@@ -200,26 +167,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-join": "round",
               "line-cap": "round",
             },
-            filter: ["!", ["get", "variant"]],
-          })
-          .addLayer({ id: "variantes",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 2,
-                15, 4
-              ],
-              "line-dasharray": [2, 1],
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.5,
-                1,
-              ],
-              "line-color": statusColor[TronçonStatus.Planned],
-            },
-            filter: ["get", "variant"],
+            filter: ["==", ["get", "status"], TronçonStatus.Planned],
           })
           .addLayer({ id: "couleur-inactive",
             source: "vif",
@@ -231,20 +179,12 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ["zoom"],
                 // at zoom level 10, the line-width is either 4 or 3
                 10, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 4,
-                  TronçonStatus.Built, 4,
-                  TronçonStatus.Building, 4,
-                  TronçonStatus.Blocked, 4,
-                  TronçonStatus.Planned, 4,
-                  3,
+                  TronçonStatus.Planned, 2,
+                  4,
                 ],
                 15, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 10,
-                  TronçonStatus.Built, 10,
-                  TronçonStatus.Building, 10,
-                  TronçonStatus.Blocked, 10,
-                  TronçonStatus.Planned, 10,
-                  6,
+                  TronçonStatus.Planned, 3,
+                  10,
                 ],
               ],
               "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
@@ -254,7 +194,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-join": "round",
               "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
-            filter: ["!", ["get", "variant"]],
           })
           .addLayer({ id: "couleur-active",
             source: "vif",
@@ -266,20 +205,12 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ["zoom"],
                 // at zoom level 10, the line-width is either 5 or 3
                 10, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 4,
-                  TronçonStatus.Built, 4,
-                  TronçonStatus.Building, 4,
-                  TronçonStatus.Blocked, 4,
-                  TronçonStatus.Planned, 4,
-                  3,
+                  TronçonStatus.Planned, 2,
+                  4,
                 ],
                 15, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 10,
-                  TronçonStatus.Built, 10,
-                  TronçonStatus.Building, 10,
-                  TronçonStatus.Blocked, 10,
-                  TronçonStatus.Planned, 10,
-                  6,
+                  TronçonStatus.Planned, 3,
+                  10,
                 ],
               ],
               "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
@@ -297,7 +228,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-join": "round",
               "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
-            filter: ["!", ["get", "variant"]],
           });
 
           newMap.moveLayer("Town labels");

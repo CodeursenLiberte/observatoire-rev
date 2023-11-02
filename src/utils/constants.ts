@@ -34,6 +34,17 @@ export const statusColor = {
 };
 
 export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.2).hex());
+
+export const borderStatusColor = {
+  [TronçonStatus.PreExisting]: "#195E2A",
+  [TronçonStatus.Built]: "#808080",
+  [TronçonStatus.Building]: "#808080",
+  [TronçonStatus.Planned]: "#808080",
+  [TronçonStatus.Blocked]: "#808080",
+  [TronçonStatus.SecondPhase]: "#808080",
+  [TronçonStatus.Unknown]: "#808080"
+};
+
 export const statusIndex = {
   [TronçonStatus.PreExisting]: 2,
   [TronçonStatus.Built]: 5,
