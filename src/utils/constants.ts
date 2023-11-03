@@ -30,22 +30,33 @@ export const statusColor = {
   [TronçonStatus.Blocked]: "#DA2F4C",
   [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#BAB7B3",
-  ["Background"]: "#ddddd5",  
+  ["Background"]: "#ddddd5",
 };
 
-export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.3).hex());
+export const fadedStatusColor = {
+  [TronçonStatus.PreExisting]: "#bed3c4",
+  [TronçonStatus.Built]: "#9ad2a7",
+  [TronçonStatus.Building]: "#c3e1a6",
+  [TronçonStatus.Planned]: "#b4d0e0",
+  [TronçonStatus.Blocked]: "#d17484",
+  [TronçonStatus.SecondPhase]: "#FFF",
+  [TronçonStatus.Unknown]: "#dad7d4",
+  ["Background"]: "#ddddd5",
+};
+
+//export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.3).hex());
 
 export const borderStatusColor = {
   [TronçonStatus.PreExisting]: "#195E2A",
-  [TronçonStatus.Built]: "#808080",
-  [TronçonStatus.Building]: "#808080",
-  [TronçonStatus.Planned]: "#808080",
-  [TronçonStatus.Blocked]: "#808080",
-  [TronçonStatus.SecondPhase]: "#808080",
-  [TronçonStatus.Unknown]: "#808080"
+  [TronçonStatus.Built]: "#666666",
+  [TronçonStatus.Building]: "#666666",
+  [TronçonStatus.Planned]: "#666666",
+  [TronçonStatus.Blocked]: "#666666",
+  [TronçonStatus.SecondPhase]: "#666666",
+  [TronçonStatus.Unknown]: "#666666"
 };
 
-export const fadedBorderStatusColor = _.mapValues(borderStatusColor, c => "#ccc");
+export const fadedBorderStatusColor = _.mapValues(borderStatusColor, c => "#d9d9d9");
 
 
 export const statusIndex = {
