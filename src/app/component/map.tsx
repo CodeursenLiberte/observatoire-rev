@@ -6,7 +6,7 @@ import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
 import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
-import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus, showWhen, hideWhen} from "../style_helpers";
+import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus, showWhen, hideWhen, width, widthFromStatus} from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -84,20 +84,14 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           .addLayer({
             ...baseLayer("base-outer-white"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 10,
-                15, 30,
-              ],
+              ...width(10, 30),
               "line-color": "#fff",
             }
           })
           .addLayer({
             ...baseLayer("hover-overlay"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 10,
-                15, 30,
-              ],
+              ...width(10, 30),
               "line-color": "#aaa",
               ...showWhen("hover")
             },
@@ -105,20 +99,14 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           .addLayer({
             ...baseLayer("outline-grey-inactive"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 7,
-                15, 16
-              ],
+              ...width(7, 16),
               ...colorFromStatus(fadedBorderStatusColor),
             },
           })
           .addLayer({
             ...baseLayer("outline-grey-active"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 7,
-                15, 16
-              ],
+              ...width(7, 16),
               ...colorFromStatus(borderStatusColor),
               ...hideWhen("inactive")
             },
@@ -126,10 +114,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           .addLayer({
             ...baseLayer("inner-white"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 5,
-                15, 10
-              ],
+              ...width(5, 10),
               "line-color": "#fff",
             },
           })
@@ -137,19 +122,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             ...baseLayer("couleur-inactive"),
             ...exceptedVariants,
             paint: {
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
-                  4,
-                ],
-                15, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
-                  10,
-                ],
-              ],
+              ...widthFromStatus(4, 2.5, 10, 3),
               ...colorFromStatus(fadedStatusColor),
               ...showWhen("inactive")
             },
@@ -158,29 +131,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             ...baseLayer("couleur-active"),
             ...exceptedVariants,
             paint: {
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // at zoom level 10, the line-width is either 5 or 3
-                10, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
-                  4,
-                ],
-                15, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
-                  10,
-                ],
-              ],
+              ...widthFromStatus(4, 2.5, 10, 3),
               ...colorFromStatus(statusColor),
-              // We cannot use feature-state in filter, only in paint
-              // Hence we hide the active layer with opacity
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.0,
-                1,
-              ],
+              ...hideWhen("inactive")
             },
           })
           .addLayer({
@@ -188,19 +141,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             ...onlyVariants,
             paint: {
               "line-dasharray" : [1, 1],
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
-                  4,
-                ],
-                15, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
-                  10,
-                ],
-              ],
+              ...widthFromStatus(4, 2.5, 10, 3),
               ...colorFromStatus(fadedStatusColor),
             },
           })
@@ -209,20 +150,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             ...onlyVariants,
             paint: {
               "line-dasharray" : [1, 1],
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // at zoom level 10, the line-width is either 5 or 3
-                10, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
-                  4,
-                ],
-                15, [ "match", ["get", "status"],
-                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
-                  10,
-                ],
-              ],
+              ...widthFromStatus(4, 2.5, 10, 3),
               ...colorFromStatus(statusColor),
               ...hideWhen("inactive")
             },
