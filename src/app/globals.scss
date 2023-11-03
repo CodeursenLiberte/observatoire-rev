@@ -415,6 +415,10 @@
 }
 
 // Component: Legend
+.legend-group + .legend-group {
+  margin-block-start: 12px;
+}
+
 .legend-value {
   width: 32px;
   display: inline-block;

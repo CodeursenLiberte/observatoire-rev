@@ -39,21 +39,25 @@ export default function Legend({
 }) {
   return (
     <>
-      <LegendItem
-        stats={stats}
-        total={total}
-        status={TronçonStatus.PreExisting}
-      />
-      <LegendItem stats={stats} total={total} status={TronçonStatus.Built} />
-      <LegendItem stats={stats} total={total} status={TronçonStatus.Building} />
-      <LegendItem stats={stats} total={total} status={TronçonStatus.Planned} />
-      <LegendItem stats={stats} total={total} status={TronçonStatus.Blocked} />
-      <LegendItem stats={stats} total={total} status={TronçonStatus.Unknown} />
-      <LegendItem
-        stats={stats}
-        total={total}
-        status={TronçonStatus.SecondPhase}
-      />
+      <div className="legend-group">
+        <LegendItem
+          stats={stats}
+          total={total}
+          status={TronçonStatus.PreExisting}
+        />
+        <LegendItem stats={stats} total={total} status={TronçonStatus.Built} />
+        <LegendItem stats={stats} total={total} status={TronçonStatus.Building} />
+        <LegendItem stats={stats} total={total} status={TronçonStatus.Planned} />
+        <LegendItem stats={stats} total={total} status={TronçonStatus.Blocked} />
+        <LegendItem stats={stats} total={total} status={TronçonStatus.Unknown} />
+      </div>
+      <div className="legend-group">
+        <LegendItem
+          stats={stats}
+          total={total}
+          status={TronçonStatus.SecondPhase}
+        />
+      </div>
     </>
   );
 }
