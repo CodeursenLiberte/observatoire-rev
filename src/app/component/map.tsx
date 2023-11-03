@@ -6,7 +6,7 @@ import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
 import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
-import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus } from "../style_helpers";
+import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus, showWhen, hideWhen} from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -99,12 +99,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 15, 30,
               ],
               "line-color": "#aaa",
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "hover"], false],
-                1,
-                0,
-              ],
+              ...showWhen("hover")
             },
           })
           .addLayer({
@@ -125,12 +120,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 15, 16
               ],
               ...colorFromStatus(borderStatusColor),
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.0,
-                1,
-              ],
+              ...hideWhen("inactive")
             },
           })
           .addLayer({
@@ -234,14 +224,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ],
               ],
               ...colorFromStatus(statusColor),
-              // We cannot use feature-state in filter, only in paint
-              // Hence we hide the active layer with opacity
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.0,
-                1,
-              ],
+              ...hideWhen("inactive")
             },
           });
 
