@@ -165,8 +165,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             layout: {
               "line-join": "round",
               "line-cap": "round",
-            },
-            filter: ["match", ["get", "status"], [TronçonStatus.Planned, TronçonStatus.Blocked], true, false],
+            }
           })
           .addLayer({ id: "couleur-inactive",
             source: "vif",
@@ -192,6 +191,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-join": "round",
               "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
+            filter: ["!", ["get", "variant"]],
           })
           .addLayer({ id: "couleur-active",
             source: "vif",
@@ -226,6 +226,70 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               "line-join": "round",
               "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
+            filter: ["!", ["get", "variant"]],
+          })
+          .addLayer({ id: "couleur-inactive-variant",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-dasharray" : [1, 1],
+              "line-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                10, [ "match", ["get", "status"],
+                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
+                  4,
+                ],
+                15, [ "match", ["get", "status"],
+                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
+                  10,
+                ],
+              ],
+              "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
+            },
+            layout: {
+              "line-cap": "butt",
+              "line-join": "round",
+              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
+            },
+            filter: ["get", "variant"],
+          })
+          .addLayer({ id: "couleur-active-variant",
+            source: "vif",
+            type: "line",
+            paint: {
+              "line-dasharray" : [1, 1],
+              "line-width": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                // at zoom level 10, the line-width is either 5 or 3
+                10, [ "match", ["get", "status"],
+                  [TronçonStatus.Planned, TronçonStatus.Blocked], 2.5,
+                  4,
+                ],
+                15, [ "match", ["get", "status"],
+                  [TronçonStatus.Planned, TronçonStatus.Blocked], 3,
+                  10,
+                ],
+              ],
+              "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
+              // We cannot use feature-state in filter, only in paint
+              // Hence we hide the active layer with opacity
+              "line-opacity": [
+                "case",
+                ["boolean", ["feature-state", "inactive"], false],
+                0.0,
+                1,
+              ],
+            },
+            layout: {
+              "line-cap": "butt",
+              "line-join": "round",
+              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
+            },
+            filter: ["get", "variant"],
           });
 
           newMap.moveLayer("Town labels");
