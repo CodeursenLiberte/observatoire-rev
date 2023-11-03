@@ -30,6 +30,37 @@ function LegendItem({
   );
 }
 
+function SecondPhaseLegendItem() {
+  const style = {
+    background: statusColor[TronçonStatus.SecondPhase],
+    border: "solid .5px #7f7f7f",
+  };
+
+  return (
+    <div>
+      <span className="legend-value"></span>
+      <span style={style} className="legend-color" />
+      <span title={statusTooltip[TronçonStatus.SecondPhase]}>{statusLabel[TronçonStatus.SecondPhase]}</span>
+    </div>
+  );
+}
+
+function VariantLegenditem() {
+  const style = {
+    background: "repeating-linear-gradient(90deg, lightgray, lightgray 3px, white 3px, white 6px)",
+    border: "solid .5px #7f7f7f",
+  };
+
+  return (
+    <div>
+      <span className="legend-value"></span>
+      <span style={style} className="legend-color" />
+      <span title='Variant de tracé'>Variante</span>
+    </div>
+  );
+
+}
+
 export default function Legend({
   stats,
   total,
@@ -52,11 +83,8 @@ export default function Legend({
         <LegendItem stats={stats} total={total} status={TronçonStatus.Unknown} />
       </div>
       <div className="legend-group">
-        <LegendItem
-          stats={stats}
-          total={total}
-          status={TronçonStatus.SecondPhase}
-        />
+        <SecondPhaseLegendItem />
+        <VariantLegenditem />
       </div>
     </>
   );
