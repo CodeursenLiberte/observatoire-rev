@@ -104,36 +104,10 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             },
           })
           .addLayer({
-            ...baseLayer("outline-grey-active"),
-            paint: {
-              ...width(7, 16),
-              ...colorFromStatus(borderStatusColor),
-              ...hideWhen("inactive")
-            },
-          })
-          .addLayer({
             ...baseLayer("inner-white"),
             paint: {
               ...width(5, 10),
               "line-color": "#fff",
-            },
-          })
-          .addLayer({
-            ...baseLayer("couleur-inactive"),
-            ...exceptedVariants,
-            paint: {
-              ...widthFromStatus(4, 2.5, 10, 3),
-              ...colorFromStatus(fadedStatusColor),
-              ...showWhen("inactive")
-            },
-          })
-          .addLayer({
-            ...baseLayer("couleur-active"),
-            ...exceptedVariants,
-            paint: {
-              ...widthFromStatus(4, 2.5, 10, 3),
-              ...colorFromStatus(statusColor),
-              ...hideWhen("inactive")
             },
           })
           .addLayer({
@@ -146,10 +120,44 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             },
           })
           .addLayer({
+            ...baseLayer("couleur-inactive"),
+            ...exceptedVariants,
+            paint: {
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(fadedStatusColor),
+              ...showWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("outline-grey-active"),
+            paint: {
+              ...width(7, 16),
+              ...colorFromStatus(borderStatusColor),
+              ...hideWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("inner-white-active"),
+            paint: {
+              ...width(5, 10),
+              "line-color": "#fff",
+              ...hideWhen("inactive")
+            },
+          })
+          .addLayer({
             ...baseLayer("couleur-active-variant", false),
             ...onlyVariants,
             paint: {
               "line-dasharray" : [1, 1],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(statusColor),
+              ...hideWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("couleur-active"),
+            ...exceptedVariants,
+            paint: {
               ...widthFromStatus(4, 2.5, 10, 3),
               ...colorFromStatus(statusColor),
               ...hideWhen("inactive")
