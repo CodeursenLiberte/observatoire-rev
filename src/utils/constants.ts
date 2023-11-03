@@ -5,11 +5,21 @@ import _ from "lodash";
 export const statusLabel = {
   [TronçonStatus.PreExisting]: "Préexistant au 01/01/2022",
   [TronçonStatus.Built]: "Livré",
-  [TronçonStatus.Building]: "Travaux en cours ou à venir",
+  [TronçonStatus.Building]: "Travaux",
   [TronçonStatus.Planned]: "À l’étude",
   [TronçonStatus.Blocked]: "Bloqué",
   [TronçonStatus.SecondPhase]: "Phase 2 (2030)",
   [TronçonStatus.Unknown]: "Inconnu",
+};
+
+export const statusTooltip = {
+  [TronçonStatus.PreExisting]: "",
+  [TronçonStatus.Built]: "",
+  [TronçonStatus.Building]: "Travaux en cours ou à venir",
+  [TronçonStatus.Planned]: "",
+  [TronçonStatus.Blocked]: "",
+  [TronçonStatus.SecondPhase]: "",
+  [TronçonStatus.Unknown]: "",
 };
 
 export const shortStatusLabel = {

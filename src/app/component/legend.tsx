@@ -1,5 +1,5 @@
 import { TronçonStatus, LengthStats } from "../types";
-import { statusColor, statusLabel } from "@/utils/constants";
+import { statusColor, statusLabel, statusTooltip } from "@/utils/constants";
 
 function LegendItem({
   stats,
@@ -25,7 +25,7 @@ function LegendItem({
           : ""}
       </span>
       <span style={style} className="legend-color" />
-      <span>{statusLabel[status]}</span>
+      <span title={statusTooltip[status]}>{statusLabel[status]}</span>
     </div>
   );
 }
