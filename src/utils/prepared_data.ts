@@ -133,10 +133,6 @@ export async function prepareData(): Promise<GlobalData> {
             feature.properties["Bloqué"] || false,
           ),
           variant:
-            !feature.properties["Bloqué"] &&
-            feature.properties.APPORT_RERV !== "Aménagement prééxistant" &&
-            feature.properties.PHASE === "1 - 2025" &&
-            feature.properties.NIVEAU_VALID_AMENAG === "A l'étude" &&
             ["Variante", "Variante initiale"].includes(
               feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
             ),

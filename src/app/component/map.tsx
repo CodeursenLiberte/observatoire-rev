@@ -5,7 +5,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { fadedStatusColor, statusColor, statusIndex } from "@/utils/constants";
+import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
+import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus, showWhen, hideWhen, width, widthFromStatus} from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -44,8 +45,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
         source: "vif",
       },
       {
-        inactive: !active,
-        "active-outline": active && level.level !== "region",
+        inactive: !active
       },
     );
   });
@@ -81,223 +81,87 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             data: segments,
             promoteId: "id",
           })
-          .addLayer({ id: "base-outer-white",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("base-outer-white"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 10,
-                15, 30,
-              ],
+              ...width(10, 30),
               "line-color": "#fff",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
+            }
           })
-          .addLayer({ id: "hover-overlay",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("hover-overlay"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 10,
-                15, 30,
-              ],
+              ...width(10, 30),
               "line-color": "#aaa",
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "hover"], false],
-                1,
-                0,
-              ],
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
+              ...showWhen("hover")
             },
           })
-          .addLayer({ id: "variant-outline-grey",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("outline-grey-inactive"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 6,
-                15, 16
-              ],
-              "line-color": "#7f7f7f",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["get", "variant"],
-          })
-          .addLayer({ id: "outline-grey-inactive",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 7,
-                15, 16
-              ],
-              "line-color": "#7f7f7f",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["!", ["get", "variant"]],
-          })
-          .addLayer({ id: "outline-grey-active",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 8,
-                15, 20
-              ],
-              "line-color": "#4c4c4c",
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "active-outline"], false],
-                1,
-                0.0,
-              ],
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
+              ...width(7, 16),
+              ...colorFromStatus(fadedBorderStatusColor),
             },
           })
-          .addLayer({ id: "variant-inner-white",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("inner-white"),
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 5,
-                15, 10
-              ],
+              ...width(5, 10),
               "line-color": "#fff",
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["get", "variant"],
           })
-          .addLayer({ id: "inner-white",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-inactive-variant", false),
+            ...onlyVariants,
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 5,
-                15, 10
-              ],
+              "line-dasharray" : [1, 1],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(fadedStatusColor),
+            },
+          })
+          .addLayer({
+            ...baseLayer("couleur-inactive"),
+            ...exceptedVariants,
+            paint: {
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(fadedStatusColor),
+              ...showWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("outline-grey-active"),
+            paint: {
+              ...width(7, 16),
+              ...colorFromStatus(borderStatusColor),
+              ...hideWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("inner-white-active"),
+            paint: {
+              ...width(5, 10),
               "line-color": "#fff",
+              ...hideWhen("inactive")
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            filter: ["!", ["get", "variant"]],
           })
-          .addLayer({ id: "variantes",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-active-variant", false),
+            ...onlyVariants,
             paint: {
-              "line-width": ["interpolate", ["linear"], ["zoom"],
-                10, 2,
-                15, 4
-              ],
-              "line-dasharray": [2, 1],
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.5,
-                1,
-              ],
-              "line-color": statusColor[TronçonStatus.Planned],
+              "line-dasharray" : [1, 1],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(statusColor),
+              ...hideWhen("inactive")
             },
-            filter: ["get", "variant"],
           })
-          .addLayer({ id: "couleur-inactive",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-active"),
+            ...exceptedVariants,
             paint: {
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // at zoom level 10, the line-width is either 4 or 3
-                10, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 4,
-                  TronçonStatus.Built, 4,
-                  TronçonStatus.Building, 4,
-                  TronçonStatus.Blocked, 4,
-                  TronçonStatus.Planned, 4,
-                  3,
-                ],
-                15, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 10,
-                  TronçonStatus.Built, 10,
-                  TronçonStatus.Building, 10,
-                  TronçonStatus.Blocked, 10,
-                  TronçonStatus.Planned, 10,
-                  6,
-                ],
-              ],
-              "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(statusColor),
+              ...hideWhen("inactive")
             },
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
-            },
-            filter: ["!", ["get", "variant"]],
-          })
-          .addLayer({ id: "couleur-active",
-            source: "vif",
-            type: "line",
-            paint: {
-              "line-width": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                // at zoom level 10, the line-width is either 5 or 3
-                10, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 4,
-                  TronçonStatus.Built, 4,
-                  TronçonStatus.Building, 4,
-                  TronçonStatus.Blocked, 4,
-                  TronçonStatus.Planned, 4,
-                  3,
-                ],
-                15, [ "match", ["get", "status"],
-                  TronçonStatus.PreExisting, 10,
-                  TronçonStatus.Built, 10,
-                  TronçonStatus.Building, 10,
-                  TronçonStatus.Blocked, 10,
-                  TronçonStatus.Planned, 10,
-                  6,
-                ],
-              ],
-              "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
-              // We cannot use feature-state in filter, only in paint
-              // Hence we hide the active layer with opacity
-              "line-opacity": [
-                "case",
-                ["boolean", ["feature-state", "inactive"], false],
-                0.0,
-                1,
-              ],
-            },
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
-            },
-            filter: ["!", ["get", "variant"]],
           });
 
           newMap.moveLayer("Town labels");

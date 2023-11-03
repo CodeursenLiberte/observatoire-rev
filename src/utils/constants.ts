@@ -23,17 +23,42 @@ export const shortStatusLabel = {
 };
 
 export const statusColor = {
-  [TronçonStatus.PreExisting]: "#B6D2BE",
-  [TronçonStatus.Built]: "#0BBC3F",
+  [TronçonStatus.PreExisting]: "#B0C7B6",
+  [TronçonStatus.Built]: "#0AB532",
   [TronçonStatus.Building]: "#79E70F",
-  [TronçonStatus.Planned]: "#7FCCDD",
-  [TronçonStatus.Blocked]: "#E95353",
+  [TronçonStatus.Planned]: "#84D2FF",
+  [TronçonStatus.Blocked]: "#DA2F4C",
   [TronçonStatus.SecondPhase]: "#FFF",
-  [TronçonStatus.Unknown]: "#E7E7E7",
+  [TronçonStatus.Unknown]: "#BAB7B3",
   ["Background"]: "#ddddd5",
 };
 
-export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.2).hex());
+export const fadedStatusColor = {
+  [TronçonStatus.PreExisting]: "#bed3c4",
+  [TronçonStatus.Built]: "#9ad2a7",
+  [TronçonStatus.Building]: "#c3e1a6",
+  [TronçonStatus.Planned]: "#b4d0e0",
+  [TronçonStatus.Blocked]: "#d17484",
+  [TronçonStatus.SecondPhase]: "#FFF",
+  [TronçonStatus.Unknown]: "#dad7d4",
+  ["Background"]: "#ddddd5",
+};
+
+//export const fadedStatusColor = _.mapValues(statusColor, c => Color(c).lighten(0.3).hex());
+
+export const borderStatusColor = {
+  [TronçonStatus.PreExisting]: "#195E2A",
+  [TronçonStatus.Built]: "#666666",
+  [TronçonStatus.Building]: "#666666",
+  [TronçonStatus.Planned]: "#666666",
+  [TronçonStatus.Blocked]: "#666666",
+  [TronçonStatus.SecondPhase]: "#666666",
+  [TronçonStatus.Unknown]: "#666666"
+};
+
+export const fadedBorderStatusColor = _.mapValues(borderStatusColor, c => "#d9d9d9");
+
+
 export const statusIndex = {
   [TronçonStatus.PreExisting]: 2,
   [TronçonStatus.Built]: 5,
