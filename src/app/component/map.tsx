@@ -5,8 +5,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor, statusIndex } from "@/utils/constants";
-import { baseLayer } from "../style_helpers";
+import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
+import { baseLayer, exceptedVariants, onlyVariants } from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -165,6 +165,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
           })
           .addLayer({
             ...baseLayer("couleur-active"),
+            ...exceptedVariants,
             paint: {
               "line-width": [
                 "interpolate",
@@ -190,10 +191,10 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 1,
               ],
             },
-            filter: ["!", ["get", "variant"]],
           })
           .addLayer({
-            ...baseLayer("couleur-inactive-variant"),
+            ...baseLayer("couleur-inactive-variant", false),
+            ...onlyVariants,
             paint: {
               "line-dasharray" : [1, 1],
               "line-width": [
@@ -211,10 +212,10 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               ],
               "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
             },
-            filter: ["get", "variant"],
           })
           .addLayer({
-            ...baseLayer("couleur-active-variant"),
+            ...baseLayer("couleur-active-variant", false),
+            ...onlyVariants,
             paint: {
               "line-dasharray" : [1, 1],
               "line-width": [
@@ -241,7 +242,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 1,
               ],
             },
-            filter: ["get", "variant"],
           });
 
           newMap.moveLayer("Town labels");
