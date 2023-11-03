@@ -20,7 +20,7 @@ export type OriginalProperties = {
 
 export enum TronçonStatus {
   Planned = "Planned",
-  PreExisting = "PerExisting",
+  PreExisting = "PreExisting",
   Building = "Building",
   Built = "Built",
   Blocked = "Blocked",
