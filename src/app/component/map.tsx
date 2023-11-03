@@ -6,7 +6,7 @@ import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
 import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
-import { baseLayer, exceptedVariants, onlyVariants } from "../style_helpers";
+import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus } from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -114,7 +114,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 10, 7,
                 15, 16
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", fadedBorderStatusColor] ],
+              ...colorFromStatus(fadedBorderStatusColor),
             },
           })
           .addLayer({
@@ -124,7 +124,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 10, 7,
                 15, 16
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", borderStatusColor] ],
+              ...colorFromStatus(borderStatusColor),
               "line-opacity": [
                 "case",
                 ["boolean", ["feature-state", "inactive"], false],
@@ -160,7 +160,8 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   10,
                 ],
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
+              ...colorFromStatus(fadedStatusColor),
+              ...showWhen("inactive")
             },
           })
           .addLayer({
@@ -181,7 +182,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   10,
                 ],
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
+              ...colorFromStatus(statusColor),
               // We cannot use feature-state in filter, only in paint
               // Hence we hide the active layer with opacity
               "line-opacity": [
@@ -210,7 +211,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   10,
                 ],
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
+              ...colorFromStatus(fadedStatusColor),
             },
           })
           .addLayer({
@@ -232,7 +233,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                   10,
                 ],
               ],
-              "line-color": [ "get", ["get", "status"], ["literal", statusColor] ],
+              ...colorFromStatus(statusColor),
               // We cannot use feature-state in filter, only in paint
               // Hence we hide the active layer with opacity
               "line-opacity": [
