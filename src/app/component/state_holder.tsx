@@ -7,6 +7,7 @@ import RouteDetails from "./route_details";
 import GlobalStats from "./global_stats";
 import Segment from "./segment";
 import About from "./about";
+import _ from "lodash";
 
 function currentDetail(
   level: Level,
@@ -26,6 +27,11 @@ function currentDetail(
 }
 
 export default function ({ data }: { data: GlobalData }) {
+  _.forEach(data.departementStats, (stat, dep) => {
+    console.log(`Statistiques pour le département ${dep}`);
+    console.log(`Longueur totale considérée : ${stat.total} mètres`);
+    console.log(stat.stats);
+  });
   const [bounds, setBounds] = useState(data.globalBounds);
   const [hash, setHash] = useState("");
   const [level, setLevel] = useState<Level>({ level: "region" });

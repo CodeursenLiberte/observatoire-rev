@@ -5,6 +5,7 @@ import {
   lineString,
   LineString,
   MultiPolygon,
+  Polygon,
 } from "@turf/helpers";
 import _ from "lodash";
 import {
@@ -19,12 +20,14 @@ import {
   GlobalData,
   OriginalProperties,
   AdminExpressProperties,
+  DepartementMap,
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import bboxPolygon from "@turf/bbox-polygon";
 import buffer from "@turf/buffer";
 import booleanWithin from "@turf/boolean-within";
 import communes from "../../data/communes-ile-de-france.geo.json";
+import departements from "../../data/departements-ile-de-france.geo.json";
 import { featureEach } from "@turf/meta";
 
 function status(
@@ -77,14 +80,21 @@ async function fetchFromCocarto(): Promise<
 
 export async function prepareData(): Promise<GlobalData> {
   const troncons = await fetchFromCocarto();
-  const casted = communes as FeatureCollection<
+  const castedCommunes = communes as FeatureCollection<
     MultiPolygon,
     AdminExpressProperties
   >;
-  featureEach(casted, (feature) => {
+  featureEach(castedCommunes, (feature) => {
+    // We add a buffer to be more tolerant with segments that might be drawn by error touching a other comune
     feature.geometry = buffer(feature, 0.05).geometry;
     feature.bbox = bbox(feature.geometry);
   });
+
+  const castedDepartements = departements as FeatureCollection<
+    Polygon,
+    AdminExpressProperties
+  >;
+  featureEach(castedDepartements, (feature) => feature.bbox = bbox(feature.geometry));
 
   const troncon_route = _(troncons.features)
     .groupBy("properties.CODE_TRONCON")
@@ -95,18 +105,16 @@ export async function prepareData(): Promise<GlobalData> {
     troncons.features
       .filter((feature) => !feature.properties.doublon)
       .map((feature) => {
-        const commune = casted.features.find((commune) => {
-          if (
+        const commune = castedCommunes.features.find((commune) =>
             commune.bbox &&
-            booleanWithin(feature, bboxPolygon(commune.bbox))
-          ) {
-            //  const buffered = buffer(feature.geometry, 0.001); // one meter
-            //  const intersection = intersect(commune, buffered);
-            return booleanWithin(feature, commune);
-          } else {
-            return false;
-          }
-        });
+            booleanWithin(feature, bboxPolygon(commune.bbox)) &&
+            booleanWithin(feature, commune)
+          );
+          const departement = castedDepartements.features.find((departement) =>
+            departement.bbox &&
+            booleanWithin(feature, bboxPolygon(departement.bbox)) &&
+            booleanWithin(feature, departement)
+          );
         const properties: TronçonProperties = {
           // A single tronçon can be used by many lines, the concatenation allows to deduplicate
           id: feature.properties.CODE_TRONCON,
@@ -116,6 +124,7 @@ export async function prepareData(): Promise<GlobalData> {
               ? 0
               : feature.properties.LONGUEUR,
           commune: commune?.properties.nom.replace(" Arrondissement", ""),
+          departement: departement?.properties.nom,
           route: troncon_route[feature.properties.CODE_TRONCON],
           status: status(
             feature.properties.NIVEAU_VALID_AMENAG || "",
@@ -169,15 +178,12 @@ export async function prepareData(): Promise<GlobalData> {
     routeList.map((route) => [route, routeStats(route)]),
   );
 
-  function routeStats(code: string): RouteStats {
-    const t = _.filter(tronçonsArray, (feature) =>
-      feature.properties.route.includes(code),
-    );
-    function length(status: TronçonStatus): number {
-      return _(t)
+
+  function computeStats(segments: Feature<LineString, TronçonProperties>[]): GlobalStats {
+    const length = (status: TronçonStatus): number  => _(segments)
         .filter((f) => f.properties.status === status)
         .sumBy("properties.length");
-    }
+
     const stats: LengthStats = {
       [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
       [TronçonStatus.Built]: length(TronçonStatus.Built),
@@ -188,7 +194,17 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
     const total =
-      _(t).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
+      _(segments).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
+
+    return {stats, total};
+  }
+
+  function routeStats(code: string): RouteStats {
+    const t = _.filter(tronçonsArray, (feature) =>
+      feature.properties.route.includes(code),
+    );
+
+    const {stats, total} = computeStats(t);
     const [xmin, ymin, xmax, ymax] = bbox({
       type: "FeatureCollection",
       features: t,
@@ -196,33 +212,23 @@ export async function prepareData(): Promise<GlobalData> {
     return { code, stats, total, bounds: [xmin, ymin, xmax, ymax] };
   }
 
-  function length(status: TronçonStatus): number {
-    return _(tronçonsArray)
-      .filter((f) => f.properties.status === status)
-      .sumBy("properties.length");
+  function departmentStats(): DepartementMap  {
+  const result: DepartementMap = {};
+    featureEach(castedDepartements, d => {
+      const t = _.filter(tronçonsArray, (feature) =>
+        feature.properties.departement == d.properties.nom,
+      );
+      result[d.properties.nom] = computeStats(t);
+    })
+  return result;
   }
-  const stats: LengthStats = {
-    [TronçonStatus.PreExisting]: length(TronçonStatus.PreExisting),
-    [TronçonStatus.Built]: length(TronçonStatus.Built),
-    [TronçonStatus.Building]: length(TronçonStatus.Building),
-    [TronçonStatus.Planned]: length(TronçonStatus.Planned),
-    [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
-    [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
-    [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
-  };
-  const total =
-    _(tronçonsArray).map("properties.length").sum() -
-    stats[TronçonStatus.SecondPhase];
 
-  const globalStats: GlobalStats = {
-    stats,
-    total,
-  };
 
   return {
-    globalStats,
+    globalStats: computeStats(tronçonsArray),
     routes,
     tronçons,
     globalBounds,
+    departementStats: departmentStats(),
   };
 }
