@@ -6,6 +6,7 @@ import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
 import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor, statusIndex } from "@/utils/constants";
+import { baseLayer } from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -80,24 +81,18 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             data: segments,
             promoteId: "id",
           })
-          .addLayer({ id: "base-outer-white",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("base-outer-white"),
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
                 10, 10,
                 15, 30,
               ],
               "line-color": "#fff",
-            },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
+            }
           })
-          .addLayer({ id: "hover-overlay",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("hover-overlay"),
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
                 10, 10,
@@ -111,14 +106,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 0,
               ],
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
           })
-          .addLayer({ id: "outline-grey-inactive",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("outline-grey-inactive"),
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
                 10, 7,
@@ -126,14 +116,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               ],
               "line-color": [ "get", ["get", "status"], ["literal", fadedBorderStatusColor] ],
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
           })
-          .addLayer({ id: "outline-grey-active",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("outline-grey-active"),
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
                 10, 7,
@@ -147,14 +132,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 1,
               ],
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
           })
-          .addLayer({ id: "inner-white",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("inner-white"),
             paint: {
               "line-width": ["interpolate", ["linear"], ["zoom"],
                 10, 5,
@@ -162,14 +142,10 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               ],
               "line-color": "#fff",
             },
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            }
           })
-          .addLayer({ id: "couleur-inactive",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-inactive"),
+            ...exceptedVariants,
             paint: {
               "line-width": [
                 "interpolate",
@@ -186,16 +162,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
               ],
               "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
             },
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
-            },
-            filter: ["!", ["get", "variant"]],
           })
-          .addLayer({ id: "couleur-active",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-active"),
             paint: {
               "line-width": [
                 "interpolate",
@@ -221,16 +190,10 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 1,
               ],
             },
-            layout: {
-              "line-cap": "round",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
-            },
             filter: ["!", ["get", "variant"]],
           })
-          .addLayer({ id: "couleur-inactive-variant",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-inactive-variant"),
             paint: {
               "line-dasharray" : [1, 1],
               "line-width": [
@@ -247,17 +210,11 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 ],
               ],
               "line-color": [ "get", ["get", "status"], ["literal", fadedStatusColor] ],
-            },
-            layout: {
-              "line-cap": "butt",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
             filter: ["get", "variant"],
           })
-          .addLayer({ id: "couleur-active-variant",
-            source: "vif",
-            type: "line",
+          .addLayer({
+            ...baseLayer("couleur-active-variant"),
             paint: {
               "line-dasharray" : [1, 1],
               "line-width": [
@@ -283,11 +240,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
                 0.0,
                 1,
               ],
-            },
-            layout: {
-              "line-cap": "butt",
-              "line-join": "round",
-              "line-sort-key": ["get", ["get", "status"], ["literal", statusIndex] ],
             },
             filter: ["get", "variant"],
           });
