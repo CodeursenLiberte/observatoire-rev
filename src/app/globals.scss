@@ -415,19 +415,59 @@
 }
 
 // Component: Legend
-.legend-value {
+.legend__group + .legend__group {
+  margin-block-start: 12px;
+}
+
+.legend__item {
+  position: relative;
+}
+
+.legend__item-value {
   width: 32px;
   display: inline-block;
   text-align: right;
 }
 
-.legend-color {
+.legend__item-color {
   width: 16px;
   height: 8px;
   border-radius: 4px;
   display: inline-block;
   margin-left: 6px;
   margin-right: 12px;
+}
+
+.legend__tooltip {
+  display: none;
+}
+
+.legend__item:hover .legend__tooltip {
+  z-index: 10;
+  position: absolute;
+  display: block;
+  top: calc(100%);
+  left: calc(32px + 8px + 6px);
+}
+
+.legend__tooltip-arrow {
+  width: 17px;
+  height: 8px;
+  background: #eaeae5;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform: translateX(-50%);
+}
+
+.legend__tooltip-bubble {
+  width: max-content;
+  padding-inline: 12px;
+  border-radius: 16px;
+  transform: translateX(-32px);
+  padding-block: 4px;
+  color: black;
+  background: #eaeae5;
+  text-align: left;
+  font-size: 1rem;
 }
 
 // Component: Segment
