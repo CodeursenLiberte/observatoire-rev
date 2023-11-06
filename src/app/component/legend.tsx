@@ -20,7 +20,9 @@ function LegendItem({
   return (
     <div>
       <span className="legend-value">
-        {status !== TronçonStatus.SecondPhase ? Math.round((100 * stats[status]) / total) + '%' : ''}
+        {status !== TronçonStatus.SecondPhase
+          ? Math.round((100 * stats[status]) / total) + "%"
+          : ""}
       </span>
       <span style={style} className="legend-color" />
       <span>{statusLabel[status]}</span>

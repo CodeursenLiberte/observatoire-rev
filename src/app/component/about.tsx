@@ -15,9 +15,6 @@ export default function About() {
           appelé&nbsp;RER&nbsp;V.
         </p>
 
-        
-    
-
         <p className="block has-text-centered">
           Réalisé par{" "}
           <Link href="https://codeursenliberte.fr/">Codeurs en Liberté</Link> et

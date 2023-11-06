@@ -94,7 +94,10 @@ export async function prepareData(): Promise<GlobalData> {
     Polygon,
     AdminExpressProperties
   >;
-  featureEach(castedDepartements, (feature) => feature.bbox = bbox(feature.geometry));
+  featureEach(
+    castedDepartements,
+    (feature) => (feature.bbox = bbox(feature.geometry)),
+  );
 
   const troncon_route = _(troncons.features)
     .groupBy("properties.CODE_TRONCON")
@@ -105,16 +108,18 @@ export async function prepareData(): Promise<GlobalData> {
     troncons.features
       .filter((feature) => !feature.properties.doublon)
       .map((feature) => {
-        const commune = castedCommunes.features.find((commune) =>
+        const commune = castedCommunes.features.find(
+          (commune) =>
             commune.bbox &&
             booleanWithin(feature, bboxPolygon(commune.bbox)) &&
-            booleanWithin(feature, commune)
-          );
-          const departement = castedDepartements.features.find((departement) =>
+            booleanWithin(feature, commune),
+        );
+        const departement = castedDepartements.features.find(
+          (departement) =>
             departement.bbox &&
             booleanWithin(feature, bboxPolygon(departement.bbox)) &&
-            booleanWithin(feature, departement)
-          );
+            booleanWithin(feature, departement),
+        );
         const properties: TronçonProperties = {
           // A single tronçon can be used by many lines, the concatenation allows to deduplicate
           id: feature.properties.CODE_TRONCON,
@@ -132,10 +137,9 @@ export async function prepareData(): Promise<GlobalData> {
             feature.properties.PHASE,
             feature.properties["Bloqué"] || false,
           ),
-          variant:
-            ["Variante", "Variante initiale"].includes(
-              feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
-            ),
+          variant: ["Variante", "Variante initiale"].includes(
+            feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
+          ),
           typeMOA: moaType(feature.properties.TYPE_MOA || "autre"),
           moa: feature.properties.NOM_MOA || "",
           blockingCommune:
@@ -174,9 +178,11 @@ export async function prepareData(): Promise<GlobalData> {
     routeList.map((route) => [route, routeStats(route)]),
   );
 
-
-  function computeStats(segments: Feature<LineString, TronçonProperties>[]): GlobalStats {
-    const length = (status: TronçonStatus): number  => _(segments)
+  function computeStats(
+    segments: Feature<LineString, TronçonProperties>[],
+  ): GlobalStats {
+    const length = (status: TronçonStatus): number =>
+      _(segments)
         .filter((f) => f.properties.status === status)
         .sumBy("properties.length");
 
@@ -190,9 +196,10 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
     const total =
-      _(segments).map("properties.length").sum() - stats[TronçonStatus.SecondPhase];
+      _(segments).map("properties.length").sum() -
+      stats[TronçonStatus.SecondPhase];
 
-    return {stats, total};
+    return { stats, total };
   }
 
   function routeStats(code: string): RouteStats {
@@ -200,7 +207,7 @@ export async function prepareData(): Promise<GlobalData> {
       feature.properties.route.includes(code),
     );
 
-    const {stats, total} = computeStats(t);
+    const { stats, total } = computeStats(t);
     const [xmin, ymin, xmax, ymax] = bbox({
       type: "FeatureCollection",
       features: t,
@@ -208,17 +215,17 @@ export async function prepareData(): Promise<GlobalData> {
     return { code, stats, total, bounds: [xmin, ymin, xmax, ymax] };
   }
 
-  function departmentStats(): DepartementMap  {
-  const result: DepartementMap = {};
-    featureEach(castedDepartements, d => {
-      const t = _.filter(tronçonsArray, (feature) =>
-        feature.properties.departement == d.properties.nom,
+  function departmentStats(): DepartementMap {
+    const result: DepartementMap = {};
+    featureEach(castedDepartements, (d) => {
+      const t = _.filter(
+        tronçonsArray,
+        (feature) => feature.properties.departement == d.properties.nom,
       );
       result[d.properties.nom] = computeStats(t);
-    })
-  return result;
+    });
+    return result;
   }
-
 
   return {
     globalStats: computeStats(tronçonsArray),

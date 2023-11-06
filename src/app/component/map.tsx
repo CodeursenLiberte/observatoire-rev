@@ -5,8 +5,22 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import _ from "lodash";
 import { FeatureCollection, LineString } from "@turf/helpers";
 import { Level, TronçonProperties, TronçonStatus } from "../types";
-import { fadedStatusColor, fadedBorderStatusColor, borderStatusColor, statusColor } from "@/utils/constants";
-import { baseLayer, exceptedVariants, onlyVariants, colorFromStatus, showWhen, hideWhen, width, widthFromStatus} from "../style_helpers";
+import {
+  fadedStatusColor,
+  fadedBorderStatusColor,
+  borderStatusColor,
+  statusColor,
+} from "@/utils/constants";
+import {
+  baseLayer,
+  exceptedVariants,
+  onlyVariants,
+  colorFromStatus,
+  showWhen,
+  hideWhen,
+  width,
+  widthFromStatus,
+} from "../style_helpers";
 
 function isActive(level: Level, feature: MapGeoJSONFeature): boolean {
   if (level.level === "route") {
@@ -45,7 +59,7 @@ function setActiveSegments(map: maplibregl.Map, level: Level) {
         source: "vif",
       },
       {
-        inactive: !active
+        inactive: !active,
       },
     );
   });

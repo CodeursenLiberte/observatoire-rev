@@ -80,7 +80,7 @@ export type GlobalData = {
   globalBounds: [number, number, number, number];
   routes: RoutesMap;
   globalStats: GlobalStats;
-  departementStats: DepartementMap
+  departementStats: DepartementMap;
 };
 
 export enum TypeMOA {

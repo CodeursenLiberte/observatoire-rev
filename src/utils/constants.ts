@@ -53,11 +53,13 @@ export const borderStatusColor = {
   [TronçonStatus.Planned]: "#666666",
   [TronçonStatus.Blocked]: "#666666",
   [TronçonStatus.SecondPhase]: "#666666",
-  [TronçonStatus.Unknown]: "#666666"
+  [TronçonStatus.Unknown]: "#666666",
 };
 
-export const fadedBorderStatusColor = _.mapValues(borderStatusColor, c => "#d9d9d9");
-
+export const fadedBorderStatusColor = _.mapValues(
+  borderStatusColor,
+  (c) => "#d9d9d9",
+);
 
 export const statusIndex = {
   [TronçonStatus.PreExisting]: 2,
@@ -67,7 +69,7 @@ export const statusIndex = {
   [TronçonStatus.Blocked]: 6,
   [TronçonStatus.SecondPhase]: 0,
   [TronçonStatus.Unknown]: 1,
-}
+};
 
 export const moaLabel = {
   [TypeMOA.Commune]: "Commune",
