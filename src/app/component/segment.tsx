@@ -30,13 +30,22 @@ function blockingCommune(segment: TronçonProperties) {
             {segment.blockingCommune}
           </p>
         </div>
-        {segment.comment && (
-          <div className="vif--block">
-            <p className="has-text-weight-normal has-text-grey">
-              {segment.comment}
-            </p>
-          </div>
-        )}
+      </>
+    );
+  } else {
+    return null;
+  }
+}
+
+function comment(segment: TronçonProperties) {
+  if (segment.comment) {
+    return (
+      <>
+        <div className="vif--block">
+          <p className="has-text-weight-normal has-text-grey">
+            {segment.comment}
+          </p>
+        </div>
       </>
     );
   } else {
@@ -98,6 +107,7 @@ export default function ({
 
         {moa(segment)}
         {blockingCommune(segment)}
+        {comment(segment)}
       </div>
     </>
   );
