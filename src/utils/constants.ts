@@ -10,6 +10,7 @@ export const statusLabel = {
   [TronçonStatus.Blocked]: "Bloqué",
   [TronçonStatus.SecondPhase]: "Phase 2 (2030)",
   [TronçonStatus.Unknown]: "Inconnu",
+  ["variant"]: "Variante",
 };
 
 export const statusTooltip = {
@@ -20,6 +21,7 @@ export const statusTooltip = {
   [TronçonStatus.Blocked]: "",
   [TronçonStatus.SecondPhase]: "",
   [TronçonStatus.Unknown]: "",
+  ["variant"]: "Hypothèse de tracé pour le réseau VIF",
 };
 
 export const shortStatusLabel = {
