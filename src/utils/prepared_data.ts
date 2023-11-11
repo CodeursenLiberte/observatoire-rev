@@ -38,10 +38,10 @@ function status(
 ): TronçonStatus {
   if (mort) {
     return TronçonStatus.Blocked;
-  } else if (apport_rerv === "Aménagement prééxistant") {
-    return TronçonStatus.PreExisting;
   } else if (phase === "2 - 2030") {
     return TronçonStatus.SecondPhase;
+  } else if (apport_rerv === "Aménagement prééxistant") {
+    return TronçonStatus.PreExisting;
   } else {
     return (
       {
