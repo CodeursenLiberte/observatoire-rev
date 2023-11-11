@@ -120,12 +120,14 @@ export async function prepareData(): Promise<GlobalData> {
             booleanWithin(feature, bboxPolygon(departement.bbox)) &&
             booleanWithin(feature, departement),
         );
+
         const properties: TronçonProperties = {
           // A single tronçon can be used by many lines, the concatenation allows to deduplicate
           id: feature.properties.CODE_TRONCON,
           // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
           length:
-            feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante"
+            feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
+            feature.properties.ITINERAIRE_PROV_DEF === "Définitif long terme"
               ? 0
               : feature.properties.LONGUEUR,
           commune: commune?.properties.nom.replace(" Arrondissement", ""),

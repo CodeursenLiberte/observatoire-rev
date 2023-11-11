@@ -16,6 +16,7 @@ export type OriginalProperties = {
   "Collectivité responsable du blocage": string | null;
   Commentaire: string | null;
   doublon: boolean | null;
+  ITINERAIRE_PROV_DEF: string | null;
 };
 
 export enum TronçonStatus {
