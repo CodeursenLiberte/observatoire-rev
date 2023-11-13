@@ -44,12 +44,32 @@ export function baseLayer(id: string, setCap: boolean = true): Layer {
   };
 }
 
-export const onlyDoneVariants: Filter = { filter: ["all", 
- ["get", "variant"],
- ["match", ["get", "status"],[TronçonStatus.Planned, TronçonStatus.Blocked], false, true]] };
-export const onlyUpcomingVariants: Filter = { filter: ["all", 
-  ["get", "variant"],
-  ["match", ["get", "status"],[TronçonStatus.Planned, TronçonStatus.Blocked], true, false]] };
+export const onlyDoneVariants: Filter = {
+  filter: [
+    "all",
+    ["get", "variant"],
+    [
+      "match",
+      ["get", "status"],
+      [TronçonStatus.Planned, TronçonStatus.Blocked],
+      false,
+      true,
+    ],
+  ],
+};
+export const onlyUpcomingVariants: Filter = {
+  filter: [
+    "all",
+    ["get", "variant"],
+    [
+      "match",
+      ["get", "status"],
+      [TronçonStatus.Planned, TronçonStatus.Blocked],
+      true,
+      false,
+    ],
+  ],
+};
 export const exceptedVariants: Filter = { filter: ["!", ["get", "variant"]] };
 
 export function colorFromStatus(colors: ColorMaps): MaplibreColor {

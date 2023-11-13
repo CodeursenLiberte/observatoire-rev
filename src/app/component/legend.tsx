@@ -1,5 +1,10 @@
 import { TronçonStatus, LengthStats } from "../types";
-import { statusColor, borderStatusColor, statusLabel, statusTooltip } from "@/utils/constants";
+import {
+  statusColor,
+  borderStatusColor,
+  statusLabel,
+  statusTooltip,
+} from "@/utils/constants";
 
 function LegendItem({
   stats,
