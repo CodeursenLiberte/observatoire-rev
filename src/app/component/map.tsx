@@ -14,7 +14,8 @@ import {
 import {
   baseLayer,
   exceptedVariants,
-  onlyVariants,
+  onlyDoneVariants,
+  onlyUpcomingVariants,
   colorFromStatus,
   showWhen,
   hideWhen,
@@ -125,8 +126,17 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             },
           })
           .addLayer({
-            ...baseLayer("couleur-inactive-variant", false),
-            ...onlyVariants,
+            ...baseLayer("couleur-inactive-variant-done", false),
+            ...onlyDoneVariants,
+            paint: {
+              "line-dasharray" : [.4, .4],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(fadedStatusColor),
+            },
+          })
+          .addLayer({
+            ...baseLayer("couleur-inactive-variant-upcoming", false),
+            ...onlyUpcomingVariants,
             paint: {
               "line-dasharray" : [1, 1],
               ...widthFromStatus(4, 2.5, 10, 3),
@@ -159,8 +169,18 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
             },
           })
           .addLayer({
-            ...baseLayer("couleur-active-variant", false),
-            ...onlyVariants,
+            ...baseLayer("couleur-active-variant-done", false),
+            ...onlyDoneVariants,
+            paint: {
+              "line-dasharray" : [.4, .4],
+              ...widthFromStatus(4, 2.5, 10, 3),
+              ...colorFromStatus(statusColor),
+              ...hideWhen("inactive")
+            },
+          })
+          .addLayer({
+            ...baseLayer("couleur-active-variant-upcoming", false),
+            ...onlyUpcomingVariants,
             paint: {
               "line-dasharray" : [1, 1],
               ...widthFromStatus(4, 2.5, 10, 3),
