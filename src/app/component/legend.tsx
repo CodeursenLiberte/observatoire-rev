@@ -14,15 +14,10 @@ function LegendItem({
     background: statusColor[status],
     border: "none",
   };
-  if (status === TronçonStatus.SecondPhase) {
-    style.border = "solid 1px #7f7f7f";
-  }
   return (
     <div className="legend__item">
       <span className="legend__item-value">
-        {status !== TronçonStatus.SecondPhase
-          ? Math.round((100 * stats[status]) / total) + "%"
-          : ""}
+        {Math.round((100 * stats[status]) / total) + "%"}
       </span>
       <span style={style} className="legend__item-color" />
       <span>{statusLabel[status]}</span>
