@@ -1,5 +1,5 @@
 import { TronçonStatus, LengthStats } from "../types";
-import { statusColor, statusLabel, statusTooltip } from "@/utils/constants";
+import { statusColor, borderStatusColor, statusLabel, statusTooltip } from "@/utils/constants";
 
 function LegendItem({
   stats,
@@ -13,7 +13,11 @@ function LegendItem({
   const style = {
     background: statusColor[status],
     border: "none",
+    outline: `solid 1px ${borderStatusColor[status]}`,
   };
+  if (status === TronçonStatus.Planned || status === TronçonStatus.Blocked) {
+    style.border = "solid 1px white";
+  }
   return (
     <div className="legend__item">
       <span className="legend__item-value">
@@ -29,7 +33,7 @@ function LegendItem({
 function SecondPhaseLegendItem() {
   const style = {
     background: statusColor[TronçonStatus.SecondPhase],
-    outline: "solid .5px #7f7f7f",
+    outline: "solid 1px #7f7f7f",
   };
 
   return (
@@ -45,9 +49,9 @@ function SecondPhaseLegendItem() {
 function VariantLegenditem() {
   const style = {
     background:
-      "repeating-linear-gradient(90deg, lightgray, lightgray 3px, white 3px, white 6px)",
-    border: "solid 1px white",
-    outline: "solid .5px #7f7f7f",
+      "repeating-linear-gradient(90deg, #BAB7B3, #BAB7B3 3px, white 3px, white 6px)",
+    border: "solid .5px white",
+    outline: "solid 1px #7f7f7f",
   };
 
   return (
