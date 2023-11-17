@@ -31,11 +31,13 @@ import departements from "../../data/departements-ile-de-france.geo.json";
 import { featureEach } from "@turf/meta";
 
 function status(
-  niveau_validation: string,
+  status_selon_idf: string,
   apport_rerv: string,
   phase: string,
   mort: boolean,
+  status_override: string,
 ): TronçonStatus {
+  const niveau = status_override !== "" ? status_override : status_selon_idf
   if (mort) {
     return TronçonStatus.Blocked;
   } else if (phase === "2 - 2030") {
@@ -48,7 +50,7 @@ function status(
         "A l'étude": TronçonStatus.Planned,
         "En travaux": TronçonStatus.Building,
         "Mis en service": TronçonStatus.Built,
-      }[niveau_validation] || TronçonStatus.Unknown
+      }[niveau] || TronçonStatus.Unknown
     );
   }
 }
@@ -138,6 +140,7 @@ export async function prepareData(): Promise<GlobalData> {
             feature.properties.APPORT_RERV || "",
             feature.properties.PHASE,
             feature.properties["Bloqué"] || false,
+            feature.properties["Niveau aménagement manuel"] || "",
           ),
           variant: ["Variante", "Variante initiale"].includes(
             feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,

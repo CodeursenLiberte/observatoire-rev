@@ -17,6 +17,7 @@ export type OriginalProperties = {
   Commentaire: string | null;
   doublon: boolean | null;
   ITINERAIRE_PROV_DEF: string | null;
+  "Niveau aménagement manuel": string | null;
 };
 
 export enum TronçonStatus {
