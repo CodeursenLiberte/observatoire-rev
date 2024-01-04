@@ -30,6 +30,12 @@ import communes from "../../data/communes-ile-de-france.geo.json";
 import departements from "../../data/departements-ile-de-france.geo.json";
 import { featureEach } from "@turf/meta";
 
+const mappingNiveau: { [fromCocarto: string]: TronçonStatus } = {
+  "A l'étude": TronçonStatus.Planned,
+  "En travaux": TronçonStatus.Building,
+  "Mis en service": TronçonStatus.Built,
+};
+
 function status(
   status_selon_idf: string,
   apport_rerv: string,
@@ -37,21 +43,16 @@ function status(
   mort: boolean,
   status_override: string,
 ): TronçonStatus {
-  const niveau = status_override !== "" ? status_override : status_selon_idf
   if (mort) {
     return TronçonStatus.Blocked;
   } else if (phase === "2 - 2030") {
     return TronçonStatus.SecondPhase;
+  } else if (status_override !== "") {
+    return mappingNiveau[status_override] || TronçonStatus.Unknown;
   } else if (apport_rerv === "Aménagement prééxistant") {
     return TronçonStatus.PreExisting;
   } else {
-    return (
-      {
-        "A l'étude": TronçonStatus.Planned,
-        "En travaux": TronçonStatus.Building,
-        "Mis en service": TronçonStatus.Built,
-      }[niveau] || TronçonStatus.Unknown
-    );
+    return mappingNiveau[status_selon_idf] || TronçonStatus.Unknown;
   }
 }
 
