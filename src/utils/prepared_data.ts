@@ -130,7 +130,7 @@ export async function prepareData(): Promise<GlobalData> {
           // When it is a "Variante" don’t count its length for any statistic, while "Variante initiale" means we DO use it for lengths stats
           length:
             feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE === "Variante" ||
-            feature.properties.ITINERAIRE_PROV_DEF === "Définitif long terme"
+              feature.properties.ITINERAIRE_PROV_DEF === "Définitif long terme"
               ? 0
               : feature.properties.LONGUEUR,
           commune: commune?.properties.nom.replace(" Arrondissement", ""),
