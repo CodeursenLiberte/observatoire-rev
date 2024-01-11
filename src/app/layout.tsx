@@ -37,24 +37,47 @@ export default async function RootLayout() {
         />
 
         <title>Observatoire du Réseau Vélo Île-de-France</title>
-        <meta name="title" content="Observatoire du Réseau Vélo Île-de-France" />
-        <meta name="description" content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
-        " />
-        
+        <meta
+          name="title"
+          content="Observatoire du Réseau Vélo Île-de-France"
+        />
+        <meta
+          name="description"
+          content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
+        "
+        />
+
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://observatoire-vif.velo-iledefrance.fr" />
-        <meta property="og:title" content="Observatoire du Réseau Vélo Île-de-France" />
-        <meta property="og:description" content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
-        " />
+        <meta
+          property="og:url"
+          content="https://observatoire-vif.velo-iledefrance.fr"
+        />
+        <meta
+          property="og:title"
+          content="Observatoire du Réseau Vélo Île-de-France"
+        />
+        <meta
+          property="og:description"
+          content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
+        "
+        />
         <meta property="og:image" content="/preview.jpg" />
-        
+
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://observatoire-vif.velo-iledefrance.fr" />
-        <meta property="twitter:title" content="Observatoire du Réseau Vélo Île-de-France" />
-        <meta property="twitter:description" content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
-        " />
+        <meta
+          property="twitter:url"
+          content="https://observatoire-vif.velo-iledefrance.fr"
+        />
+        <meta
+          property="twitter:title"
+          content="Observatoire du Réseau Vélo Île-de-France"
+        />
+        <meta
+          property="twitter:description"
+          content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Une première moitié doit être déployée d’ici 2025, l’autre d’ici 2030. Cet observatoire rend compte de l’avancement du projet.
+        "
+        />
         <meta property="twitter:image" content="/preview.jpg" />
-        
       </head>
       <body className={inter.className}>
         <main className="vif-main">
