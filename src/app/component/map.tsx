@@ -48,6 +48,7 @@ function setBounds(
       left: xPadding,
       right: xPadding,
     },
+    maxZoom: 15,
   });
 }
 
