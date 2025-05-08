@@ -248,40 +248,22 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
   });
 
   const oldLevel = useRef<Level>(level);
-  const oldBounds = useRef<[number, number, number, number]>(bounds);
 
   useEffect(() => {
     if (map.current !== null) {
-      var toBounds = bounds;
-      var paddingRatio;
-      var skip = false;
-
       if (oldLevel.current.level === "segment" && level.level === "region") {
         // When exiting a segment, only zoom out a bit, do not return to the whole region.
-        toBounds = oldBounds.current;
-        const currentBounds = map.current.getBounds();
-        if (
-          currentBounds.contains({ lon: toBounds[0], lat: toBounds[1] }) &&
-          currentBounds.contains({ lat: toBounds[2], lon: toBounds[3] })
-        ) {
-          // Don’t zoom in if the user zoomed out themselves
-          skip = true;
-        }
-        paddingRatio = 2.2;
-      } else if (level.level === "segment") {
-        paddingRatio = 4;
-      } else if (level.level === "route") {
-        paddingRatio = 10;
+        map.current.flyTo({zoom: 12});
       } else {
-        paddingRatio = 1000;
+        let paddingRatio = 1000;
+        if (level.level === "segment") {
+          paddingRatio = 4;
+        } else if (level.level === "route") {
+          paddingRatio = 10;
+        }
+        setBounds(map.current, bounds, paddingRatio);
       }
-
-      if (!skip) {
-        setBounds(map.current, toBounds, paddingRatio);
-      }
-
       oldLevel.current = level;
-      oldBounds.current = bounds;
     }
   }, [mapReady, level, bounds]);
 
