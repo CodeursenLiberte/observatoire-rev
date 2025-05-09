@@ -12,7 +12,6 @@ import { Feature, LineString } from "geojson";
 
 function currentDetail(
   level: Level,
-  data: GlobalData,
   setHash: (hash: string) => void,
 ) {
   let current;
@@ -77,7 +76,7 @@ export default function ({ data }: { data: GlobalData }) {
         <GlobalStats globalStats={data.globalStats} />
         <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
-        <div className="vif-detail">{currentDetail(level, data, setHash)}</div>
+        <div className="vif-detail">{currentDetail(level, setHash)}</div>
       </div>
     </>
   );

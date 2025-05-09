@@ -76,7 +76,7 @@ export default function ({
   segment: TronçonProperties;
   setHash: (hash: string) => void;
 }) {
-  const intCode = (code: string) => parseInt(code.replace("V", ""));
+  const intCode = (code: string) => parseInt((code||"").replace("V", ""));
   return (
     <>
       <div className="vif-detail-header vif-detail-header--segment">
