@@ -47,8 +47,8 @@ function status(
 ): TronçonStatus {
   if (mort) {
     return TronçonStatus.Blocked;
-  } else if (phase === "2 - 2030") {
-    return TronçonStatus.SecondPhase;
+  // } else if (phase === "2 - 2030") {
+  //   return TronçonStatus.SecondPhase;
   } else if (status_override !== "") {
     return mappingNiveau[status_override] || TronçonStatus.Unknown;
   } else if (apport_rerv === "Aménagement prééxistant") {
