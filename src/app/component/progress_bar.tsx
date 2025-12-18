@@ -42,7 +42,7 @@ function Pointer(statuses: TronçonStatus[], props: Props) {
     </div>
   ));
   return (
-    <div className="progress-bar__pointer progress-bar__pointer">
+    <div className="progress-bar__pointer">
       <div className="progress-bar__arrow progress-bar__arrow--gray"></div>
       <div className="progress-bar__bubble progress-bar__bubble--gray">
         {text}

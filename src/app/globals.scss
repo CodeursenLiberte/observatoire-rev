@@ -336,6 +336,16 @@ $desktop: 960px;
   margin-block-end: 62px;
 }
 
+.vif-phase .progress-bar {
+  height: 15px;
+  border-radius: 15px;
+  border-width: 4px;
+  margin-block-end: 40px;
+}
+.vif-phase .progress-bar__parts {
+  height: 15px;
+}
+
 .progress-bar__parts {
   display: flex;
   flex-direction: row;
@@ -384,6 +394,7 @@ $desktop: 960px;
 
 .progress-bar__pointer {
   margin-block-start: 14px;
+  z-index: 1;
 }
 
 .progress-bar__arrow {
@@ -420,6 +431,30 @@ $desktop: 960px;
   background: #eaeae5;
   text-align: left;
   font-size: 1rem;
+}
+
+.vif-phase {
+  .progress-bar__pointer {
+    margin-block-start: 14px;
+  }
+
+  .progress-bar__arrow {
+    width: 13px;
+    height: 6px;
+  }
+  .progress-bar__bubble {
+    width: max-content;
+    padding-inline: 10px;
+    border-radius: 14px;
+  }
+  .progress-bar__bubble--black {
+    line-height: 28px;
+    font-size: 1.2rem;
+  }
+  .progress-bar__bubble--gray {
+    padding-block: 4px;
+    font-size: 1rem;
+  }
 }
 
 // Maplibre overrides
