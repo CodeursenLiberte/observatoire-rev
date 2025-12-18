@@ -5,15 +5,17 @@ import _ from "lodash";
 
 export default function PhaseInfo({
   phases,
+  setHash,
 }: {
   phases: PhasesMap;
+  setHash: (hash: string) => void;
 }) {
   return (
     <section className="section vif-phases-stats">
       <div className="vif-container">
         {
           _(phases).map((phase, name) => (
-            <div key={name} className="vif-phase">
+            <a key={name} className="vif-phase" onClick={() => setHash(`phase/${name}`)}>
               <div className="is-size-6 has-text-grey">
                 Phase {name}
               </div>
@@ -22,7 +24,7 @@ export default function PhaseInfo({
                 total={phase.total}
                 global={false}
               />
-            </div>
+            </a>
           )).value()
         }
       </div>
