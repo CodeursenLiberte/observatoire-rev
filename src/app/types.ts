@@ -82,6 +82,7 @@ export type GlobalStats = {
 
 export type Level =
   | { level: "region" }
+  | { level: "phase"; props: PhaseStats }
   | { level: "route"; props: RouteStats }
   | { level: "segment"; props: TronçonProperties };
 

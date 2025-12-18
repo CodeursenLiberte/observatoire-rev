@@ -27,6 +27,8 @@ import { Protocol } from "pmtiles";
 function isActive(level: Level, feature: GeoJSONFeature): boolean {
   if (level.level === "route") {
     return JSON.parse(feature.properties.route).includes(level.props.code);
+  } else if (level.level === "phase") {
+    return feature.properties.phase == level.props.phase;
   } else if (level.level === "segment") {
     return feature.properties.id === level.props.id;
   } else {

@@ -53,6 +53,10 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
     if (level === "" || level === "region") {
       setBounds(data.globalBounds);
       setLevel({ level: "region" });
+    } else if (level === "phase" && id !== null) {
+      const props = data.phases[id];
+      setBounds(props.bounds);
+      setLevel({ level: "phase", props });
     } else if (level === "route" && id !== null) {
       const props = data.routes[id];
       setBounds(props.bounds);
@@ -81,7 +85,7 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
       />
       <div className="vif-panel">
         <NetworkInfo globalStats={data.globalStats} />
-        <PhaseInfo phases={data.phases} />
+        <PhaseInfo phases={data.phases} setHash={setHash} />
         <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
         <div className="vif-detail">{currentDetail(level, setHash)}</div>
