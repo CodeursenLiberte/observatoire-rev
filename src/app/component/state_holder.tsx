@@ -27,6 +27,12 @@ function currentDetail(
 }
 
 export default function StateHolder ({ data }: { data: GlobalData }) {
+  _.forEach(data.phases, (stat, phase) => {
+    console.log(`Statistiques pour la phase ${phase}`);
+    console.log(`Longueur totale considérée : ${stat.total} mètres`);
+    console.log(stat.stats);
+  });
+
   _.forEach(data.departementStats, (stat, dep) => {
     console.log(`Statistiques pour le département ${dep}`);
     console.log(`Longueur totale considérée : ${stat.total} mètres`);

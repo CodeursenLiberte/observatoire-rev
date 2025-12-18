@@ -63,8 +63,16 @@ export type RouteStats = {
   total: number;
   bounds: Bounds;
 };
-
 export type RoutesMap = { [index: string]: RouteStats };
+
+export type PhaseStats = {
+  phase: string;
+  stats: LengthStats;
+  total: number;
+  bounds: Bounds;
+};
+export type PhasesMap = { [index: string]: PhaseStats };
+
 export type DepartementMap = { [index: string]: GlobalStats };
 
 export type GlobalStats = {
@@ -80,6 +88,7 @@ export type Level =
 export type GlobalData = {
   tronçons: FeatureCollection<LineString, TronçonProperties>;
   globalBounds: [number, number, number, number];
+  phases: PhasesMap;
   routes: RoutesMap;
   globalStats: GlobalStats;
   departementStats: DepartementMap;

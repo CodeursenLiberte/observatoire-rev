@@ -14,8 +14,10 @@ import {
   TronçonStatus,
   TronçonProperties,
   RoutesMap,
+  PhasesMap,
   Bounds,
   RouteStats,
+  PhaseStats,
   GlobalStats,
   TypeMOA,
   LengthStats,
@@ -180,6 +182,15 @@ export async function prepareData(): Promise<GlobalData> {
     routeList.map((route) => [route, routeStats(route)]),
   );
 
+  const phaseList = [
+    "1 - 2025",
+    "2 - 2030"
+  ];
+
+  const phases: PhasesMap = _.fromPairs(
+    phaseList.map((phase) => [phase, phaseStats(phase)]),
+  );
+
   function computeStats(
     segments: Feature<LineString, TronçonProperties>[],
   ): GlobalStats {
@@ -214,6 +225,19 @@ export async function prepareData(): Promise<GlobalData> {
     return { code, stats, total, bounds: [xmin, ymin, xmax, ymax] };
   }
 
+  function phaseStats(phase: string): PhaseStats {
+    const t = _.filter(tronçonsArray, (feature) =>
+      feature.properties.phase == phase,
+    );
+  
+    const { stats, total } = computeStats(t);
+    const [xmin, ymin, xmax, ymax] = bbox({
+      type: "FeatureCollection",
+      features: t,
+    });
+    return { phase, stats, total, bounds: [xmin, ymin, xmax, ymax] };
+  }
+
   function departmentStats(): DepartementMap {
     const result: DepartementMap = {};
     featureEach(castedDepartements, (d) => {
@@ -228,6 +252,7 @@ export async function prepareData(): Promise<GlobalData> {
 
   return {
     globalStats: computeStats(tronçonsArray),
+    phases,
     routes,
     tronçons,
     globalBounds,
