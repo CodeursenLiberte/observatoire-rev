@@ -95,7 +95,7 @@ export default function Segment ({
       <div className="vif-detail-content">
         <div className="vif--block">
           <label className="has-text-weight-normal has-text-grey">
-            Avancement
+            Avancement (Phase {segment.phase})
           </label>
           <p className="is-size-4 has-text-weight-semibold">
             {statusLabel[segment.status]}
