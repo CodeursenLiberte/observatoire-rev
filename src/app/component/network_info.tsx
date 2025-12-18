@@ -2,13 +2,13 @@ import { GlobalStats } from "../types";
 import ProgressBar from "./progress_bar";
 import Legend from "./legend";
 
-export default function GlobalStatsComponent({
+export default function NetworkInfo({
   globalStats,
 }: {
   globalStats: GlobalStats;
 }) {
   return (
-    <section className="section vif-global-stats">
+    <section className="section vif-network-info">
       <div className="vif-container">
         <ProgressBar
           stats={globalStats.stats}
