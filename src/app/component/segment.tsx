@@ -69,7 +69,7 @@ function RouteLogo(code: string) {
   );
 }
 
-export default function ({
+export default function Segment ({
   segment,
   setHash,
 }: {

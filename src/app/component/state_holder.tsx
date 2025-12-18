@@ -26,7 +26,7 @@ function currentDetail(
   return current;
 }
 
-export default function ({ data }: { data: GlobalData }) {
+export default function StateHolder ({ data }: { data: GlobalData }) {
   _.forEach(data.departementStats, (stat, dep) => {
     console.log(`Statistiques pour le département ${dep}`);
     console.log(`Longueur totale considérée : ${stat.total} mètres`);
