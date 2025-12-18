@@ -52,7 +52,7 @@ $desktop: 960px;
     border-left: solid 1px #d8d7d3;
   }
 
-  .vif-global-stats {
+  .vif-network-info {
     >* {
       padding-top: 18px;
     }
@@ -216,7 +216,7 @@ $desktop: 960px;
 }
 
 // Component: global-stats
-.vif-global-stats {
+.vif-network-info {
   display: flex;
   flex-flow: column;
 
@@ -357,7 +357,7 @@ $desktop: 960px;
 @media screen and (max-width: $desktop) {
 
   // Tweak the main progress bar border on mobile
-  .vif-global-stats .progress-bar {
+  .vif-network-info .progress-bar {
     border-color: #f1ede2;
     outline: solid 1px #ddd;
   }
