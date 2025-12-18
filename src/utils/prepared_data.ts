@@ -41,14 +41,11 @@ const mappingNiveau: { [fromCocarto: string]: TronçonStatus } = {
 function status(
   status_selon_idf: string,
   apport_rerv: string,
-  phase: string,
   mort: boolean,
   status_override: string,
 ): TronçonStatus {
   if (mort) {
     return TronçonStatus.Blocked;
-  // } else if (phase === "2 - 2030") {
-  //   return TronçonStatus.SecondPhase;
   } else if (status_override !== "") {
     return mappingNiveau[status_override] || TronçonStatus.Unknown;
   } else if (apport_rerv === "Aménagement prééxistant") {
@@ -141,7 +138,6 @@ export async function prepareData(): Promise<GlobalData> {
           status: status(
             feature.properties.NIVEAU_VALID_AMENAG || "",
             feature.properties.APPORT_RERV || "",
-            feature.properties.PHASE,
             feature.properties["Bloqué"] || false,
             feature.properties["Niveau aménagement manuel"] || "",
           ),
@@ -160,10 +156,7 @@ export async function prepareData(): Promise<GlobalData> {
         });
       });
 
-  const phase1Tronçons = tronçonsArray.filter(
-    (feature) => feature.properties.status !== TronçonStatus.SecondPhase,
-  );
-  const [xmin, ymin, xmax, ymax] = bbox(featureCollection(phase1Tronçons));
+  const [xmin, ymin, xmax, ymax] = bbox(featureCollection(tronçonsArray));
   const globalBounds: Bounds = [xmin, ymin, xmax, ymax];
 
   const tronçons = featureCollection(tronçonsArray);
@@ -201,11 +194,8 @@ export async function prepareData(): Promise<GlobalData> {
       [TronçonStatus.Planned]: length(TronçonStatus.Planned),
       [TronçonStatus.Blocked]: length(TronçonStatus.Blocked),
       [TronçonStatus.Unknown]: length(TronçonStatus.Unknown),
-      [TronçonStatus.SecondPhase]: length(TronçonStatus.SecondPhase),
     };
-    const total =
-      _(segments).map("properties.length").sum() -
-      stats[TronçonStatus.SecondPhase];
+    const total =  _(segments).map("properties.length").sum();
 
     return { stats, total };
   }

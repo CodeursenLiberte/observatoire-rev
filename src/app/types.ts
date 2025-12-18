@@ -26,7 +26,6 @@ export enum TronçonStatus {
   Building = "Building",
   Built = "Built",
   Blocked = "Blocked",
-  SecondPhase = "SecondPhase",
   Unknown = "Unknown",
 }
 

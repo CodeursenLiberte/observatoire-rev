@@ -8,7 +8,6 @@ export const statusLabel = {
   [TronçonStatus.Building]: "Travaux",
   [TronçonStatus.Planned]: "À l’étude",
   [TronçonStatus.Blocked]: "Bloqué",
-  [TronçonStatus.SecondPhase]: "Phase 2 (2030)",
   [TronçonStatus.Unknown]: "Inconnu",
   ["variant"]: "Variante",
 };
@@ -19,7 +18,6 @@ export const statusTooltip = {
   [TronçonStatus.Building]: "Travaux en cours ou à venir",
   [TronçonStatus.Planned]: "",
   [TronçonStatus.Blocked]: "",
-  [TronçonStatus.SecondPhase]: "",
   [TronçonStatus.Unknown]: "",
   ["variant"]: "Hypothèse de tracé pour le réseau VIF",
 };
@@ -30,7 +28,6 @@ export const shortStatusLabel = {
   [TronçonStatus.Building]: "Travaux en cours ou à venir",
   [TronçonStatus.Planned]: "À l’étude",
   [TronçonStatus.Blocked]: "Bloqué",
-  [TronçonStatus.SecondPhase]: "Phase 2",
   [TronçonStatus.Unknown]: "Inconnu",
 };
 
@@ -40,7 +37,6 @@ export const statusColor = {
   [TronçonStatus.Building]: "#79E70F",
   [TronçonStatus.Planned]: "#84D2FF",
   [TronçonStatus.Blocked]: "#DA2F4C",
-  [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#BAB7B3",
   ["Background"]: "#ddddd5",
 };
@@ -51,7 +47,6 @@ export const fadedStatusColor = {
   [TronçonStatus.Building]: "#c3e1a6",
   [TronçonStatus.Planned]: "#b4d0e0",
   [TronçonStatus.Blocked]: "#d17484",
-  [TronçonStatus.SecondPhase]: "#FFF",
   [TronçonStatus.Unknown]: "#dad7d4",
   ["Background"]: "#ddddd5",
 };
@@ -64,7 +59,6 @@ export const borderStatusColor = {
   [TronçonStatus.Building]: "#666666",
   [TronçonStatus.Planned]: "#666666",
   [TronçonStatus.Blocked]: "#666666",
-  [TronçonStatus.SecondPhase]: "#666666",
   [TronçonStatus.Unknown]: "#666666",
 };
 
@@ -79,7 +73,6 @@ export const statusIndex = {
   [TronçonStatus.Building]: 4,
   [TronçonStatus.Planned]: 3,
   [TronçonStatus.Blocked]: 6,
-  [TronçonStatus.SecondPhase]: 0,
   [TronçonStatus.Unknown]: 1,
 };
 

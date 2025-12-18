@@ -428,7 +428,7 @@ $desktop: 960px;
 }
 
 // Component: Legend
-.legend__group+.legend__group {
+.legend__group+.legend__group { // useless now?
   margin-block-start: 12px;
 }
 
