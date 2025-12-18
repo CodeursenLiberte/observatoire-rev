@@ -13,16 +13,16 @@ export default function PhaseInfo({
       <div className="vif-container">
         {
           _(phases).map((phase, name) => (
-            <>
+            <div key={name} className="vif-phase">
+              <div className="is-size-6 has-text-grey">
+                Phase {name}
+              </div>
               <ProgressBar
                 stats={phase.stats}
                 total={phase.total}
                 global={false}
               />
-              <div className="is-size-5 has-text-centered">
-                Phase {name}
-              </div>
-            </>
+            </div>
           )).value()
         }
       </div>
