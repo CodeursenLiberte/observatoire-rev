@@ -141,6 +141,7 @@ export async function prepareData(): Promise<GlobalData> {
             feature.properties["Bloqué"] || false,
             feature.properties["Niveau aménagement manuel"] || "",
           ),
+          phase: feature.properties.PHASE,
           variant: ["Variante", "Variante initiale"].includes(
             feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
           ),

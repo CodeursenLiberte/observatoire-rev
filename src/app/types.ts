@@ -33,6 +33,7 @@ export type TronçonProperties = {
   id: string;
   length: number;
   status: TronçonStatus;
+  phase: string;
   route: string[];
   variant: boolean;
   commune?: string;
