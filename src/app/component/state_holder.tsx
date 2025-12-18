@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Level, GlobalData, TronçonProperties } from "../types";
 import RouteDetails from "./route_details";
 import NetworkInfo from "./network_info";
+import PhaseInfo from "./phase_info";
 import Segment from "./segment";
 import About from "./about";
 import _ from "lodash";
@@ -80,6 +81,7 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
       />
       <div className="vif-panel">
         <NetworkInfo globalStats={data.globalStats} />
+        <PhaseInfo phases={data.phases} />
         <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
         <div className="vif-detail">{currentDetail(level, setHash)}</div>
