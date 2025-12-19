@@ -85,7 +85,7 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
       />
       <div className="vif-panel">
         <NetworkInfo globalStats={data.globalStats} />
-        <PhaseInfo phases={data.phases} setHash={setHash} />
+        <PhaseInfo phases={data.phases} level={level} setHash={setHash} />
         <RouteList routes={data.routes} level={level} setHash={setHash} />
         <About />
         <div className="vif-detail">{currentDetail(level, setHash)}</div>
