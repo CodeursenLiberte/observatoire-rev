@@ -29,11 +29,16 @@ export enum TronçonStatus {
   Unknown = "Unknown",
 }
 
+export enum TronçonPhase {
+  Une = "1",
+  Deux = "2"
+}
+
 export type TronçonProperties = {
   id: string;
   length: number;
   status: TronçonStatus;
-  phase: string;
+  phase: TronçonPhase;
   route: string[];
   variant: boolean;
   commune?: string;

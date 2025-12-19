@@ -25,6 +25,7 @@ import {
   OriginalProperties,
   AdminExpressProperties,
   DepartementMap,
+  TronçonPhase,
 } from "@/app/types";
 import bbox from "@turf/bbox";
 import bboxPolygon from "@turf/bbox-polygon";
@@ -38,6 +39,11 @@ const mappingNiveau: { [fromCocarto: string]: TronçonStatus } = {
   "A l'étude": TronçonStatus.Planned,
   "En travaux": TronçonStatus.Building,
   "Mis en service": TronçonStatus.Built,
+};
+
+const mappingPhase: { [fromCarto: string]: TronçonPhase} = {
+  "1 - 2025": TronçonPhase.Une,
+  "2 - 2030": TronçonPhase.Deux
 };
 
 function status(
@@ -143,7 +149,7 @@ export async function prepareData(): Promise<GlobalData> {
             feature.properties["Bloqué"] || false,
             feature.properties["Niveau aménagement manuel"] || "",
           ),
-          phase: feature.properties.PHASE,
+          phase: mappingPhase[feature.properties.PHASE],
           variant: ["Variante", "Variante initiale"].includes(
             feature.properties.NIVEAU_VALID_SUPPORT_VIAIRE,
           ),
@@ -182,15 +188,11 @@ export async function prepareData(): Promise<GlobalData> {
     routeList.map((route) => [route, routeStats(route)]),
   );
 
-  const phaseList = [
-    "1 - 2025",
-    "2 - 2030"
-  ];
-
-  const phases: PhasesMap = _.fromPairs(
-    phaseList.map((phase) => [phase, phaseStats(phase)]),
-  );
-
+  const phases: PhasesMap = {
+    [TronçonPhase.Une]: phaseStats(TronçonPhase.Une),
+    [TronçonPhase.Deux]: phaseStats(TronçonPhase.Deux),
+  }
+  
   function computeStats(
     segments: Feature<LineString, TronçonProperties>[],
   ): GlobalStats {
