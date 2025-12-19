@@ -255,7 +255,8 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
     if (map.current !== null) {
       if (oldLevel.current.level === "segment" && level.level === "region") {
         // When exiting a segment, only zoom out a bit, do not return to the whole region.
-        map.current.flyTo({zoom: 12});
+        let newZoom = Math.min(map.current.getZoom(), 12)
+        map.current.flyTo({zoom: newZoom});
       } else {
         let paddingRatio = 1000;
         if (level.level === "segment") {
