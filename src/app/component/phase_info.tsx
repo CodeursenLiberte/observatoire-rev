@@ -14,18 +14,18 @@ export default function PhaseInfo({
   setHash: (hash: string) => void;
 }) {
   return (
-    <section className="section vif-phases-stats">
+    <section className="section vif-phases-stats" onClick={() => setHash("region")}>
       <div className="vif-container">
         {
           _(phases).map((stats, phase) => (
             <button key={phase} 
               className="vif-phase" 
-              onClick={() => setHash(`phase/${phase}`)}
+              onClick={(e) => { e.stopPropagation(); setHash(`phase/${phase}`)} }
               aria-pressed={
                 level.level === "phase" && level.props.phase === phase
               }
             >
-              <div className="is-size-6 has-text-grey">
+              <div className="is-size-6">
                 {phaseName[phase]}
               </div>
               <ProgressBar

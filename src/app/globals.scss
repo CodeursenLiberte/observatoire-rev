@@ -427,6 +427,15 @@ $desktop: 960px;
   font-size: 1rem;
 }
 
+.section.vif-phases-stats {
+  padding-bottom: 20px;
+  .vif-container {
+    display: flex;
+    gap: 1em;
+    margin-inline: 0;
+  }
+}
+
 .vif-phase {
   display: block;
   width: 100%;
@@ -447,7 +456,7 @@ $desktop: 960px;
     height: 15px;
   }
   .progress-bar__pointer {
-    margin-block-start: 14px;
+    margin-block-start: 10px;
   }
   .progress-bar__arrow {
     width: 13px;
@@ -459,12 +468,12 @@ $desktop: 960px;
     border-radius: 14px;
   }
   .progress-bar__bubble--black {
-    line-height: 28px;
-    font-size: 1.2rem;
+    line-height: 20px;
+    font-size: 1rem;
   }
   .progress-bar__bubble--gray {
     padding-block: 4px;
-    font-size: 1rem;
+    font-size: .9rem;
   }
 }
 
