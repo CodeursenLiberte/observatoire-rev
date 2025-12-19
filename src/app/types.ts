@@ -31,7 +31,7 @@ export enum TronçonStatus {
 
 export enum TronçonPhase {
   Une = "1",
-  Deux = "2"
+  Deux = "2",
 }
 
 export type TronçonProperties = {

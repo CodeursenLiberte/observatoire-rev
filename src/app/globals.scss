@@ -18,6 +18,10 @@
   }
 }
 
+.section:nth-of-type(even) {
+  background-color: RGBA(0, 138, 172, 0.07);
+}
+
 .title:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -292,7 +296,7 @@ $desktop: 960px;
 
 // Component: RouteList
 .route-list {
-  background-color: RGBA(0, 138, 172, 0.07);
+  // background-color: RGBA(0, 138, 172, 0.07);
 }
 
 .route-list-icons {
@@ -334,16 +338,6 @@ $desktop: 960px;
   box-sizing: content-box;
   position: relative;
   margin-block-end: 62px;
-}
-
-.vif-phase .progress-bar {
-  height: 15px;
-  border-radius: 15px;
-  border-width: 4px;
-  margin-block-end: 40px;
-}
-.vif-phase .progress-bar__parts {
-  height: 15px;
 }
 
 .progress-bar__parts {
@@ -434,10 +428,27 @@ $desktop: 960px;
 }
 
 .vif-phase {
+  display: block;
+  width: 100%;
+}
+
+.vif-phase:has(~ [aria-pressed="true"]), [aria-pressed="true"]~.vif-phase{
+  opacity: 50%
+}
+
+.vif-phase {
+  .progress-bar {
+    height: 15px;
+    border-radius: 15px;
+    border-width: 4px;
+    margin-block-end: 40px;
+  }
+  .progress-bar__parts {
+    height: 15px;
+  }
   .progress-bar__pointer {
     margin-block-start: 14px;
   }
-
   .progress-bar__arrow {
     width: 13px;
     height: 6px;
