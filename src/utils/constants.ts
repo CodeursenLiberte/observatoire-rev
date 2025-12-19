@@ -22,7 +22,7 @@ export const statusTooltip = {
   ["variant"]: "Hypothèse de tracé pour le réseau VIF",
 };
 
-export const phaseName = {
+export const phaseName: { [index: string]: string }  = {
   [TronçonPhase.Une]: "Phase 1 (2025)",
   [TronçonPhase.Deux]: "Phase 2 (2030)",  
 }
