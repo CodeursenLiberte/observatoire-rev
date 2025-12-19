@@ -55,7 +55,7 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
       setLevel({ level: "region" });
     } else if (level === "phase" && id !== null) {
       const props = data.phases[id];
-      setBounds(props.bounds);
+      setBounds(data.globalBounds); // prefer the global bounds to the phase bounds (props.bounds)
       setLevel({ level: "phase", props });
     } else if (level === "route" && id !== null) {
       const props = data.routes[id];
