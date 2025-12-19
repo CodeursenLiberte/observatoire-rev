@@ -1,4 +1,4 @@
-import { TronçonStatus, TypeMOA } from "@/app/types";
+import { TronçonPhase, TronçonStatus, TypeMOA } from "@/app/types";
 import Color from "color";
 import _ from "lodash";
 
@@ -21,6 +21,11 @@ export const statusTooltip = {
   [TronçonStatus.Unknown]: "",
   ["variant"]: "Hypothèse de tracé pour le réseau VIF",
 };
+
+export const phaseName = {
+  [TronçonPhase.Une]: "Phase 1 (2025)",
+  [TronçonPhase.Deux]: "Phase 2 (2030)",  
+}
 
 export const shortStatusLabel = {
   [TronçonStatus.PreExisting]: "Préexistant",
