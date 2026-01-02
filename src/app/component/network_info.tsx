@@ -18,7 +18,7 @@ export default function NetworkInfo({
     <section className="section vif-network-info">
       <div className="vif-container" onClick={() => setHash("region")}>
         <ProgressBar stats={globalStats.stats} total={globalStats.total} additionalClassName="progress-bar--main progress-bar--interactive" />
-        <div className="title is-size-5 has-text-centered">
+        <div className="is-size-5 has-text-centered">
           État d’avancement du réseau VIF
         </div>
       </div>
