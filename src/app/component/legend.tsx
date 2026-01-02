@@ -102,6 +102,9 @@ export default function Legend({
           status={TronçonStatus.Unknown}
         />
       </div>
+      <div className="legend__group">
+        <VariantLegenditem />
+      </div>
     </>
   );
 }
