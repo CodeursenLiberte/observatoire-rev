@@ -18,10 +18,6 @@
   }
 }
 
-.section.vif-phases-stats, .section.route-list {
-  background-color: RGBA(0, 138, 172, 0.07);
-}
-
 .title:not(:last-child) {
   margin-bottom: 20px;
 }
@@ -224,6 +220,10 @@ $desktop: 960px;
   display: flex;
   flex-flow: column;
 
+  .vif-container {
+    gap: 60px;
+  }
+  
   >* {
     width: 100%;
   }
@@ -296,7 +296,7 @@ $desktop: 960px;
 
 // Component: RouteList
 .route-list {
-  // background-color: RGBA(0, 138, 172, 0.07);
+  background-color: RGBA(0, 138, 172, 0.07);
 }
 
 .route-list-icons {
@@ -332,18 +332,22 @@ $desktop: 960px;
 
 // Component: Progress Bar
 .progress-bar {
-  height: 26px;
-  border-radius: 29px;
-  border: solid 6px #eaeae5;
+  --progress-bar-height: 26px;
+  --progress-bar-outline-width: 6px;
+  height: var(--progress-bar-height);
+  border-radius: calc(var(--progress-bar-height) - var(--progress-bar-outline-width) / 2);
+  border: solid 1px #eaeae5;
+  outline: solid var(--progress-bar-outline-width) #eaeae5;
   box-sizing: content-box;
   position: relative;
-  margin-block-end: 62px;
+  margin: var(--progress-bar-outline-width);
+  margin-block-end: 68px;
 }
 
 .progress-bar__parts {
   display: flex;
   flex-direction: row;
-  height: 26px;
+  height: var(--progress-bar-height);
   clip-path: inset(0% 0% round 29px);
 }
 
@@ -359,11 +363,9 @@ $desktop: 960px;
 }
 
 @media screen and (max-width: $desktop) {
-
   // Tweak the main progress bar border on mobile
-  .vif-network-info .progress-bar {
-    border-color: #f1ede2;
-    outline: solid 1px #ddd;
+  .progress-bar--main {
+    box-shadow: 0 0 0 calc(var(--progress-bar-outline-width) + 1px) #ddd;
   }
 }
 
@@ -427,34 +429,25 @@ $desktop: 960px;
   font-size: 1rem;
 }
 
-.section.vif-phases-stats {
-  padding-bottom: 20px;
-  .vif-container {
-    display: flex;
-    gap: 1em;
-    margin-inline: 0;
+.progress-bar.progress-bar--interactive {
+  &:hover {
+    border: solid 1px #c3cbcc;
+    cursor: pointer;
+  }
+  &:active {
+    border: solid 1px RGB(0, 130, 173);
   }
 }
 
-.vif-phase {
-  display: block;
-  width: 100%;
+[aria-pressed="true"] .progress-bar.progress-bar--interactive {
+  border: solid 1px #7c8c8f;
 }
 
-.vif-phase:has(~ [aria-pressed="true"]), [aria-pressed="true"]~.vif-phase{
-  opacity: 50%
-}
-
-.vif-phase {
-  .progress-bar {
-    height: 15px;
-    border-radius: 15px;
-    border-width: 4px;
-    margin-block-end: 40px;
-  }
-  .progress-bar__parts {
-    height: 15px;
-  }
+.progress-bar.progress-bar--small {
+  --progress-bar-height: 15px;
+  --progress-bar-outline-width: 4px;
+  margin-block-end: 40px;
+  
   .progress-bar__pointer {
     margin-block-start: 10px;
   }
@@ -475,6 +468,21 @@ $desktop: 960px;
     padding-block: 4px;
     font-size: .9rem;
   }
+}
+
+// VIF Phases 
+.vif-phases-stats {
+  display: flex;
+  gap: 1em;
+}
+
+.vif-phase {
+  display: block;
+  width: 100%;
+}
+
+.vif-phase:has(~ [aria-pressed="true"]), [aria-pressed="true"]~.vif-phase{
+  opacity: 80%
 }
 
 // Maplibre overrides
