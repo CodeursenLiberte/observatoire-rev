@@ -61,7 +61,7 @@ export default async function RootLayout() {
           content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Cet observatoire rend compte de l’avancement du projet.
         "
         />
-        <meta property="og:image" content="/preview.jpg" />
+        <meta property="og:image" content="/preview.webp" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta
@@ -77,7 +77,7 @@ export default async function RootLayout() {
           content="Le réseau vélo Île-de-France (réseau VIF) comprend 750 km de voies cyclables directes, continues et sécurisées pour connecter les grands pôles de la région. Le projet est porté par la Région Île-de-France. Cet observatoire rend compte de l’avancement du projet.
         "
         />
-        <meta property="twitter:image" content="/preview.jpg" />
+        <meta property="twitter:image" content="/preview.webp" />
       </head>
       <body className={inter.className}>
         <main className="vif-main">
