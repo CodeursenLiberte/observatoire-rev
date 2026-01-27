@@ -1,16 +1,16 @@
 .DEFAULT_GOAL := help
 
-install: package.json yarn.lock ## Install or update the required dependencies
-	yarn install
+install: package.json bun.lock ## Install or update the required dependencies
+	bun install
 
 run: install ## Start the development server
-	yarn dev
+	bun next dev
 
 build: install ## Build the static website
-	yarn build
+	bun next build
 
 lint: ## Run linters
-	yarn eslint
+	bun eslint
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
