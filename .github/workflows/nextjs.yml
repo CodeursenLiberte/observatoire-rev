@@ -45,6 +45,8 @@ jobs:
           static_site_generator: next
       - name: Install dependencies
         run: make install
+      - name: Lint
+        run: make lint
       - name: Build with Next.js
         env:
           COCARTO_TOKEN: ${{ secrets.COCARTO_TOKEN }}
