@@ -38,13 +38,19 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
     console.log(`Longueur totale considérée : ${stat.total} mètres`);
     console.log(stat.stats);
   });
+
   const [bounds, setBounds] = useState(data.globalBounds);
   const [hash, setHash] = useState((typeof window === 'undefined') ? "" : window.location.hash);
+  const [prevHash, setPrevHash] = useState();
   const [level, setLevel] = useState<Level>({ level: "region" });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = hash;
+  }, [hash]);
+
+  if (hash !== prevHash) {
+    setPrevHash(hash);
     const [level, id] = hash.replace("#", "").split("/");
 
     if (level === "" || level === "region") {
@@ -70,7 +76,7 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
         console.warn("something weird", tronçon);
       }
     }
-  }, [hash]);
+  };
 
   return (
     <>
