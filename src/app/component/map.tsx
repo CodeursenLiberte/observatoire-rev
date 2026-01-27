@@ -279,9 +279,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
 
   return (
     <div ref={mapContainer} className="vif-map">
-      <figure className="vif-map--logo">
+      <picture className="vif-map--logo">
         <img src="logo_cvidf.png" alt="Logo du collectif vélo Île-de-France" />
-      </figure>
+      </picture>
     </div>
   );
 }
