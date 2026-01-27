@@ -39,10 +39,8 @@ export default function StateHolder ({ data }: { data: GlobalData }) {
     console.log(stat.stats);
   });
   const [bounds, setBounds] = useState(data.globalBounds);
-  const [hash, setHash] = useState("");
+  const [hash, setHash] = useState((typeof window === 'undefined') ? "" : window.location.hash);
   const [level, setLevel] = useState<Level>({ level: "region" });
-
-  useEffect(() => setHash(window.location.hash), []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
