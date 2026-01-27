@@ -62,11 +62,11 @@ jobs:
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: make install
       - name: Build with Next.js
         env:
           COCARTO_TOKEN: ${{ secrets.COCARTO_TOKEN }}
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: make build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

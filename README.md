@@ -22,19 +22,19 @@ COCARTO_TOKEN= # token de partage de la carte sur cocarto
 Installer les dépendances:
 
 ```
-yarn install
+make install
 ```
 
 Démarrer un serveur local:
 
 ```
-yarn dev
+make run
 ```
 
 ### Publication
 
 ```
-yarn build
+make build
 ```
 
 génère un site statique dans le dossier `./out`.
