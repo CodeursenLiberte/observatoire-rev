@@ -82,7 +82,6 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapViewport, setMapViewport] = useState<null | LngLatBounds>(null);
-  let hoveredSegment: null | string | number = null;
 
   let protocol = new Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
@@ -95,7 +94,9 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       container: mapContainer.current || "",
       bounds: new LngLatBounds(bounds),
       style: `style.json`,
-    })
+    });
+    let hoveredSegment: null | string | number = null;
+
     newMap.on("load", () => {
         newMap
           .addSource("vif", {
