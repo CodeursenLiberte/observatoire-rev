@@ -208,6 +208,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
 
           newMap.moveLayer("Town labels");
           newMap.moveLayer("City labels");
+          newMap.moveLayer("Road labels");
         })
       newMap.on("moveend", () => { setMapViewport(newMap.getBounds()) })
       newMap.on("click", () => setHash("region") )
