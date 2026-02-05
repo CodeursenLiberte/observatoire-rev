@@ -78,6 +78,7 @@ type Props = {
 };
 
 export default function Map({ bounds, segments, level, setHash }: Props) {
+  const DEFAULT_MAP_STYLE = "maplibre-styles/default.json";
   const mapContainer = useRef<null | HTMLDivElement>(null);
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);

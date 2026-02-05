@@ -1,7 +1,15 @@
 {
   "version": 8,
   "id": "db0b0c2f-dcff-45fd-aa4d-0ddb0228e342",
-  "name": "Dataviz-velo-idf",
+  "name": "Dataviz-velo-idf Défaut",
+  "bearing": 0.0,
+  "pitch": 0.0,
+  "center": [
+    0.0,
+    0.0
+  ],
+  "zoom": 1,
+  "glyphs": "https://osm.nbg1.your-objectstorage.com/fonts/{fontstack}/{range}.pbf",
   "sources": {
     "maptiler_planet": {
       "url": "pmtiles://https://osm.nbg1.your-objectstorage.com/planet.pmtiles",
@@ -10,6 +18,102 @@
     "maptiler_attribution": {
       "attribution": "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
       "type": "vector"
+    }
+  },
+  "metadata": {
+    "maptiler:template": {
+      "groups": [
+        {
+          "id": "administrative",
+          "icon": "administrative",
+          "name": "Administrative",
+          "layers": [
+            "Other border",
+            "Other border dash",
+            "Disputed border",
+            "Country border",
+            "Place labels",
+            "Town labels",
+            "State labels",
+            "City labels",
+            "Country labels",
+            "Continent labels",
+            "Village labels"
+          ]
+        },
+        {
+          "id": "built-up",
+          "icon": "builtUp",
+          "name": "Built-up",
+          "layers": [
+            "Residential",
+            "Stadium",
+            "Cemetery",
+            "Aeroway",
+            "Building",
+            "Building top"
+          ]
+        },
+        {
+          "id": "transport",
+          "icon": "transport",
+          "name": "Transport",
+          "layers": [
+            "Tunnel outline",
+            "Tunnel path",
+            "Tunnel",
+            "Railway tunnel",
+            "Railway tunnel dash",
+            "Pier",
+            "Pier road",
+            "Bridge",
+            "Road network outline",
+            "Road network",
+            "Path outline",
+            "Path",
+            "Railway",
+            "Railway dash",
+            "Road labels"
+          ]
+        },
+        {
+          "id": "water",
+          "icon": "water",
+          "name": "Water",
+          "layers": [
+            "River",
+            "Water shadow",
+            "Water",
+            "Ocean labels",
+            "Lakeline labels",
+            "Sea labels"
+          ]
+        },
+        {
+          "id": "nature",
+          "icon": "nature",
+          "name": "Nature",
+          "layers": [
+            "Landcover",
+            "Forest"
+          ]
+        },
+        {
+          "id": "background",
+          "icon": "background",
+          "name": "Background",
+          "layers": [
+            "Background"
+          ]
+        }
+      ],
+      "viewState": {
+        "mapType": "Style",
+        "toolPanelType": "QuickEdits"
+      },
+      "userSettings": {
+        "preferredViewPanelType": "Blocks"
+      }
     }
   },
   "layers": [
@@ -3457,109 +3561,5 @@
         "continent"
       ]
     }
-  ],
-  "metadata": {
-    "maptiler:template": {
-      "groups": [
-        {
-          "id": "administrative",
-          "icon": "administrative",
-          "name": "Administrative",
-          "layers": [
-            "Other border",
-            "Other border dash",
-            "Disputed border",
-            "Country border",
-            "Place labels",
-            "Town labels",
-            "State labels",
-            "City labels",
-            "Country labels",
-            "Continent labels",
-            "Village labels"
-          ]
-        },
-        {
-          "id": "built-up",
-          "icon": "builtUp",
-          "name": "Built-up",
-          "layers": [
-            "Residential",
-            "Stadium",
-            "Cemetery",
-            "Aeroway",
-            "Building",
-            "Building top"
-          ]
-        },
-        {
-          "id": "transport",
-          "icon": "transport",
-          "name": "Transport",
-          "layers": [
-            "Tunnel outline",
-            "Tunnel path",
-            "Tunnel",
-            "Railway tunnel",
-            "Railway tunnel dash",
-            "Pier",
-            "Pier road",
-            "Bridge",
-            "Road network outline",
-            "Road network",
-            "Path outline",
-            "Path",
-            "Railway",
-            "Railway dash",
-            "Road labels"
-          ]
-        },
-        {
-          "id": "water",
-          "icon": "water",
-          "name": "Water",
-          "layers": [
-            "River",
-            "Water shadow",
-            "Water",
-            "Ocean labels",
-            "Lakeline labels",
-            "Sea labels"
-          ]
-        },
-        {
-          "id": "nature",
-          "icon": "nature",
-          "name": "Nature",
-          "layers": [
-            "Landcover",
-            "Forest"
-          ]
-        },
-        {
-          "id": "background",
-          "icon": "background",
-          "name": "Background",
-          "layers": [
-            "Background"
-          ]
-        }
-      ],
-      "viewState": {
-        "mapType": "Style",
-        "toolPanelType": "QuickEdits"
-      },
-      "userSettings": {
-        "preferredViewPanelType": "Blocks"
-      }
-    }
-  },
-  "glyphs": "https://osm.nbg1.your-objectstorage.com/fonts/{fontstack}/{range}.pbf",
-  "bearing": 0.0,
-  "pitch": 0.0,
-  "center": [
-    0.0,
-    0.0
-  ],
-  "zoom": 1.0
+  ]
 }
