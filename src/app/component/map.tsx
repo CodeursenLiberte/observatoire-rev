@@ -83,6 +83,7 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
   const map = useRef<null | maplibregl.Map>(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapViewport, setMapViewport] = useState<null | LngLatBounds>(null);
+  const [mapStyle, setMapStyle] = useState("");
 
   let protocol = new Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
@@ -281,7 +282,14 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
 
   return (
     <div ref={mapContainer} className="vif-map">
-      <picture className="vif-map--logo">
+      <div className="vif-map--chrome vif-map--styles">
+        <label htmlFor="vif-map--style-select">Style</label>
+        <select id="vif-map--style-select" value={mapStyle} onChange={e => setMapStyle(e.target.value)}>
+          <option value="maplibre-styles/default.json">Défaut</option>
+          <option value="maplibre-styles/bright.json">Contraste élevé</option>
+        </select>
+      </div>
+      <picture className="vif-map--chrome vif-map--logo">
         <img src="logo_cvidf.png" alt="Logo du collectif vélo Île-de-France" />
       </picture>
     </div>
