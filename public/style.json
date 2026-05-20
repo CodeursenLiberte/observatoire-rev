@@ -4,7 +4,7 @@
   "name": "Dataviz-velo-idf",
   "sources": {
     "maptiler_planet": {
-      "url": "pmtiles://https://osm.nbg1.your-objectstorage.com/planet.pmtiles",
+      "url": "pmtiles://https://tuiles.enliberte.fr/planet.pmtiles",
       "type": "vector"
     },
     "maptiler_attribution": {
@@ -3549,7 +3549,7 @@
       }
     }
   },
-  "glyphs": "https://osm.nbg1.your-objectstorage.com/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://tuiles.enliberte.fr/fonts/{fontstack}/{range}.pbf",
   "bearing": 0.0,
   "pitch": 0.0,
   "center": [
