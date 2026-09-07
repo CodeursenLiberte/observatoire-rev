@@ -113,14 +113,32 @@ $desktop: 960px;
 }
 
 .vif-map--styles {
-  background: white;
-  padding: 4px;
+  --maplibre-ctrl-bottom: 25px;
+  --maplibre-ctrl-radius: 12px;
+  --maplibre-ctrl-background: white;
+  --maplibre-ctrl-font-size: 12px;
+
+  bottom: var(--maplibre-ctrl-bottom);
   margin: 10px;
-  border-radius: 4px;
+  padding: 2px 3px 2px 6px;
+  border-radius: var(--maplibre-ctrl-radius);
+  background: var(--maplibre-ctrl-background);
+  font-size: var(--maplibre-ctrl-font-size);
 
   label {
-    font-weight: bold;
     margin: 0 4px 0 0;
+  }
+
+  select {
+    border: 1px solid var(--bulma-grey-lighter);
+    border-radius: var(--maplibre-ctrl-radius);
+    color: var(--bulma-dark-l);
+    background-color: var(--bulma-background);
+
+    &:hover, &:focus {
+      color: var(--bulma-dark);
+      background-color: var(--bulma-background-hover);
+    }
   }
 }
 
