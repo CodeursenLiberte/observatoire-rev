@@ -332,8 +332,8 @@ export default function Map({ bounds, segments, level, setHash }: Props) {
       <div className="vif-map--chrome vif-map--styles">
         <label htmlFor="vif-map--style-select">Style</label>
         <select id="vif-map--style-select" value={mapStyle} onChange={e => setMapStyle(e.target.value)}>
-          <option value="maplibre-styles/default.json">Défaut</option>
-          <option value="maplibre-styles/bright.json">Contraste élevé</option>
+          <option value="maplibre-styles/default.json">Fond de carte</option>
+          <option value="maplibre-styles/bright.json">OSM</option>
         </select>
       </div>
       <picture className="vif-map--chrome vif-map--logo">
