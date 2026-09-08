@@ -30,6 +30,7 @@ export default function NetworkInfo({
       <div className="vif-container vif-container--narrow vif-border-top">
         <Legend stats={globalStats.stats} total={globalStats.total} />
       </div>
+      <PhaseInfo phases={phases} level={level} setHash={setHash} />
       <div className="vif-container">
         <p className="block has-text-centered">
           <span>
@@ -45,7 +46,6 @@ export default function NetworkInfo({
           </span>
         </p>
       </div>
-      <PhaseInfo phases={phases} level={level} setHash={setHash} />
     </section>
   );
 }
